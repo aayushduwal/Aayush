@@ -1,0 +1,347 @@
+body {
+  background-color: #f4f4f4;
+  margin: 0;
+  font-family: "Inter", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* css of navbar */
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 5%;
+  background-color: white;
+  color: var(--dark-background);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  flex: 1;
+}
+
+.logo img {
+  height: 40px;
+  width: auto;
+}
+
+.nav-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navmenu {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  transition: transform 0.3s ease;
+}
+
+.navmenu li {
+  margin: 0 15px;
+  list-style: none;
+}
+
+.navmenu a {
+  text-decoration: none;
+  color: var(--dark-background);
+  font-size: 22px;
+  font-weight: 450;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.navmenu a:hover {
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.nav-icon {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-icon a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.nav-icon i {
+  color: var(--dark-background);
+  font-size: 24px;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-icon i:hover {
+  color: var(--primary);
+  transform: scale(1.1);
+}
+
+.navmenu li {
+  position: relative; /* Add this */
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  display: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
+  z-index: 1;
+}
+
+.navmenu li:hover .dropdown-menu {
+  display: block; /* Show the dropdown on hover */
+}
+
+#menu-icon {
+  font-size: 30px;
+  color: var(--dark-background);
+  cursor: pointer;
+  display: none;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .logo img {
+    height: 30px;
+  }
+
+  #menu-icon {
+    display: block;
+  }
+
+  .navmenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    width: 100%;
+    height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-100%);
+  }
+
+  .navmenu.active {
+    transform: translateX(0);
+  }
+
+  .main-text h1 {
+    font-size: 2rem;
+  }
+
+  .main-btn {
+    font-size: 0.8rem;
+    padding: 8px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navmenu a {
+    font-size: 16px;
+  }
+
+  .main-text h1 {
+    font-size: 1.5rem;
+  }
+
+  .main-btn {
+    font-size: 0.7rem;
+  }
+}
+
+/* Home section */
+.main-home {
+  width: 100%;
+  height: 100vh;
+  margin-top: 60px;
+  padding-top: 60px;
+  background-image: url("https://static.vecteezy.com/system/resources/previews/011/911/023/large_2x/full-street-fashion-slender-figure-beautiful-face-graceful-girl-sitting-on-isolated-white-background-portrait-of-female-model-in-studio-plastic-surgery-and-aesthetic-cosmetology-free-photo.jpg"); /* Ensure this path is correct */
+  background-color: #fff; /* Set the background color for the entire section */
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-left: 5%;
+}
+
+.main-text {
+  max-width: 100%;
+  padding: 0 10%;
+  margin-bottom: 50px;
+}
+
+.main-text h2 {
+  color: var(--secondary);
+  font-size: 16px;
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.main-text h1 {
+  color: var(--dark-background);
+  font-size: 65px;
+  text-transform: capitalize;
+  line-height: 1.1;
+  font-weight: 600;
+  margin: 6px 0 10px;
+}
+
+.main-text h3 {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+.main-text p {
+  color: var(--foreground);
+  font-size: 20px;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.main-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: var(--primary);
+  color: white;
+  text-decoration: none;
+  font-size: 1.2em;
+  border-radius: var(--border-radius);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.main-btn:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+.main-btn i {
+  vertical-align: middle;
+}
+
+.down-arrow {
+  position: absolute;
+  top: 85%;
+  right: 11%;
+}
+
+.down i {
+  font-size: 30px;
+  color: var(--border);
+  border: 2px solid var(--border);
+  border-radius: var(--border-radius);
+  padding: 12px 12px;
+}
+
+.down i:hover {
+  background-color: var(--border);
+  color: #fff;
+  transition: all.42s ease;
+}
+
+/* css of footer */
+.infos {
+  background-color: var(--dark-background);
+  color: #fff;
+}
+.contact {
+  padding-top: 100px;
+}
+
+.contact-info {
+  display: flex;
+  gap: 3rem;
+  color: #fff;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.info {
+  flex: 1;
+}
+
+.first-info {
+  flex: 2;
+}
+
+.contact a {
+  text-decoration: none;
+}
+
+.contact-info h4 {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.contact-info p {
+  color: var(--dark-background-foreground);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.copyright {
+  max-width: 1200px;
+  margin: 0 auto;
+  color: var(--dark-background-foreground);
+}
+
+.copyright a {
+  text-decoration: underline;
+  color: var(--dark-background-foreground);
+}
+.copyright a:hover {
+  text-decoration: underline;
+}
+footer {
+  width: 100%;
+  background-color: var(--dark-background);
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+/* end of css of footer */
+
+.info h4 {
+  margin-bottom: 14px;
+}
+
+.info {
+  text-align: left;
+}
+.info ul {
+  list-style-type: none;
+}
+.footer-image {
+  margin-bottom: 14px;
+}

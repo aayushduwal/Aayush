@@ -1,0 +1,15 @@
+:root {
+  --primary: #ea580c;
+  --secondary: #dc2626;
+  --tertiary: #c026d3;
+  --border: #475569;
+
+  --border-radius: 7px;
+
+  --foreground: #334155; /*text color*/
+  --primary-foreground: #ffedd5;
+
+  --primary-hover: #f97316;
+  --dark-background: #0f172a;
+  --dark-background-foreground: #e2e8f0;
+}
