@@ -201,6 +201,7 @@ body {
 }
 
 .input-box {
+  position: relative;
   margin-bottom: 20px;
 }
 
@@ -210,9 +211,20 @@ body {
   border: none;
   background: #eeeeee;
   color: #333;
+  border-radius: 5px;
+}
+
+.forgot-password {
+  position: absolute;
+  right: 0;
+  bottom: -20px;
+  font-size: 14px;
+  color: #666;
+  text-decoration: none;
 }
 
 .btn {
+  margin-top: 25px;
   width: 100%;
   padding: 12px;
   background: #ff5733;

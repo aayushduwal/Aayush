@@ -1,9 +1,7 @@
 <?php
-require_once 'database/config.php'; // Include the database connection
-
+require_once 'database/config.php';
 session_start();
 
-// Add this missing function
 function test_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
@@ -11,55 +9,118 @@ function test_input($data) {
     return $data;
 }
 
-$error_message = ""; 
-$success_message = ""; 
-$errors = []; // To track all validation errors
+// Initialize validation and errors
+$validation = true;
+$errors = [
+    'name' => '',
+    'email' => '',
+    'password' => '',
+    'confirm_password' => '',
+    'general' => ''
+];
+
+// Initialize isSubmitted flag
+$isSubmitted = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = trim($_POST['name']);
-    $email = trim($_POST['email']);
-    $password = $_POST['password'];
-    $confirm_password = $_POST['confirm_password'];
-     // Server-side validation
-    if (empty($name) || empty($email) || empty($password) || empty($confirm_password)) {
-        $error = "All fields are required";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "Invalid email format";
-    } elseif (strlen($password) < 8) {
-        $error = "Password must be at least 8 characters long";
-    } elseif ($password !== $confirm_password) {
-        $error = "Passwords do not match";
-    } else {
-        // Check if email already exists
-        $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        if ($result->num_rows > 0) {
-            $error = "Email already exists";
-        } else {
-            // Hash password and insert user
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-            $stmt->bind_param("sss", $name, $email, $hashed_password);
-            
-            if ($stmt->execute()) {
-                $success = "Registration successful! You can now login.";
-                // Optional: Automatically log in the user
-                $_SESSION['user_id'] = $stmt->insert_id;
-                $_SESSION['user_name'] = $name;
-                header("Location: dashboard.php");
-                exit();
-            } else {
-                $error = "Registration failed. Please try again.";
-            }
-        }
-        $stmt->close();
+    $isSubmitted = true;  // Set flag when form is submitted
+    
+    // Get and sanitize data from form
+    $username = test_input($_POST['username'] ?? '');
+    $email = test_input($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+    $confirm_password = $_POST['confirm_password'] ?? '';
+if (empty($username)) {
+        $errors['name'] = "Username is required.";
+        $validation = false;
+    } elseif (!preg_match("/^[a-zA-Z\s'-]*$/", $username)) {
+        $errors['name'] = "Only letters and whitespaces allowed.";
+        $validation = false;
+    } elseif (strlen($username) > 50) { // Add maximum length check
+        $errors['name'] = "Username cannot exceed 50 characters.";
+        $validation = false;
     }
-  }
-?>
 
+    // Email validation with additional checks
+    if (empty($email)) {
+        $errors['email'] = "Email is required.";
+        $validation = false;
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = "Invalid email format.";
+        $validation = false;
+    } elseif (strlen($email) > 255) { // Add maximum length check
+        $errors['email'] = "Email cannot exceed 255 characters.";
+        $validation = false;
+    }
+
+
+
+    // Password validation - only run if form is submitted
+    if (empty($password)) {
+        $errors['password'] = "Password is required.";
+        $validation = false;
+    }elseif(strlen($password)<8){
+ $errors['password'] = "Must be 8 char";
+        $validation = false;
+    } elseif (!preg_match('/[a-zA-Z]/', $password)) {
+        $errors['password'] = "Must include one letter";
+        $validation = false;
+    }elseif (!preg_match('/[0-9]/', $password)) {
+        $errors['password'] = "Must include one number";
+        $validation = false;
+    }elseif (!preg_match('/[@$!%*?&]/', $password)) {
+        $errors['password'] = "Must include one special char";
+        $validation = false;
+    }
+
+      // Confirm password validation
+    if (empty($confirm_password)) {
+        $errors['confirm_password'] = "Please confirm your password.";
+        $validation = false;
+    } elseif ($password !== $confirm_password) {
+        $errors['confirm_password'] = "Passwords do not match.";
+        $validation = false;
+    }
+
+    // Database interaction if validation passes
+    if ($validation) {
+        try {
+            // Check for existing user
+            $sql = "SELECT * FROM users WHERE email = ? OR username = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ss", $email, $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0) {
+                $errors['general'] = "Email or username already exists.";
+            } else {
+                // Hash password and insert user
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                $sql = "INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, NOW())";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("sss", $username, $email, $hashed_password);
+                
+                if ($stmt->execute()) {
+                    // Success - set session and redirect
+                    $_SESSION['username'] = $username;
+                    $_SESSION['email'] = $email;
+                    header("Location: home.php");
+                    exit();
+                } else {
+                    $errors['general'] = "Error: " . $stmt->error;
+                }
+            }
+        } catch (Exception $e) {
+            $errors['general'] = "An error occurred. Please try again later.";
+            // Log the error securely
+            error_log("Signup error: " . $e->getMessage());
+        }
+    }
+}
+
+$conn->close();
+?>
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -97,12 +158,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <body>
     <!-- start of navbar -->
     <header>
-      <div class="logo">
-        <img src="images/logo.png" alt="Logo" />
+       <div class="logo">
+        <a href="home.php">
+          <img src="images/logo.png" alt="Logo" />
+        </a>
       </div>
       <nav class="nav-container">
         <ul class="navmenu">
-          <li><a href="index.html">Home</a></li>
+          <li><a href="index.php">Home</a></li>
           <li>
             <a href="shop.html">Shop</a>
             <ul class="dropdown-menu">
@@ -127,56 +190,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </header>
     <!-- end of navbar -->
     <div class="image-background"></div>
-    <div class="parent-container">
-      <div class="container">
-        
-        <?php if ($error): ?>
-          <div class="message error">
-            <?php echo htmlspecialchars($error); ?>
-          </div>
-          <?php endif; ?>
-          
-          <?php if ($success): ?>
-            <div class="message success">
-              <?php echo htmlspecialchars($success); ?>
-            </div>
-            <?php endif; ?>
-            
+     <div class="parent-container">
+        <div class="container">
             <h1>Signup</h1>
 
-        <form action="signup.php" method="POST">
-          <div class="input-box">
-            <input type="text" name="username" placeholder="username" required />
-          </div>
-          <div class="input-box">
-            <input type="email" name="email" placeholder="email" required />
-          </div>
-          <div class="input-box">
-            <input type="password" name="password" placeholder="password" required />
-          </div>
-          <div class="password-requirements">
-            <h5>Password requirements:</h5>
-            <ul>
-              <li id="length">At least 8 characters</li>
-              <li id="letter">At least one letter</li>
-              <li id="number">At least one number</li>
-              <li id="special">At least one special character</li>
-            </ul>
-          </div>
-          <div class="input-box">
-            <input
-              type="password"
-              name="confirm_password"
-              placeholder="confirm your password"
-              required
-            />
-          </div>
-          <button type="submit" class="btn">Signup</button>
-          <div class="signup-link">
-            <p>Don't have an account? <a href="login.html">Login Here!</a></p>
-          </div>
-        </form>
-      </div>
+            <?php if (!empty($errors['general'])): ?>
+                <p style="color: red"><?php echo $errors['general']; ?></p>
+            <?php endif; ?>
+
+            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" id="signup-form">
+                <div class="input-box">
+                    <input type="text" name="username" 
+                           placeholder="Username" 
+                           value="<?php echo isset($username) ? htmlspecialchars($username) : ''; ?>"
+                           required />
+                    <?php if (!empty($errors['name'])): ?>
+                        <p style="color: red"><?php echo $errors['name']; ?></p>
+                    <?php endif; ?>
+                </div>
+
+                <div class="input-box">
+                    <input type="email" name="email" 
+                           placeholder="Email" 
+                           value="<?php echo isset($email) ? htmlspecialchars($email) : ''; ?>"
+                           required />
+                    <?php if (!empty($errors['email'])): ?>
+                        <p style="color: red"><?php echo $errors['email']; ?></p>
+                    <?php endif; ?>
+                </div>
+
+                <div class="input-box">
+                    <input type="password" name="password" 
+                           placeholder="Password" 
+                           required />
+                    <?php if ($isSubmitted && !empty($errors['password'])): ?>
+                        <p style="color: red"><?php echo $errors['password']; ?></p>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Password requirements - show always -->
+                <div class="password-requirements">
+                    <h5>Password requirements:</h5>
+                    <ul>
+                        <li>At least 8 characters</li>
+                        <li>At least one letter</li>
+                        <li>At least one number</li>
+                        <li>At least one special character</li>
+                    </ul>
+                </div>
+
+                <div class="input-box">
+                    <input type="password" name="confirm_password" 
+                           placeholder="Confirm your password" 
+                           required />
+                    <?php if ($isSubmitted && !empty($errors['confirm_password'])): ?>
+                        <p style="color: red"><?php echo $errors['confirm_password']; ?></p>
+                    <?php endif; ?>
+                </div>
+
+                <button type="submit" class="btn">Signup</button>
+            </form>
+        </div>
     </div>
   </body>
 </html>

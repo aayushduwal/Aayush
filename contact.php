@@ -32,8 +32,10 @@
   <body>
     <!-- navbar -->
     <header>
-      <div class="logo">
-        <img src="images/logo.png" alt="Logo" />
+       <div class="logo">
+        <a href="home.php">
+          <img src="images/logo.png" alt="Logo" />
+        </a>
       </div>
       <nav class="nav-container">
         <ul class="navmenu">

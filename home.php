@@ -35,14 +35,12 @@
   </head>
   <body>
     <header>
-       <div class="logo">
-        <a href="home.php">
-          <img src="images/logo.png" alt="Logo" />
-        </a>
+      <div class="logo">
+        <img src="images/logo.png" alt="Logo" />
       </div>
       <nav class="nav-container">
         <ul class="navmenu">
-          <li><a href="index.php">Home</a></li>
+          <li><a href="home.php">Home</a></li>
           <li>
             <a href="shop.php">Shop</a>
             <ul class="dropdown-menu">
@@ -52,7 +50,7 @@
             </ul>
           </li>
           <li><a href="aboutus.php">AboutUs</a></li>
-          <li><a href="login.php">Login</a></li>
+          <li><a href="login.php">Logout</a></li>
           <li><a href="contact.php">Contact</a></li>
         </ul>
       </nav>
@@ -111,7 +109,7 @@
           </div>
           <div class="collection-wrapper-child">
             <img
-              src="/images/index-page_images/mens_collection/vans.png"
+                src="images/index-page_images/mens_collection/vans.png"
               alt=""
             />
             <h2>Nike Airforce</h2>

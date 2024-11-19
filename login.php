@@ -1,3 +1,43 @@
+<?php
+require_once 'database/config.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Sanitize user input to prevent SQL injection
+    $email = $conn->real_escape_string($_POST['email']);
+    $password = $_POST['password'];
+
+    // Prepare SQL statement to prevent SQL injection
+    $stmt = $conn->prepare("SELECT password FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+        
+        // Verify password using password_verify (recommended for modern PHP)
+        if (password_verify($password, $user['password'])) {
+            // Successful login
+            session_start();
+            $_SESSION['email'] = $email;
+            header("Location: home.php"); // Redirect to dashboard
+            exit();
+        } else {
+            // Incorrect password
+            $error = "Invalid email or password";
+        }
+    } else {
+        // User not found
+        $error = "Invalid email or password";
+    }
+
+    $stmt->close();
+}
+
+$conn->close();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -36,11 +76,13 @@
     <!-- navbar -->
     <header>
       <div class="logo">
-        <img src="images/logo.png" alt="Logo" />
+        <a href="home.php">
+          <img src="images/logo.png" alt="Logo" />
+        </a>
       </div>
       <nav class="nav-container">
         <ul class="navmenu">
-          <li><a href="index.html">Home</a></li>
+          <li><a href="index.php">Home</a></li>
           <li>
             <a href="shop.html">Shop</a>
             <ul class="dropdown-menu">
@@ -50,7 +92,7 @@
             </ul>
           </li>
           <li><a href="aboutus.html">AboutUs</a></li>
-          <li><a href="login.html">Login</a></li>
+          
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </nav>
@@ -68,16 +110,22 @@
     <div class="parent-container">
       <div class="container">
         <h1>Login</h1>
-        <form action="#">
-          <div class="input-box">
-            <input type="text" placeholder="email" required />
-          </div>
-          <div class="input-box">
-            <input type="password" placeholder="password" required />
-          </div>
-          <button type="submit" class="btn">Login</button>
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+    <div class="input-box">
+        <input type="text" name="email" placeholder="email" required />
+    </div>
+    <div class="input-box">
+        <input type="password" name="password" placeholder="password" required />
+        <?php 
+        if (isset($error)) {
+            echo "<p style='color: red;'>$error</p>";
+        }
+        ?>
+        <a href="forgot-password.php" class="forgot-password">Forgot password?</a>
+    </div>
+    <button type="submit" class="btn">Login</button>
           <div class="register-link">
-            <p>Don't have an account? <a href="signup.html">Signup Here!</a></p>
+            <p>Don't have an account? <a href="signup.php">Signup Here!</a></p>
           </div>
         </form>
       </div>
