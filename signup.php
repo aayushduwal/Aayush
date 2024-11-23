@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if (empty($username)) {
         $errors['name'] = "Username is required.";
         $validation = false;
-    } elseif (!preg_match("/^[a-zA-Z\s'-]*$/", $username)) {
+    } elseif (!preg_match("/^[a-zA-Z0-9_-]{3,50}$/", $username)) {
         $errors['name'] = "Only letters and whitespaces allowed.";
         $validation = false;
     } elseif (strlen($username) > 50) { // Add maximum length check

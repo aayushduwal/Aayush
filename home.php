@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ecommerce Website</title>
+    <title>Ecommerce Website - Elegance</title>
     <!-- CSS-link -->
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/index.css" />
@@ -56,7 +56,6 @@
       </nav>
       <div class="nav-icon">
         <a href="#"><i class="bx bxs-shopping-bag"></i></a>
-        <a href="#"><i class="bx bx-user"></i></a>
       </div>
       <div id="menu-icon">
         <i class="fa fa-bars"></i>
@@ -84,6 +83,7 @@
 
         <div class="collection-wrapper">
           <div class="collection-wrapper-child">
+           <a href="home_collections_products/mens_jacket1_product_detail.php">
             <img
               src="images/index-page_images/mens_collection/jacket.png"
               alt=""
@@ -108,8 +108,8 @@
             <p>रु. 99.99</p>
           </div>
           <div class="collection-wrapper-child">
-            <img
-                src="images/index-page_images/mens_collection/vans.png"
+          <img
+              src="images/index-page_images/mens_collection/pant.png"
               alt=""
             />
             <h2>Nike Airforce</h2>

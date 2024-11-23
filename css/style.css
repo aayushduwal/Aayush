@@ -150,10 +150,6 @@ header {
     transform: translateX(0);
   }
 
-  .main-text h1 {
-    font-size: 2rem;
-  }
-
   .main-btn {
     font-size: 0.8rem;
     padding: 8px 15px;
@@ -211,11 +207,13 @@ header {
   line-height: 1.1;
   font-weight: 600;
   margin: 6px 0 10px;
+  color: rgb(212, 206, 206);
 }
 
 .main-text h3 {
   font-size: 1.5em;
   margin-bottom: 20px;
+  color: rgb(181, 173, 173);
 }
 
 .main-text p {
@@ -330,7 +328,6 @@ footer {
   padding: 20px;
   text-align: center;
 }
-/* end of css of footer */
 
 .info h4 {
   margin-bottom: 14px;
@@ -345,3 +342,4 @@ footer {
 .footer-image {
   margin-bottom: 14px;
 }
+/* end of css of footer */
