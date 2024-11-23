@@ -39,18 +39,18 @@
       </div>
       <nav class="nav-container">
         <ul class="navmenu">
-          <li><a href="index.html">Home</a></li>
+          <li><a href="index.php">Home</a></li>
           <li>
-            <a href="shop.html">Shop</a>
+            <a href="shop.php">Shop</a>
             <ul class="dropdown-menu">
-              <li><a href="mens_collection.html">Men's Collection</a></li>
-              <li><a href="womens_collection.html">Women's Collection</a></li>
-              <li><a href="kids_collection.html">Kid's Collection</a></li>
+              <li><a href="mens_collection.php">Men's Collection</a></li>
+              <li><a href="womens_collection.php">Women's Collection</a></li>
+              <li><a href="kids_collection.php">Kid's Collection</a></li>
             </ul>
           </li>
-          <li><a href="aboutus.html">AboutUs</a></li>
-          <li><a href="login.html">Login</a></li>
-          <li><a href="contact.html">Contact</a></li>
+          <li><a href="About.php">About</a></li>
+          <li><a href="login.php">Login</a></li>
+          <li><a href="contact.php">Contact</a></li>
         </ul>
       </nav>
       <div class="nav-icon">
@@ -73,7 +73,7 @@
           <input type="text" class="field" placeholder="Phone" />
           <textarea placeholder="Message" class="field"></textarea>
           <button class="btn">Send</button>
-          <a href="index.html" class="btn1">Back to Home</a>
+          <a href="index.php" class="btn1">Back to Home</a>
         </div>
       </div>
     </div>

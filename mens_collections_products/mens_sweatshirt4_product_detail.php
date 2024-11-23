@@ -32,7 +32,7 @@
       /* font of inter */
       body {
         margin: 0;
-        padding-top: 400px;
+        
         font-family: "Inter", sans-serif;
         font-weight: 400;
         min-height: 100vh;
@@ -42,12 +42,8 @@
       /* closing the font of inter */
 
       /* -------------------- Navbar Start -------------------- */
-      header {
-        position: fixed;
-        width: 100%;
-        top: 0;
-        left: 0;
-        z-index: 1000;
+      header { 
+        width: 100%; 
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -164,9 +160,9 @@
         margin-top: 650px; /* Adjust this value to match the height of your navbar */
       }
       .small-container {
-        margin-top: 200px;
+        margin-top: 0;
         max-width: 1200px;
-        padding: 0 20px;
+        padding: 20px;
         margin-left: auto;
         margin-right: auto;
       }
@@ -268,6 +264,9 @@
         cursor: pointer;
         margin-right: 10px;
       }
+.small-img-col {
+aspect-ratio: 1/1;
+}
       /* end of multiple small images */
 
       @media (max-width: 768px) {
@@ -279,7 +278,7 @@
 
       /* Related Products Section */
       .related-products {
-        margin-top: 50px;
+        margin-top: 60px;
         margin-bottom: 50px;
       }
 
@@ -407,7 +406,7 @@ footer {
       </div>
       <div class="nav-container">
         <ul class="navmenu">
-          <li><a href="index.php">Home</a></li>
+          <li><a href="/aayush/index.php">Home</a></li>
           <li>
             <a href="shop.php">Shop</a>
             <ul class="dropdown">
@@ -416,9 +415,9 @@ footer {
               <li><a href="kids_collection.php">Kids' Collection</a></li>
             </ul>
           </li>
-          <li><a href="abt.php">AboutUs</a></li>
-          <li><a href="login.php">Login</a></li>
-          <li><a href="contact.php">Contact</a></li>
+          <li><a href="/aayush/abt.php">About</a></li>
+          <li><a href="/aayush/login.php">Login</a></li>
+          <li><a href="/aayush/contact.php">Contact</a></li>
         </ul>
       </div>
       <div class="nav-icon">
@@ -503,33 +502,7 @@ footer {
       <!-- end of product detail -->
 
       <!-- Related Products Section -->
-      <div class="related-products">
-        <h3>Related Products</h3>
-        <div class="related-items">
-          <div class="related-item">
-            <img src="image/product-1.jpg" />
-            <div>Charcoal Grey & Gunmetal-Toned Analogue Watch</div>
-            <div class="item-price">$59.99</div>
-          </div>
-          <div class="related-item">
-            <img src="image/product-2.jpg" />
-            <div>Running Black Shoes</div>
-            <div class="item-price">$19.99</div>
-          </div>
-          <div class="related-item">
-            <img src="image/product-3.jpg" />
-            <div>Men Nordic Walking Sports Shoes</div>
-            <div class="item-price">$99.99</div>
-          </div>
-          <div class="related-item">
-            <img src="image/product-4.jpg" />
-            <div>Nike Men's Track Pants</div>
-            <div class="item-price">$79.99</div>
-          </div>
-        </div>
-        <!-- </div> -->
-        <!-- end of product detail -->
-      </div>
+
     </div>
 
     <!-- js for quantity increment and decrement -->
