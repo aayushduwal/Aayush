@@ -36,11 +36,13 @@
   <body>
     <header>
       <div class="logo">
+<a href="index.php">
         <img src="images/logo.png" alt="Logo" />
+</a>
       </div>
       <nav class="nav-container">
         <ul class="navmenu">
-          <li><a href="index.php">Home</a></li>
+          <li><a href="/aayush/index.php">Home</a></li>
           <li>
             <a href="shop.php">Shop</a>
             <ul class="dropdown-menu">
@@ -49,9 +51,9 @@
               <li><a href="kids_collection.php">Kid's Collection</a></li>
             </ul>
           </li>
-          <li><a href="#">AboutUs</a></li>
-          <li><a href="login.php">Login</a></li>
-          <li><a href="contact.php">Contact</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="/aayush/login.php">Login</a></li>
+          <li><a href="/aayush/contact.php">Contact</a></li>
         </ul>
       </nav>
       <div class="nav-icon">
@@ -82,9 +84,7 @@
       </div>
       <div class="products">
         <div class="row">
-          <div class="product-text">
-            <h5>New</h5>
-          </div>
+          
           <a href="mens_collections_products/mens_tshirt1_product_detail.php">
             <img
               src="https://img.drz.lazcdn.com/static/np/p/e8dba39b7552c4e1829daafd0ccab7cc.jpg_960x960q80.jpg_.webp"
@@ -107,9 +107,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="product-text">
-            <h5>New</h5>
-          </div>
+          
           <a href="mens_collections_products/mens_tshirt2_product_detail.php">
             <img
               src="https://m.media-amazon.com/images/I/81jsi38Q15L.jpg"
@@ -132,9 +130,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="product-text">
-            <h5>New</h5>
-          </div>
+          
           <a href="mens_collections_products/mens_tshirt3_product_detail.php">
             <img
               src="https://www.nepal.ubuy.com/productimg/?image=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvNjFwUm5vN3VsUkwuX0FDX1VMMTUwMF8uanBn.jpg"
@@ -157,9 +153,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="product-text">
-            <h5>New</h5>
-          </div>
+          
           <a href="mens_collections_products/mens_tshirt4_product_detail.php">
             <img
               src="https://ae01.alicdn.com/kf/S35baa0e0cd5f4fbfa93e80956f438d06O/Summer-Mens-Shirts-Vacation-Blue-Love-Floral-Print-Casual-Short-Sleeve-Button-Up-Black-Shirt-For.jpg"
@@ -237,9 +231,7 @@
       </div>
       <div class="jackets">
         <div class="row">
-          <div class="product-text">
-            <h5>New</h5>
-          </div>
+          
           <a href="mens_collections_products/mens_jacket1_product_detail.php">
             <img
               src="https://ae01.alicdn.com/kf/S907b1da851b7442dabfe8673e0ee555ei.jpg"
@@ -262,9 +254,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="product-text">
-            <h5>New</h5>
-          </div>
+          
           <a href="mens_collections_products/mens_jacket2_product_detail.php">
             <img
               src="https://m.media-amazon.com/images/I/818N0G6aolL._AC_UF1000,1000_QL80_.jpg"
@@ -287,9 +277,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="product-text">
-            <h5>New</h5>
-          </div>
+          
           <a href="mens_collections_products/mens_jacket3_product_detail.php">
             <img
               src="https://m.media-amazon.com/images/I/61v-4BLmeIL._AC_UY1000_.jpg"
@@ -312,9 +300,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="product-text">
-            <h5>New</h5>
-          </div>
+          
           <a href="mens_collections_products/mens_jacket4_product_detail.php">
             <img
               src="https://m.media-amazon.com/images/I/51ypOE3tunL._AC_SX569_.jpg"
@@ -422,9 +408,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="product-text">
-            <h5>New</h5>
-          </div>
+          
           <a href="mens_collections_products/mens_hoodies4_product_detail.php">
             <img
               src="https://img.drz.lazcdn.com/static/np/p/1038ad3d85395b4d1d06bb4ee18f09d5.jpg_720x720q80.jpg_.webp"
@@ -457,9 +441,7 @@
       </div>
       <div class="sweatshirts">
         <div class="row">
-          <div class="product-text">
-            <h5>New</h5>
-          </div>
+          
           <a href="mens_collections_products/mens_sweatshirt1_product_detail.php">
             <img
               src="https://m.media-amazon.com/images/I/71SQ1yLUPAL._AC_SX569_.jpg"
@@ -482,9 +464,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="product-text">
-            <h5>New</h5>
-          </div>
+          
           <a href="mens_collections_products/mens_sweatshirt2_product_detail.php">
             <img
               src="https://m.media-amazon.com/images/I/91H-hex2baL._AC_SX522_.jpg"
@@ -507,9 +487,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="product-text">
-            <h5>New</h5>
-          </div>
+          
           <a href="mens_collections_products/mens_sweatshirt3_product_detail.php">
             <img
               src="https://m.media-amazon.com/images/I/91zVXoW6t7L._AC_SX679_.jpg"
@@ -532,9 +510,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="product-text">
-            <h5>New</h5>
-          </div>
+          
           <a href="mens_collections_products/mens_sweatshirt4_product_detail.php">
             <img
               src="https://m.media-amazon.com/images/I/81s9x-g6EEL._AC_SX569_.jpg"

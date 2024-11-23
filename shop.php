@@ -50,9 +50,9 @@
               <li><a href="kids_collection.php">Kid's Collection</a></li>
             </ul>
           </li>
-          <li><a href="aboutus.php">AboutUs</a></li>
+          <li><a href="About.php">About</a></li>
           <li><a href="login.php">Logout</a></li>
-          <li><a href="contact.php">Contact</a></li>
+          <li><a href="/aayush/contact.php">Contact</a></li>
         </ul>
       </nav>
       <div class="nav-icon">
@@ -76,7 +76,7 @@
       <h2>Featured Collections</h2>
       <div class="collection-grid">
         <div class="collection-item">
-          <a href="mens_collection.html">
+          <a href="mens_collection.php">
             <img src="images/srk.jpg" alt="Collection 1" />
             <div class="hover-details">
               <h3>For Men's</h3>
@@ -85,7 +85,7 @@
           </a>
         </div>
         <div class="collection-item">
-          <a href="womens_collection.html">
+          <a href="womens_collection.php">
             <img src="images/shraddhakapoor.webp" alt="Collection 2" />
             <div class="hover-details">
               <h3>For Women's</h3>
@@ -94,7 +94,7 @@
           </a>
         </div>
         <div class="collection-item">
-          <a href="kids_collection.html">
+          <a href="kids_collection.php">
             <img src="images/Kids.png" alt="Collection 3" />
             <div class="hover-details">
               <h3>For Kids</h3>

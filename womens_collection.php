@@ -35,11 +35,13 @@
   <body>
     <header>
       <div class="logo">
+<a href="index.php">
         <img src="images/logo.png" alt="Logo" />
+</a>
       </div>
       <nav class="nav-container">
         <ul class="navmenu">
-          <li><a href="index.php">Home</a></li>
+          <li><a href="/aayush/index.php">Home</a></li>
           <li>
             <a href="shop.php">Shop</a>
             <ul class="dropdown-menu">
@@ -48,9 +50,9 @@
               <li><a href="kids_collection.php">Kid's Collection</a></li>
             </ul>
           </li>
-          <li><a href="#">AboutUs</a></li>
-          <li><a href="login.php">Login</a></li>
-          <li><a href="contact.php">Contact</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="/aayush/login.php">Login</a></li>
+          <li><a href="/aayush/contact.php">Contact</a></li>
         </ul>
       </nav>
       <div class="nav-icon">
