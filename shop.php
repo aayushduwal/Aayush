@@ -35,13 +35,13 @@
   <body>
     <header>
       <div class="logo">
-        <a href="home.php">
+        <a href="index.php">
           <img src="images/logo.png" alt="Logo" />
         </a>
       </div>
       <nav class="nav-container">
         <ul class="navmenu">
-          <li><a href="home.php">Home</a></li>
+          <li><a href="index.php">Home</a></li>
           <li>
             <a href="shop.php">Shop</a>
             <ul class="dropdown-menu">

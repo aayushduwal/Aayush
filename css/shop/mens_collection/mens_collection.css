@@ -7,8 +7,8 @@ body {
 }
 
 /* css of navbar */
-header { 
-  width: 100%;  
+header {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -95,7 +95,7 @@ header {
   display: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 10px 0;
-  z-index: 1;
+  z-index: 100;
 }
 
 .navmenu li:hover .dropdown-menu {
@@ -231,9 +231,7 @@ header {
   margin-bottom: 10px;
 }
 
-row img:hover
-
-.product-text h5 {
+row img:hover .product-text h5 {
   position: absolute;
   top: 13px;
   left: 13px;
@@ -307,7 +305,6 @@ row img:hover
   transition: all 0.4s;
 }
 
-
 .heart-icon {
   position: absolute;
   right: 0;
@@ -367,7 +364,6 @@ row img:hover
   transition: all 0.4s;
 }
 
-
 .heart-icon {
   position: absolute;
   right: 0;
@@ -425,10 +421,9 @@ row img:hover
   width: 100%;
   height: auto;
   transition: all 0.4s;
-   border-radius: 7px;
+  border-radius: 7px;
   margin-bottom: 10px;
 }
-
 
 .heart-icon {
   position: absolute;

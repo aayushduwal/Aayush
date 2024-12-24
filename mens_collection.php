@@ -84,7 +84,6 @@
       </div>
       <div class="products">
         <div class="row">
-          
           <a href="mens_collections_products/mens_tshirt1_product_detail.php">
             <img
               src="https://img.drz.lazcdn.com/static/np/p/e8dba39b7552c4e1829daafd0ccab7cc.jpg_960x960q80.jpg_.webp"

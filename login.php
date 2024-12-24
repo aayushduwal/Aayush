@@ -7,20 +7,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     // Prepare SQL statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT password FROM users WHERE email = ?");
+    $stmt = $conn->prepare("SELECT username, password FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
+        $username = $user['username'];
         
         // Verify password using password_verify (recommended for modern PHP)
         if (password_verify($password, $user['password'])) {
             // Successful login
             session_start();
+            $_SESSION['username'] = $username;
             $_SESSION['email'] = $email;
-            header("Location: home.php"); // Redirect to dashboard
+
+            echo "<script>alert('Logged in as: $username');</script>";
+
+            header("Location: index.php"); // Redirect to dashboard
             exit();
         } else {
             // Incorrect password
@@ -76,7 +81,7 @@ $conn->close();
     <!-- navbar -->
     <header>
       <div class="logo">
-        <a href="home.php">
+        <a href="index.php">
           <img src="images/logo.png" alt="Logo" />
         </a>
       </div>

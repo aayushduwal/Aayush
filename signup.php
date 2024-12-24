@@ -30,6 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = test_input($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
+
+        // Username validation
 if (empty($username)) {
         $errors['name'] = "Username is required.";
         $validation = false;
@@ -103,9 +105,10 @@ if (empty($username)) {
                 
                 if ($stmt->execute()) {
                     // Success - set session and redirect
+                    $_SESSION['id'] = mysqli_insert_id($conn);
                     $_SESSION['username'] = $username;
                     $_SESSION['email'] = $email;
-                    header("Location: home.php");
+                    header("Location: index.php");
                     exit();
                 } else {
                     $errors['general'] = "Error: " . $stmt->error;
@@ -159,7 +162,7 @@ $conn->close();
     <!-- start of navbar -->
     <header>
        <div class="logo">
-        <a href="home.php">
+        <a href="index.php">
           <img src="images/logo.png" alt="Logo" />
         </a>
       </div>

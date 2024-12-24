@@ -14,14 +14,15 @@
   --dark-background-foreground: #e2e8f0;
 }
 
+.single-product .col-2 {
+  aspect-ratio: 1/1;
+}
 
-  .single-product .col-2 {
-    aspect-ratio: 1/1;
-  }
+.single-product .col-2 img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
 
-  .single-product .col-2 img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
- 
+@media (max-width: 768px) {
+}

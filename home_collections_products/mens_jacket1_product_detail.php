@@ -444,22 +444,22 @@
     <div class="small-container single-product">
       <div class="row">
         <div class="col-2">
-          <img src="https://img.drz.lazcdn.com/static/np/p/5301838d97fda05285ff71fa2e7c10b3.jpg_720x720q80.jpg_.webp"
+          <img src="../images/index-page_images/mens_collection/jacket.png"
             width="100%" id="ProductImg" alt="Cotton Plain Half Sleeves T-Shirt" />
           <div class="small-img-row">
             <div class="small-img-col">
               <img
-                src="https://img.drz.lazcdn.com/static/np/p/5301838d97fda05285ff71fa2e7c10b3.jpg_720x720q80.jpg_.webp"
+                src="../images/index-page_images/mens_collection/jacket.png"
                 width="100%" class="small-img" alt="Cotton Plain Half Sleeves T-Shirt" />
             </div>
             <div class="small-img-col">
               <img
-                src="https://img.drz.lazcdn.com/static/np/p/2bf2e3ce5554994bea6b0fe78de8fd32.jpg_720x720q80.jpg_.webp"
+                src="https://sofieschnoor.com/cdn/shop/files/EMMALISW_JACKET-Jacket-SNOS509-9099_Middle_Brown-1.jpg?v=1729434135&width=1200"
                 width="100%" class="small-img" alt="Cotton Plain Half Sleeves T-Shirt" />
             </div>
             <div class="small-img-col">
               <img
-                src="https://img.drz.lazcdn.com/static/np/p/ff14ce0351a82eb8607d271c33659f79.jpg_720x720q80.jpg_.webp"
+                src="https://int.bape.com/cdn/shop/files/AAPLJM7663XXNBGD-pdp-1.jpg?v=1730693524&width=1200"
                 width="100%" class="small-img" alt="Cotton Plain Half Sleeves T-Shirt" />
             </div>
           </div>

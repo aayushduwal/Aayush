@@ -1,3 +1,67 @@
+<?php
+  session_start();
+include('database/config.php');
+
+  if (!isset($_SESSION['initiated'])) {
+    session_regenerate_id(true);
+    $_SESSION['initiated'] = true;
+}
+
+  require_once __DIR__ . '/database/config.php';
+
+  // Check if database connection is established
+  if (!isset($conn) || !$conn) {
+    die("Database connection failed.");
+}
+
+  // Function to get user details
+  function getUserDetails($conn, $user_id) {
+    $stmt = $conn->prepare("SELECT username, email FROM users WHERE id = ?");
+    if (!$stmt) {
+        die("Prepare failed: " . $conn->error);
+    }
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+}
+
+// Login logic
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    if ($_POST['action'] === 'login') {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        $stmt = $conn->prepare("SELECT id, password FROM users WHERE username = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($row = $result->fetch_assoc()) {
+            if (password_verify($password, $row['password'])) {
+                $_SESSION['user_id'] = $row['id'];
+                header("Location: index.php");
+                exit();
+            } else {
+                $loginError = "Invalid password.";
+            }
+        } else {
+            $loginError = "User not found.";
+        }
+    }
+
+    // Logout logic
+    if ($_POST['action'] === 'logout') {
+        session_destroy();
+        header("Location: index.php");
+        exit();
+    }
+}
+
+  $isLoggedIn = isset($_SESSION['user_id']);
+  $userDetails = $isLoggedIn ? getUserDetails($conn, $_SESSION['user_id']) : null;
+  ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,13 +72,10 @@
   <!-- CSS-link -->
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/index.css" />
-
   <link rel="stylesheet" href="css/collection.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <!-- font of inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet" />
@@ -29,7 +90,7 @@
 <body>
   <header>
     <div class="logo">
-      <a href="home.php">
+      <a href="index.php">
         <img src="images/logo.png" alt="Logo" />
       </a>
     </div>
@@ -45,12 +106,28 @@
           </ul>
         </li>
         <li><a href="About.php">About</a></li>
-        <li><a href="/aayush/login.php">Login</a></li>
         <li><a href="/aayush/contact.php">Contact</a></li>
-      </ul>
+
+        <?php
+        echo $isLoggedIn;
+        echo $userDetails;
+        echo "Hello World!";
+        ?>
+     <?php if ($isLoggedIn): ?>
+  <li>
+    <a href="logout.php">Logout</a> 
+  </li>
+<?php else: ?>
+  <li>
+    <a href="login.php">Login</a>
+  </li>
+<?php endif; ?>
+
+
+    </ul>
     </nav>
+
     <div class="nav-icon">
-      <a href="#"><i class="bx bxs-shopping-bag"></i></a>
       <a href="#"><i class="bx bx-user"></i></a>
     </div>
     <div id="menu-icon">
@@ -79,39 +156,37 @@
         <div class="collection-wrapper-child">
           <a href="home_collections_products/mens_jacket1_product_detail.php">
             <img src="images/index-page_images/mens_collection/jacket.png" alt="" />
-            <h2>Nike Airforce</h2>
+            <h2>jacket</h2>
             <div class="rating-wrapper">
               <i class="fa-regular fa-star"></i>
               4.5
             </div>
-            <p>रु. 99.99</p>
+            <p>रु.1500</p>
           </a>
         </div>
         <div class="collection-wrapper-child">
           <a href="home_collections_products/mens_boxpant1_product_detail.php">
-
             <img src="images/index-page_images/mens_collection/pant.png" alt="" />
-            <h2>Nike Airforce</h2>
+            <h2>Cargo Pant</h2>
             <div class="rating-wrapper">
               <i class="fa-regular fa-star"></i>
               4.5
             </div>
-            <p>रु. 99.99</p>
+            <p>रु. 1200</p>
           </a>
         </div>
         <div class="collection-wrapper-child">
           <img src="images/index-page_images/mens_collection/vans.png" alt="" />
-          <h2>Nike Airforce</h2>
+          <h2>Vans</h2>
           <div class="rating-wrapper">
             <i class="fa-regular fa-star"></i>
-
             4.5
           </div>
-          <p>रु. 99.99</p>
+          <p>रु. 2000</p>
         </div>
         <div class="collection-wrapper-child">
           <img src="images/index-page_images/mens_collection/jacket1.png" alt="" />
-          <h2>Nike Airforce</h2>
+          <h2>Jacket</h2>
           <div class="rating-wrapper">
             <i class="fa-regular fa-star"></i>
             4.5
@@ -129,40 +204,40 @@
       <div class="collection-wrapper">
         <div class="collection-wrapper-child">
           <img src="images/index-page_images/womens_collection/jacket.png" alt="" />
-          <h2>Nike Airforce</h2>
+          <h2>Jacket</h2>
           <div class="rating-wrapper">
             <i class="fa-regular fa-star"></i>
             4.5
           </div>
-          <p>रु. 99.99</p>
+          <p>रु. 800</p>
         </div>
         <div class="collection-wrapper-child">
           <img src="images/index-page_images/womens_collection/shoes.png" alt="" />
-          <h2>Nike Airforce</h2>
+          <h2>Shoes</h2>
           <div class="rating-wrapper">
             <i class="fa-regular fa-star"></i>
             4.5
           </div>
-          <p>रु. 99.99</p>
+          <p>रु. 50</p>
         </div>
         <div class="collection-wrapper-child">
           <img src="images/index-page_images/womens_collection/pant.png" alt="" />
-          <h2>Nike Airforce</h2>
+          <h2>Pant</h2>
           <div class="rating-wrapper">
             <i class="fa-regular fa-star"></i>
 
             4.5
           </div>
-          <p>रु. 99.99</p>
+          <p>रु. 200</p>
         </div>
         <div class="collection-wrapper-child">
           <img src="images/index-page_images/womens_collection/top.png" alt="" />
-          <h2>Nike Airforce</h2>
+          <h2>Top</h2>
           <div class="rating-wrapper">
             <i class="fa-regular fa-star"></i>
             4.5
           </div>
-          <p>रु. 99.99</p>
+          <p>रु. 150</p>
         </div>
       </div>
     </div>
@@ -175,39 +250,39 @@
       <div class="collection-wrapper">
         <div class="collection-wrapper-child">
           <img src="images/index-page_images/kids_collection/tshirt.png" alt="" />
-          <h2>Nike Airforce</h2>
+          <h2>Tshirt</h2>
           <div class="rating-wrapper">
             <i class="fa-regular fa-star"></i>
             4.5
           </div>
-          <p>रु. 99.99</p>
+          <p>रु. 600</p>
         </div>
         <div class="collection-wrapper-child">
           <img src="images/index-page_images/kids_collection/jacket.png" />
-          <h2>Nike Airforce</h2>
+          <h2>Jacket</h2>
           <div class="rating-wrapper">
             <i class="fa-regular fa-star"></i>
             4.5
           </div>
-          <p>रु. 99.99</p>
+          <p>रु. 1800</p>
         </div>
         <div class="collection-wrapper-child">
           <img src="images/index-page_images/kids_collection/shoes.png" />
-          <h2>Nike Airforce</h2>
+          <h2>Shoes</h2>
           <div class="rating-wrapper">
             <i class="fa-regular fa-star"></i>
             4.5
           </div>
-          <p>रु. 99.99</p>
+          <p>रु. 2100</p>
         </div>
         <div class="collection-wrapper-child">
           <img src="images/index-page_images/kids_collection/jacket1.png" alt="" />
-          <h2>Nike Airforce</h2>
+          <h2>Jacket</h2>
           <div class="rating-wrapper">
             <i class="fa-regular fa-star"></i>
             4.5
           </div>
-          <p>रु. 99.99</p>
+          <p>रु. 1500</p>
         </div>
       </div>
     </div>
