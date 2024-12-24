@@ -1,11 +1,14 @@
 <?php
-$host = 'localhost';
-$user = 'root';
-$pw = '';
-$db = 'aayush-elegance';
+$db_host = 'localhost';
+$db_user = 'root';
+$db_pass = '';
+$db_name = 'aayush-elegance';
 
-$conn = mysqli_connect($host, $user, $pw, $db); 
-if(!$conn){
-    die('Connection failed: '.mysqli_connect_error());
+// Create connection
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 ?>

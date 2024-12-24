@@ -108,7 +108,7 @@ if (empty($username)) {
                     $_SESSION['id'] = mysqli_insert_id($conn);
                     $_SESSION['username'] = $username;
                     $_SESSION['email'] = $email;
-                    header("Location: index.php");
+                    header("Location: login.php");
                     exit();
                 } else {
                     $errors['general'] = "Error: " . $stmt->error;
