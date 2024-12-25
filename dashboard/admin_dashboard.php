@@ -1,128 +1,97 @@
-<?php 
+<?php
 session_start();
-include('../database/config.php');
+require_once('includes/common.php');
+require_once('../database/config.php');
 
-// Function to get user details
-function getUserDetails($conn, $user_id) {
-    $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
-    $stmt->bind_param("s", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    return $result->fetch_assoc();
+// Check for host role
+if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'host') {
+    header("Location: ../login.php");
+    exit();
 }
 
-// Check if user is logged in
-$isLoggedIn = isset($_SESSION['user_id']);
-$userDetails = null;
+// Get dashboard statistics
+$product_count = $conn->query("SELECT COUNT(*) as count FROM products")->fetch_assoc()['count'];
+$order_count = $conn->query("SELECT COUNT(*) as count FROM orders")->fetch_assoc()['count'];
+$customer_count = $conn->query("SELECT COUNT(*) as count FROM customers")->fetch_assoc()['count'];
+$total_revenue = $conn->query("SELECT SUM(total_amount) as total FROM orders WHERE status = 'completed'")->fetch_assoc()['total'] ?? 0;
 
-if ($isLoggedIn) {
-    $userDetails = getUserDetails($conn, $_SESSION['user_id']);
-}
+// Get recent orders
+$recent_orders = $conn->query("
+    SELECT o.*, c.name as customer_name 
+    FROM orders o 
+    LEFT JOIN customers c ON o.customer_id = c.id 
+    ORDER BY order_date DESC LIMIT 5
+");
+
+// Get header with title
+getHeader('Dashboard - Aayush Elegance');
+getSidebar();
+
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>E-commerce Admin Dashboard</title>
-    <link rel="stylesheet" href="../css/admin_dashboard.css" />
-  </head>
-  <body>
-    <div class="sidebar">
-      <div class="sidebar-logo">
-         <a href="/aayush/index.php">
-           <h2>Elegance</h2>
-         </a>
-      </div>
-      <ul class="sidebar-menu">
-        <li><a href="#">Dashboard</a></li>
-        <li class="has-dropdown">
-          <a href="#">Products ▼</a>
-          <div class="dropdown">
-            <a href="#">Add Products</a>
-            <a href="#">View Products</a>
-          </div>
-        </li>
-        <li><a href="#">Orders</a></li>
-        <li><a href="#">Customers</a></li>
-      </ul>
+<div class="main-content">
+    <div class="dashboard-header">
+        <h1>Dashboard Overview</h1>
+        <div class="nav-icon">
+            <p>Welcome, <?php echo $_SESSION['username']; ?></p>
+            <a href="../logout.php">Logout</a>
+        </div>
     </div>
 
-    <div class="main-content">
-      <div class="dashboard-header">
-        <h1>Dashboard</h1>
-        <!-- <div>Welcome, Admin</div> -->
+    <!-- Stats Cards -->
+    <div class="stats-container">
+        <div class="stat-card">
+            <h3>Total Products</h3>
+            <div class="number"><?php echo $product_count; ?></div>
+        </div>
+        <div class="stat-card">
+            <h3>Total Orders</h3>
+            <div class="number"><?php echo $order_count; ?></div>
+        </div>
+        <div class="stat-card">
+            <h3>Total Customers</h3>
+            <div class="number"><?php echo $customer_count; ?></div>
+        </div>
+        <div class="stat-card">
+            <h3>Total Revenue</h3>
+            <div class="number">Rs. <?php echo number_format($total_revenue, 2); ?></div>
+        </div>
+    </div>
 
-    <div class="nav-icon">
-       <?php if ($isLoggedIn): ?>
-       <p>
-         Logged in as <u><strong><?php echo $userDetails['username']; ?></strong></u>
-       </p>
-       <?php else: ?>
-       <a href="#"><i class="bx bx-user"></i></a>
-       <?php endif; ?>
-     </div>
-     <div id="menu-icon">
-       <i class="fa fa-bars"></i>
-     </div>
-     </div>
-
-      <div class="stats-container">
-        <div class="stat-card">
-          <h3>Total Revenue</h3>
-          <div class="number">NPR-0</div>
-        </div>
-        <div class="stat-card">
-          <h3>Orders</h3>
-          <div class="number">0</div>
-        </div>
-        <div class="stat-card">
-          <h3>Products</h3>
-          <div class="number">0</div>
-        </div>
-        <div class="stat-card">
-          <h3>Customers</h3>
-          <div class="number">0</div>
-        </div>
-      </div>
-
-      <div class="recent-orders">
+    <!-- Recent Orders -->
+    <div class="recent-orders">
         <h2>Recent Orders</h2>
         <table class="order-table">
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Customer</th>
-              <th>Date</th>
-              <th>Status</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>#12345</td>
-              <td>Ram</td>
-              <td>2024-02-15</td>
-              <td>Completed</td>
-              <td>$247.50</td>
-            </tr>
-            <tr>
-              <td>#12346</td>
-              <td>Shyam</td>
-              <td>2024-02-16</td>
-              <td>Pending</td>
-              <td>$189.99</td>
-            </tr>
-            <tr>
-              <td>#12347</td>
-              <td>Hari</td>
-              <td>2024-02-17</td>
-              <td>Processing</td>
-              <td>$345.25</td>
-            </tr>
-          </tbody>
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while($order = $recent_orders->fetch_assoc()): ?>
+                <tr>
+                    <td>#<?php echo $order['id']; ?></td>
+                    <td><?php echo $order['customer_name']; ?></td>
+                    <td>Rs. <?php echo number_format($order['total_amount'], 2); ?></td>
+                    <td>
+                        <span class="status status-<?php echo strtolower($order['status']); ?>">
+                            <?php echo ucfirst($order['status']); ?>
+                        </span>
+                    </td>
+                    <td><?php echo date('d M Y', strtotime($order['order_date'])); ?></td>
+                    <td>
+                        <a href="orders/view.php?id=<?php echo $order['id']; ?>" class="btn-view">View</a>
+                    </td>
+                </tr>
+                <?php endwhile; ?>
+            </tbody>
         </table>
-      </div>
     </div>
-  </body>
-</html>
+</div>
+
+<?php getFooter(); ?>
