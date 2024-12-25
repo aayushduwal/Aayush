@@ -76,7 +76,7 @@ header {
 }
 
 .navmenu li {
-  position: relative; /* Add this */
+  position: relative; 
 }
 
 .dropdown-menu {
@@ -91,7 +91,7 @@ header {
 }
 
 .navmenu li:hover .dropdown-menu {
-  display: block; /* Show the dropdown on hover */
+  display: block; 
 }
 
 #menu-icon {

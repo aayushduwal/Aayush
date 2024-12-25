@@ -11,8 +11,8 @@ body {
   box-sizing: border-box;
   outline: none;
   text-decoration: none;
-  /* font-family: "Josefin Sans", sans-serif; */
 }
+
 /* css of navbar */
 header {
   width: 100%;
@@ -106,7 +106,7 @@ header {
 }
 
 .navmenu li:hover .dropdown-menu {
-  display: block; /* Show the dropdown on hover */
+  display: block;
 }
 
 #menu-icon {

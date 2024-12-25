@@ -93,7 +93,7 @@ header {
 }
 
 .navmenu li {
-  position: relative; /* Add this */
+  position: relative;
 }
 
 .dropdown-menu {
@@ -108,7 +108,7 @@ header {
 }
 
 .navmenu li:hover .dropdown-menu {
-  display: block; /* Show the dropdown on hover */
+  display: block;
 }
 
 #menu-icon {
@@ -177,7 +177,7 @@ header {
   background: rgba(255, 255, 255, 0.9);
   padding: 80px 60px;
   border-radius: 20px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Adds a subtle shadow */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 .container h1 {
