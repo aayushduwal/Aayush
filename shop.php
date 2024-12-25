@@ -1,3 +1,27 @@
+<?php 
+session_start();
+include('database/config.php');
+
+// Function to get user details
+function getUserDetails($conn, $user_id) {
+    $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
+    $stmt->bind_param("s", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+}
+
+
+// Check if user is logged in
+$isLoggedIn = isset($_SESSION['user_id']);
+$userDetails = null;
+
+if ($isLoggedIn) {
+    $userDetails = getUserDetails($conn, $_SESSION['user_id']);
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -51,10 +75,16 @@
             </ul>
           </li>
           <li><a href="About.php">About</a></li>
-          <li><a href="login.php">Logout</a></li>
           <li><a href="/aayush/contact.php">Contact</a></li>
+
+          <?php if ($isLoggedIn): ?>
+           <li><a href="logout.php">Logout</a></li>
+         <?php else: ?>
+           <li><a href="login.php">Login</a></li>
+         <?php endif; ?>
         </ul>
       </nav>
+      
       <div class="nav-icon">
         <a href="#"><i class="bx bxs-shopping-bag"></i></a>
       </div>

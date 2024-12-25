@@ -2,6 +2,9 @@
 require_once 'database/config.php';
 session_start();
 
+// Initialize the user role variable
+$user_role = '';
+
 function test_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
@@ -16,6 +19,7 @@ $errors = [
     'email' => '',
     'password' => '',
     'confirm_password' => '',
+    'role' => '', 
     'general' => ''
 ];
 
@@ -30,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = test_input($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
+    $user_role = test_input($_POST['user_role'] ?? '');
 
         // Username validation
 if (empty($username)) {
@@ -84,6 +89,15 @@ if (empty($username)) {
         $validation = false;
     }
 
+    // Role validation
+   if (!isset($_POST['user_role']) || $_POST['user_role'] === '') {
+        $errors['role'] = "Role selection is required.";
+        $validation = false;
+    } elseif (!in_array($user_role, ['guest', 'host'])) {
+        $errors['role'] = "Invalid role selected.";
+        $validation = false;
+    }
+
     // Database interaction if validation passes
     if ($validation) {
         try {
@@ -99,16 +113,23 @@ if (empty($username)) {
             } else {
                 // Hash password and insert user
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $sql = "INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, NOW())";
+                $sql = "INSERT INTO users (username, email, password, user_role, created_at) VALUES (?, ?, ?, ?, NOW())";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("sss", $username, $email, $hashed_password);
+                $stmt->bind_param("ssss", $username, $email, $hashed_password, $user_role);
                 
                 if ($stmt->execute()) {
                     // Success - set session and redirect
-                    $_SESSION['id'] = mysqli_insert_id($conn);
+                    $_SESSION['user_id'] = mysqli_insert_id($conn);
                     $_SESSION['username'] = $username;
                     $_SESSION['email'] = $email;
-                    header("Location: login.php");
+                    $_SESSION['user_role'] = $user_role;
+
+                     // Redirect based on role
+                    if ($user_role === 'host') {
+                        header("Location: admin_dashboard.php");
+                    } elseif ($user_role === 'guest'){
+                        header("Location: index.php");
+                    }
                     exit();
                 } else {
                     $errors['general'] = "Error: " . $stmt->error;
@@ -251,6 +272,16 @@ $conn->close();
                     <?php endif; ?>
                 </div>
 
+          <div class="input-box">
+    <select name="user_role" class="role-select" required>
+        <option value="">Select your role</option>
+        <option value="guest" <?php echo ($user_role === 'guest') ? 'selected' : ''; ?>>Guest</option>
+        <option value="host" <?php echo ($user_role === 'host') ? 'selected' : ''; ?>>Host</option>
+    </select>
+    <?php if (!empty($errors['role'])): ?>
+        <p style="color: red"><?php echo $errors['role']; ?></p>
+    <?php endif; ?>
+</div>
                 <button type="submit" class="btn">Signup</button>
             </form>
         </div>

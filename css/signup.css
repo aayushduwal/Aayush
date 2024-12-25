@@ -249,3 +249,19 @@ h1 {
   color: #717171;
   margin-right: 0.5rem;
 }
+
+.role-select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  background: #eeeeee;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.role-select option {
+  padding: 10px;
+  background: white;
+}

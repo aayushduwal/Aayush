@@ -1,4 +1,4 @@
- <?php
+<?php
 session_start();
 include('database/config.php');
 
@@ -67,17 +67,15 @@ if ($isLoggedIn) {
          <li><a href="About.php">About</a></li>
          <li><a href="/aayush/contact.php">Contact</a></li>
 
-         <?php if ($isLoggedIn): ?>
-         <li>
-           <a href="logout.php">Logout</a>
-         </li>
-         <?php else: ?>
-         <li>
-           <a href="login.php">Login</a>
-         </li>
-         <?php endif; ?>
-
-
+        
+    <?php if ($isLoggedIn): ?>
+      <?php if ($userDetails['user_role'] === 'host'): ?>
+        <li><a href="dashboard/admin_dashboard.php" class="dashboard-btn">Dashboard</a></li>
+      <?php endif; ?>
+      <li><a href="logout.php">Logout</a></li>
+    <?php else: ?>
+      <li><a href="login.php">Login</a></li>
+    <?php endif; ?>
        </ul>
      </nav>
 
@@ -103,12 +101,12 @@ if ($isLoggedIn) {
        <h1>Summer Collection</h1>
        <h3>Up to 50% Off</h3>
        <p>Discover the latest trends and styles.</p>
-       <a href="#products" class="main-btn">Shop Now <i class="fa fa-arrow-right"></i></a>
+       <a href="#mens-collection" class="main-btn">Shop Now <i class="fa fa-arrow-right"></i></a>
      </div>
    </section>
 
    <!-- Men's collection -->
-   <section class="collection">
+   <section id="mens-collection" class="collection">
      <div class="container">
        <h1 class="">Men's Collection</h1>
 
@@ -253,7 +251,9 @@ if ($isLoggedIn) {
      <section class="contact">
        <div class="contact-info">
          <div class="first-info info">
-           <img src="images/logo.png" width="80" class="footer-image" height="80" alt="Elegance Logo" />
+            <a href="index.php">
+         <img src="images/logo.png" width="80" class="footer-image" height="80" alt="Elegance Logo" />
+            </a>
            <ul>
              <li>
                <p>Kathmandu, Nepal</p>
