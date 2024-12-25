@@ -126,7 +126,7 @@ if (empty($username)) {
 
                      // Redirect based on role
                     if ($user_role === 'host') {
-                        header("Location: admin_dashboard.php");
+                        header("Location: dashboard/admin_dashboard.php");
                     } elseif ($user_role === 'guest'){
                         header("Location: index.php");
                     }
