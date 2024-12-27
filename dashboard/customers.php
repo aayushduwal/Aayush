@@ -17,23 +17,30 @@ getSidebar();
         case 'view':
             // View Customer Details
             $id = isset($_GET['id']) ? $_GET['id'] : 0;
-            $customer = $conn->query("
-                SELECT c.*, 
-                       COUNT(o.id) as total_orders,
-                       SUM(o.total_amount) as total_spent
-                FROM customers c
-                LEFT JOIN orders o ON c.id = o.customer_id
-                WHERE c.id = $id
-                GROUP BY c.id
-            ")->fetch_assoc();
+            $stmt = $conn->prepare("
+                SELECT u.*, cd.*,
+       COUNT(o.id) as total_orders,
+       SUM(o.total_amount) as total_spent
+FROM users u
+LEFT JOIN customer_details cd ON u.id = cd.user_id
+LEFT JOIN orders o ON u.id = o.user_id
+WHERE u.id = ?
+GROUP BY u.id
+            ");
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $customer = $stmt->get_result()->fetch_assoc();
 
             if($customer) {
                 // Get customer's orders
-                $orders = $conn->query("
+                $stmt = $conn->prepare("
                     SELECT * FROM orders 
-                    WHERE customer_id = $id 
+                    WHERE user_id = ? 
                     ORDER BY order_date DESC
                 ");
+                $stmt->bind_param("i", $id);
+                $stmt->execute();
+                $orders = $stmt->get_result();
                 ?>
                 <div class="dashboard-header">
                     <h1>Customer Details</h1>
@@ -116,13 +123,14 @@ getSidebar();
         default:
             // List Customers (Default View)
             $customers = $conn->query("
-                SELECT c.*, 
+                SELECT u.*, cd.*,
                        COUNT(o.id) as total_orders,
                        SUM(o.total_amount) as total_spent
-                FROM customers c
-                LEFT JOIN orders o ON c.id = o.customer_id
-                GROUP BY c.id
-                ORDER BY c.created_at DESC
+                FROM users u
+                LEFT JOIN customer_details cd ON u.id = cd.user_id
+                LEFT JOIN orders o ON u.id = o.user_id
+                GROUP BY u.id
+                ORDER BY u.created_at DESC
             ");
             ?>
             <div class="dashboard-header">

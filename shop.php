@@ -3,20 +3,20 @@ session_start();
 include('database/config.php');
 
 // Function to get user details
+// Function to get user details
 function getUserDetails($conn, $user_id) {
     $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
-    $stmt->bind_param("s", $user_id);
+    $stmt->bind_param("i", $user_id);  // Changed from "s" to "i"
     $stmt->execute();
     $result = $stmt->get_result();
     return $result->fetch_assoc();
 }
 
-
 // Check if user is logged in
-$isLoggedIn = isset($_SESSION['user_id']);
+$isLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['admin_id']);
 $userDetails = null;
 
-if ($isLoggedIn) {
+if (isset($_SESSION['user_id'])) {
     $userDetails = getUserDetails($conn, $_SESSION['user_id']);
 }
 ?>
@@ -77,20 +77,37 @@ if ($isLoggedIn) {
           <li><a href="About.php">About</a></li>
           <li><a href="/aayush/contact.php">Contact</a></li>
 
-          <?php if ($isLoggedIn): ?>
-           <li><a href="logout.php">Logout</a></li>
-         <?php else: ?>
-           <li><a href="login.php">Login</a></li>
-         <?php endif; ?>
+              <?php if ($isLoggedIn): ?>
+    <?php if (isset($_SESSION['is_admin'])): ?>
+        <li><a href="dashboard/admin_dashboard.php" class="dashboard-btn">Dashboard</a></li>
+    <?php elseif (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'user'): ?>
+        <li><a href="user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s Account</a></li>
+    <?php endif; ?>
+    <li><a href="logout.php">Logout</a></li>
+<?php else: ?>
+    <li><a href="login.php">Login</a></li>
+<?php endif; ?>
+
         </ul>
       </nav>
       
       <div class="nav-icon">
-        <a href="#"><i class="bx bxs-shopping-bag"></i></a>
-      </div>
-      <div id="menu-icon">
-        <i class="fa fa-bars"></i>
-      </div>
+    <?php if ($isLoggedIn): ?>
+        <p>
+            Logged in as <u><strong>
+            <?php 
+                if (isset($_SESSION['is_admin'])) {
+                    echo htmlspecialchars($_SESSION['admin_username']);
+                } elseif ($userDetails && isset($userDetails['username'])) {
+                    echo htmlspecialchars($userDetails['username']);
+                }
+            ?></strong></u>
+        </p>
+    <?php else: ?>
+        <a href="login.php"><i class="bx bx-user"></i></a>
+    <?php endif; ?>
+    <a href="cart.php"><i class="bx bx-cart"></i></a>
+</div>
     </header>
 
     <section id="hero">

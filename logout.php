@@ -1,11 +1,18 @@
 <?php
 session_start();
 
-// Destroy the session to log the user out
-session_unset();  // Unset all session variables
-session_destroy();  // Destroy the session
+// Store the user type before destroying the session
+$is_admin = isset($_SESSION['is_admin']) && $_SESSION['is_admin'];
 
-// Redirect to the login page
-header("Location: login.php");
+// Destroy the session to log the user out
+session_unset();
+session_destroy();
+
+// Redirect based on stored user type
+if ($is_admin) {
+    header("Location: /aayush/dashboard/login.php"); // Admin login page
+} else {
+    header("Location: login.php"); // User login page
+}
 exit();
 ?>

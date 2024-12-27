@@ -207,17 +207,39 @@ h1 {
   cursor: pointer;
 }
 
-.btn:hover {
-  background-color: #ff5733;
-}
-
-.signup-link {
+/* .signup-link {
   text-align: center;
   margin-top: 15px;
 }
 
 .signup-link a {
   color: #ff5733;
+} */
+
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.login-link p {
+  color: #666;
+  font-size: 14px;
+}
+
+.login-link a {
+  color: #ff5733;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+  color: #e64a2e;
 }
 
 .password-requirements {
@@ -264,4 +286,12 @@ h1 {
 .role-select option {
   padding: 10px;
   background: white;
+}
+
+/* Error message styling */
+.error-message {
+  color: #dc3545;
+  font-size: 13px;
+  margin-top: 5px;
+  padding-left: 2px;
 }

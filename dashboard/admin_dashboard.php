@@ -1,13 +1,10 @@
 <?php
 session_start();
+
 require_once('includes/common.php');
 require_once('../database/config.php');
 
-// Check for host role
-if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'host') {
-    header("Location: ../login.php");
-    exit();
-}
+checkAuth();
 
 // Get dashboard statistics
 $product_count = $conn->query("SELECT COUNT(*) as count FROM products")->fetch_assoc()['count'];
@@ -24,7 +21,7 @@ $recent_orders = $conn->query("
 ");
 
 // Get header with title
-getHeader('Dashboard - Aayush Elegance');
+getHeader('Dashboard - Elegance');
 getSidebar();
 
 ?>
@@ -33,7 +30,7 @@ getSidebar();
     <div class="dashboard-header">
         <h1>Dashboard Overview</h1>
         <div class="nav-icon">
-            <p>Welcome, <?php echo $_SESSION['username']; ?></p>
+            <p>Welcome, <?php echo $_SESSION['admin_username']; ?></p>
             <a href="../logout.php">Logout</a>
         </div>
     </div>
