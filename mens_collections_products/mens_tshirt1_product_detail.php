@@ -16,6 +16,9 @@
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet" />
   <!-- closing the font of inter -->
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../cart/addToCart.js"></script>
   <style>
   * {
     margin: 0;
@@ -430,7 +433,10 @@
     <div class="nav-icon">
       <a href="#"><i class="bx bx-search"></i></a>
       <a href="#"><i class="bx bx-user"></i></a>
-      <a href="#"><i class="bx bx-cart"></i></a>
+      <a href="/aayush/cart/cart.php">
+        <i class='bx bx-cart'></i>
+        <span id="cart-badge" class="cart-badge">0</span>
+      </a>
       <div class="bx bx-menu" id="menu-icon"></div>
     </div>
   </header>
@@ -480,7 +486,11 @@
           </div>
           <div class="btn-container">
             <a href="#" class="btn buy-now">Buy Now</a>
-            <a href="#" class="btn">Add To Cart</a>
+
+            <button class="add-to-cart-btn" onclick="addToCart('mens_tshirt1', 'Cotton Plain Half Sleeves T-Shirt', 50.00)">
+                Add to Cart
+            </button>
+
           </div>
           <h3>Product Details <i class="fa fa-indent"></i></h3>
           <br />

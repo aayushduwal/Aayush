@@ -15,6 +15,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- closing the font of inter -->
   <style>
   * {
@@ -433,7 +434,9 @@
     <div class="nav-icon">
       <a href="#"><i class="bx bx-search"></i></a>
       <a href="#"><i class="bx bx-user"></i></a>
-      <a href="#"><i class="bx bx-cart"></i></a>
+      <a href="/aayush/cart/cart.php"><i class="bx bx-cart"></i>
+      <span id="cart-badge" class="cart-badge">0</span>
+    </a>
       <div class="bx bx-menu" id="menu-icon"></div>
     </div>
   </header>
@@ -530,6 +533,8 @@
     ProductImg.src = SmallImg[2].src;
   };
   </script>
+  
+  <script src="../cart/addToCart.js" ></script>
 
   <!-- footer starts -->
   <footer class="infos">

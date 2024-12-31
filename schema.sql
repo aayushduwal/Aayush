@@ -99,7 +99,13 @@ CREATE TABLE admin_users (
 CREATE INDEX idx_admin_email ON admin_users(email);
 
 
-
+CREATE TABLE cart (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    product_name VARCHAR(255),
+    price DECIMAL(10,2),
+    quantity INT
+);
 
 
 

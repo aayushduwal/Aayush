@@ -1,3 +1,7 @@
+<?php
+$product_id = isset($_GET['id']) ? $_GET['id'] : 1; // Or however you're getting the product ID
+?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -15,6 +19,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- closing the font of inter -->
   <style>
   * {
@@ -268,6 +273,25 @@
     aspect-ratio: 1/1;
   }
 
+ .cart-badge {
+  position: relative;
+  top: -10px;
+  right: 5px;
+  background-color: #ff5733;
+  color: white;
+  font-size: 8px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold; /* Bold text */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  visibility: hidden;
+}
+
+
   /* end of multiple small images */
 
   @media (max-width: 768px) {
@@ -433,7 +457,9 @@
     <div class="nav-icon">
       <a href="#"><i class="bx bx-search"></i></a>
       <a href="#"><i class="bx bx-user"></i></a>
-      <a href="#"><i class="bx bx-cart"></i></a>
+      <a href="/aayush/cart/cart.php"><i class="bx bx-cart"></i>
+      <span id="cart-badge" class="cart-badge">0</span>
+    </a>
       <div class="bx bx-menu" id="menu-icon"></div>
     </div>
   </header>
@@ -466,7 +492,7 @@
         </div>
         <div class="col-2">
           <p>Home / Jacket</p>
-          <h1>J.Fisher Denim Pant For Kids</h1>
+          <h1>J.Fisher Jacket</h1>
           <h4>$50.00</h4>
           <select>
             <option>Select Size</option>
@@ -482,9 +508,10 @@
             <button onclick="increment()">+</button>
           </div>
           <div class="btn-container">
-            <a href="#" class="btn buy-now">Buy Now</a>
-            <a href="#" class="btn">Add To Cart</a>
-          </div>
+    <a href="#" class="btn buy-now">Buy Now</a>
+    <a href="#" class="btn">Add To Cart</a>
+    <input type="hidden" id="product_id" value="<?php echo $product_id; ?>">
+</div>
           <h3>Product Details <i class="fa fa-indent"></i></h3>
           <br />
           <p>
@@ -556,6 +583,39 @@
     ProductImg.src = SmallImg[2].src;
   };
   </script>
+
+<script>
+  function increment() {
+    let input = document.getElementById("quantity");
+    input.value = parseInt(input.value) + 1;
+  }
+
+  function decrement() {
+    let input = document.getElementById("quantity");
+    if (input.value > 1) {
+      input.value = parseInt(input.value) - 1;
+    }
+  }
+  </script>
+
+  <!-- js for product gallery -->
+  <script>
+  var ProductImg = document.getElementById("ProductImg");
+  var SmallImg = document.getElementsByClassName("small-img");
+
+  SmallImg[0].onmouseover = function() {
+    ProductImg.src = SmallImg[0].src;
+  };
+  SmallImg[1].onmouseover = function() {
+    ProductImg.src = SmallImg[1].src;
+  };
+  SmallImg[2].onmouseover = function() {
+    ProductImg.src = SmallImg[2].src;
+  };
+
+  </script>
+
+<script src="../cart/addToCart.js" ></script>
 
   <!-- footer starts -->
   <footer class="infos">
@@ -640,4 +700,4 @@
   <!-- footer ends -->
 </body>
 
-</html>
+</html> 

@@ -96,11 +96,11 @@ if (isset($_SESSION['user_id'])) {
     <?php else: ?>
         <a href="login.php"><i class="bx bx-user"></i></a>
     <?php endif; ?>
-    <a href="cart.php"><i class="bx bx-cart"></i></a>
-</div>
-     <div id="menu-icon">
-       <i class="fa fa-bars"></i>
-     </div>
+    <a href="/aayush/cart/cart.php"><i class="bx bx-cart"></i>
+      <span id="cart-badge" class="cart-badge">0</span>
+    </a>
+      <div class="bx bx-menu" id="menu-icon"></div>
+    </div>
    </header>
 
    <!-- Hero section -->
@@ -153,6 +153,7 @@ if (isset($_SESSION['user_id'])) {
            <p>रु. 2000</p>
          </div>
          <div class="collection-wrapper-child">
+          <a href="home_collections_products/mens_jacket2_product_detail.php">
            <img src="images/index-page_images/mens_collection/jacket1.png" alt="" />
            <h2>Jacket</h2>
            <div class="rating-wrapper">
@@ -340,12 +341,18 @@ if (isset($_SESSION['user_id'])) {
    </footer>
    <!-- footer ends -->
 
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <script src="cart/addToCart.js"></script>
    <script>
    const menuIcon = document.getElementById("menu-icon");
    const navMenu = document.querySelector(".navmenu");
 
    menuIcon.addEventListener("click", () => {
      navMenu.classList.toggle("active");
+   });
+
+   $(document).ready(function() {
+       updateCartBadge();
    });
    </script>
  </body>
