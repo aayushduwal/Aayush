@@ -9,12 +9,12 @@ if (!$conn) {
 }
 
 // Define the order of subcategories
-$subcategory_order = ['Tops', 'Bottoms', 'Jeans', 'Outerwear'];
+$subcategory_order = ['Winterwear', 'Summerwear', 'Skirts', 'Jeans'];
 
 // Fetch products for each subcategory
 $products_by_category = [];
 foreach ($subcategory_order as $subcategory) {
-    $stmt = $conn->prepare("SELECT * FROM products WHERE category = 'Women' AND subcategory = ?");
+    $stmt = $conn->prepare("SELECT * FROM products WHERE category = 'Kids' AND subcategory = ?");
     if (!$stmt) {
         die("Prepare failed: " . $conn->error);
     }
@@ -30,7 +30,7 @@ foreach ($subcategory_order as $subcategory) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Women's Collection - Elegance</title>
+    <title>Kids' Collection - Elegance</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/collection.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -39,7 +39,7 @@ foreach ($subcategory_order as $subcategory) {
 <body>
   <style>
     .hero {
-  background: url("https://ccknitting.com.np/wp-content/uploads/2023/09/Womens-Clothing.jpg")
+  background: url("https://www.modsandminis.ie/wp-content/uploads/2022/07/blog_banner.jpg")
     no-repeat center center/cover;
   height: 60vh;
   display: flex;
@@ -85,15 +85,15 @@ foreach ($subcategory_order as $subcategory) {
     </section>
 
     <div class="categories">
-      <a href="#tops">Tops</a>
-      <a href="#bottoms">Bottoms</a>
+      <a href="#winterwear">Winterwear</a>
+      <a href="#summerwear">Summerwear</a>
+      <a href="#skirts">Skirts</a>
       <a href="#jeans">Jeans</a>
-      <a href="#outerwear">Outerwear</a>
     </div>
 
     <!-- Hero Section with Title -->
     <div class="collection-hero">
-        <h1>WOMEN'S COLLECTION</h1>
+        <h1>KIDS' COLLECTION</h1>
     </div>
 
     <!-- Products by Subcategory -->

@@ -99,7 +99,7 @@ foreach ($subcategory_order as $subcategory) {
     <!-- Products by Subcategory -->
     <div class="container">
         <?php foreach ($subcategory_order as $subcategory): ?>
-            <section class="collection-section">
+            <section class="collection-section" id="<?php echo strtolower($subcategory); ?>">
                 <h2><?php echo htmlspecialchars($subcategory); ?></h2>
                 <div class="collection-wrapper">
                     <?php if (!empty($products_by_category[$subcategory])): ?>
