@@ -1,10 +1,51 @@
+<?php
+session_start();
+include('../database/config.php');
+
+// Function to get user details
+function getUserDetails($conn, $user_id) {
+    $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+}
+
+// Check if user is logged in
+$isLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['admin_id']);
+$userDetails = null;
+
+if (isset($_SESSION['user_id'])) {
+    $userDetails = getUserDetails($conn, $_SESSION['user_id']);
+}
+
+// Check if ID is provided and fetch product details
+if (!isset($_GET['id'])) {
+    header('Location: index.php');
+    exit();
+}
+
+$product_id = $_GET['id'];
+$stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
+$stmt->bind_param("i", $product_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$product = $result->fetch_assoc();
+
+// If product not found
+if (!$product) {
+    header('Location: index.php');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login Form | Login</title>
+  <title><?php echo htmlspecialchars($product['name']); ?> | Elegance</title>
   <link rel="stylesheet" href="../css/index.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css"
@@ -15,6 +56,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- closing the font of inter -->
   <style>
   * {
@@ -70,19 +112,21 @@
   }
 
   .navmenu li {
+    position: relative;
     margin: 0 15px;
+    list-style: none;
   }
 
   .navmenu a {
     text-decoration: none;
-    color: black;
+    color: var(--dark-background);
     font-size: 22px;
     font-weight: 450;
     transition: color 0.3s ease, transform 0.3s ease;
   }
 
   .navmenu a:hover {
-    color: #ff5733;
+    color: var(--primary);
     transform: translateY(-2px);
   }
 
@@ -116,7 +160,6 @@
     background-color: white;
     white-space: nowrap;
   }
-
   /* End of CSS for dropdown in shop */
 
   .nav-icon {
@@ -154,13 +197,13 @@
 
   /* Start of product detail */
   .product-container {
-    margin-top: 50;
+    margin-top: 60px;
   }
 
   .small-container {
-    margin-top: 0px;
+    margin-top: 0;
     max-width: 1200px;
-    padding: 0 20px;
+    padding: 20px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -259,7 +302,7 @@
   }
 
   .small-img-col {
-    width: 100px;
+    flex-basis: 24%;
     cursor: pointer;
     margin-right: 10px;
   }
@@ -267,6 +310,25 @@
   .small-img-col img {
     aspect-ratio: 1/1;
   }
+
+ .cart-badge {
+  position: relative;
+  top: -10px;
+  right: 5px;
+  background-color: #ff5733;
+  color: white;
+  font-size: 8px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold; /* Bold text */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  visibility: hidden;
+}
+
 
   /* end of multiple small images */
 
@@ -403,6 +465,133 @@
   }
 
   /* end of css of footer */
+
+  .product-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  
+  .product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+  
+  .product-images {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .main-image img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+  
+  .thumbnail-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  
+  .thumbnail-grid img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    cursor: pointer;
+  }
+  
+  .product-info h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .size-select {
+    margin-bottom: 20px;
+  }
+  
+  .quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .button-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+  
+  .button-group button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .buy-now {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .add-to-cart {
+    background-color: #ff523b;
+    color: white;
+  }
+
+  /* Add these CSS rules to match style.css exactly */
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    display: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    z-index: 1000;
+    min-width: 200px;
+  }
+
+  .dropdown-menu li {
+    margin: 0;
+    padding: 0;
+    display: block;
+    width: 100%;
+  }
+
+  .dropdown-menu li a {
+    padding: 8px 20px;
+    display: block;
+    font-size: 18px;
+    white-space: nowrap;
+    width: 100%;
+    color: black;
+  }
+
+  .navmenu > li {
+    position: relative;
+    display: inline-block;
+  }
+
+  .navmenu li:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+  }
+
+  .navmenu a:hover {
+    color: var(--primary);
+    transform: translateY(-2px);
+  }
   </style>
 </head>
 
@@ -410,30 +599,55 @@
   <!-- navbar -->
   <header>
     <div class="logo">
-<a href="index.php">
-      <img src="../images/logo.png" alt="elegance" />
-</a>
-      </div>
-    <div class="nav-container">
+      <a href="index.php">
+        <img src="../images/logo.png" alt="Logo" />
+      </a>
+    </div>
+    <nav class="nav-container">
       <ul class="navmenu">
-        <li><a href="/aayush/index.php">Home</a></li>
+        <li><a href="../index.php">Home</a></li>
         <li>
-          <a href="shop.php">Shop</a>
-          <ul class="dropdown">
+          <a href="../shop.php">Shop</a>
+          <ul class="dropdown-menu">
             <li><a href="mens_collection.php">Men's Collection</a></li>
             <li><a href="womens_collection.php">Women's Collection</a></li>
-            <li><a href="kids_collection.php">Kids' Collection</a></li>
+            <li><a href="kids_collection.php">Kid's Collection</a></li>
           </ul>
         </li>
-        <li><a href="/aayush/abt.php">About</a></li>
-        <li><a href="/aayush/login.php">Login</a></li>
-        <li><a href="/aayush/contact.php">Contact</a></li>
+        <li><a href="../About.php">About</a></li>
+        <li><a href="../contact.php">Contact</a></li>
+
+        <?php if ($isLoggedIn): ?>
+          <?php if (isset($_SESSION['is_admin'])): ?>
+            <li><a href="dashboard/admin_dashboard.php" class="dashboard-btn">Dashboard</a></li>
+          <?php else: ?>
+            <li><a href="userdashboard/user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s Account</a></li>
+          <?php endif; ?>
+          <li><a href="logout.php">Logout</a></li>
+        <?php else: ?>
+          <li><a href="login.php">Login</a></li>
+        <?php endif; ?>
       </ul>
-    </div>
+    </nav>
+
     <div class="nav-icon">
-      <a href="#"><i class="bx bx-search"></i></a>
-      <a href="#"><i class="bx bx-user"></i></a>
-      <a href="#"><i class="bx bx-cart"></i></a>
+      <?php if ($isLoggedIn): ?>
+        <p>
+          Logged in as <u><strong>
+          <?php 
+            if (isset($_SESSION['is_admin'])) {
+              echo htmlspecialchars($_SESSION['admin_username']);
+            } elseif ($userDetails && isset($userDetails['username'])) {
+              echo htmlspecialchars($userDetails['username']);
+            }
+          ?></strong></u>
+        </p>
+      <?php else: ?>
+        <a href="login.php"><i class="bx bx-user"></i></a>
+      <?php endif; ?>
+      <a href="../cart/cart.php"><i class="bx bx-cart"></i>
+        <span id="cart-badge" class="cart-badge">0</span>
+      </a>
       <div class="bx bx-menu" id="menu-icon"></div>
     </div>
   </header>
@@ -444,47 +658,47 @@
     <div class="small-container single-product">
       <div class="row">
         <div class="col-2">
-          <img src="https://img.drz.lazcdn.com/static/np/p/474b0974f250c2860ac0ade356e1f00e.jpg_720x720q80.jpg_.webp"
-            width="100%" id="ProductImg" alt="Cotton Plain Half Sleeves T-Shirt" />
+          <!-- Main Product Image -->
+          <img src="../uploads/products/<?php echo htmlspecialchars($product['images']); ?>"
+              width="100%" id="ProductImg" alt="<?php echo htmlspecialchars($product['name']); ?>" />
+          
           <div class="small-img-row">
-            <div class="small-img-col">
-              <img
-                src="https://img.drz.lazcdn.com/static/np/p/474b0974f250c2860ac0ade356e1f00e.jpg_720x720q80.jpg_.webp"
-                width="100%" class="small-img" alt="Cotton Plain Half Sleeves T-Shirt" />
-            </div>
-            <div class="small-img-col">
-              <img
-                src="https://img.drz.lazcdn.com/static/np/p/7152ce754905262b821f58f9c6953f6a.jpg_720x720q80.jpg_.webp"
-                width="100%" class="small-img" alt="Cotton Plain Half Sleeves T-Shirt" />
-            </div>
-            <div class="small-img-col">
-              <img
-                src="https://img.drz.lazcdn.com/static/np/p/becec951b6f44b2d75ce2c68aa08e880.jpg_720x720q80.jpg_.webp"
-                width="100%" class="small-img" alt="Cotton Plain Half Sleeves T-Shirt" />
-            </div>
-            <div class="small-img-col">
-              <img
-                src="https://img.drz.lazcdn.com/static/np/p/796721add95d35c59a0fdba7ec912767.jpg_720x720q80.jpg_.webp"
-                width="100%" class="small-img" alt="Cotton Plain Half Sleeves T-Shirt" />
-            </div>
-            <div class="small-img-col">
-              <img
-                src="https://img.drz.lazcdn.com/static/np/p/c98c1b15e22bf4fcca38ee06ee526cb4.jpg_720x720q80.jpg_.webp"
-                width="100%" class="small-img" alt="Cotton Plain Half Sleeves T-Shirt" />
-            </div>
+              <!-- Main image thumbnail -->
+              <div class="small-img-col">
+                  <img src="../uploads/products/<?php echo htmlspecialchars($product['images']); ?>"
+                      width="100%" class="small-img" alt="<?php echo htmlspecialchars($product['name']); ?>" />
+              </div>
+              
+              <!-- Additional images -->
+              <?php 
+              if(!empty($product['additional_images'])) {
+                  $additional_images = json_decode($product['additional_images'], true);
+                  if(is_array($additional_images)) {
+                      foreach($additional_images as $image): 
+              ?>
+                      <div class="small-img-col">
+                          <img src="../uploads/products/<?php echo htmlspecialchars($image); ?>"
+                              width="100%" class="small-img" alt="Additional view" />
+                      </div>
+              <?php 
+                      endforeach;
+                  }
+              }
+              ?>
           </div>
         </div>
         <div class="col-2">
-          <p>Home / Jacket</p>
-          <h1>Round Neck Crop Cami Top For Women-Free Size</h1>
-          <h4>$50.00</h4>
+          <p>Home / <?php echo htmlspecialchars($product['category']); ?></p>
+          <h1><?php echo htmlspecialchars($product['name']); ?></h1>
+          <h4>रु. <?php echo number_format($product['price'], 2); ?></h4>
           <select>
             <option>Select Size</option>
-            <option>XXL</option>
-            <option>XL</option>
-            <option>Large</option>
-            <option>Medium</option>
-            <option>Small</option>
+            <?php 
+            $sizes = explode(',', $product['sizes']);
+            foreach($sizes as $size): 
+            ?>
+                <option value="<?php echo trim($size); ?>"><?php echo trim($size); ?></option>
+            <?php endforeach; ?>
           </select>
           <div class="number-input">
             <button onclick="decrement()">-</button>
@@ -492,50 +706,18 @@
             <button onclick="increment()">+</button>
           </div>
           <div class="btn-container">
-            <a href="#" class="btn buy-now">Buy Now</a>
-            <a href="#" class="btn">Add To Cart</a>
-          </div>
+    <a href="#" class="btn buy-now">Buy Now</a>
+    <button class="btn add-to-cart-btn" style="background-color: #FF523B;">Add To Cart</button>
+    <input type="hidden" id="product_id" value="<?php echo $product_id; ?>">
+</div>
           <h3>Product Details <i class="fa fa-indent"></i></h3>
           <br />
-          <p>
-            This Cotton Plain Half Sleeves T-Shirt for men is a stylish and
-            versatile summer essential. Made from 100% cotton, it offers a
-            slim fit that provides comfort and breathability, making it
-            perfect for warm weather. Available in multiple sizes.
-          </p>
+          <p><?php echo nl2br(htmlspecialchars($product['description'])); ?></p>
         </div>
       </div>
     </div>
     <!-- end of product detail -->
 
-    <!-- Related Products Section -->
-    <div class="related-products">
-      <h3>Related Products</h3>
-      <div class="related-items">
-        <div class="related-item">
-          <img src="image/product-1.jpg" />
-          <div>Charcoal Grey & Gunmetal-Toned Analogue Watch</div>
-          <div class="item-price">$59.99</div>
-        </div>
-        <div class="related-item">
-          <img src="image/product-2.jpg" />
-          <div>Running Black Shoes</div>
-          <div class="item-price">$19.99</div>
-        </div>
-        <div class="related-item">
-          <img src="image/product-3.jpg" />
-          <div>Men Nordic Walking Sports Shoes</div>
-          <div class="item-price">$99.99</div>
-        </div>
-        <div class="related-item">
-          <img src="image/product-4.jpg" />
-          <div>Nike Men's Track Pants</div>
-          <div class="item-price">$79.99</div>
-        </div>
-      </div>
-      <!-- </div> -->
-      <!-- end of product detail -->
-    </div>
   </div>
 
   <!-- js for quantity increment and decrement -->
@@ -567,20 +749,16 @@
   SmallImg[2].onmouseover = function() {
     ProductImg.src = SmallImg[2].src;
   };
-  SmallImg[3].onmouseover = function() {
-    ProductImg.src = SmallImg[3].src;
-  };
-  SmallImg[4].onmouseover = function() {
-    ProductImg.src = SmallImg[4].src;
-  };
   </script>
+
+<script src="cart/addToCart.js"></script>
 
   <!-- footer starts -->
   <footer class="infos">
     <section class="contact">
       <div class="contact-info">
         <div class="first-info info">
-          <img src="../images/logo.png" width="80" class="footer-image" height="80" alt="Elegance Logo" />
+          <img src="images/logo.png" width="80" class="footer-image" height="80" alt="Elegance Logo" />
           <ul>
             <li>
               <p>Kathmandu, Nepal</p>
@@ -656,6 +834,62 @@
     </div>
   </footer>
   <!-- footer ends -->
+
+  <script>
+  $(document).ready(function() {
+    $('.add-to-cart-btn').off('click');
+    
+    $('.add-to-cart-btn').on('click', function(e) {
+        e.preventDefault();
+        
+        const productId = $("#product_id").val();
+        const productName = $("h1").text();
+        const price = $("h4").text().replace("रु.", "").replace(/,/g, "").trim();
+        const quantity = parseInt($("#quantity").val());
+        const size = $("select").val();
+        
+        if (size === 'Select Size') {
+            alert('Please select a size');
+            return;
+        }
+        
+        $.ajax({
+            url: '../cart/cart_handler.php',
+            type: 'POST',
+            data: {
+                action: 'add',
+                productId: productId,
+                productName: productName,
+                price: price,
+                quantity: quantity
+            },
+            success: function(response) {
+                if(response === "Please login first") {
+                    alert("Please login to add items to cart");
+                    window.location.href = 'login.php';
+                } else {
+                    console.log('Server response:', response);
+                    alert('Product added to cart!');
+                    // Update cart count
+                    $.ajax({
+                        url: '../cart/cart_handler.php',
+                        type: 'POST',
+                        data: { action: 'count' },
+                        success: function(count) {
+                            $('#cart-badge').text(count);
+                            $('#cart-badge').css('visibility', count > 0 ? 'visible' : 'hidden');
+                        }
+                    });
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('Error adding product to cart');
+            }
+        });
+    });
+  });
+  </script>
 </body>
 
-</html>
+</html> 
