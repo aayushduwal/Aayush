@@ -8,39 +8,21 @@ if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-// Check login status
-$isLoggedIn = isset($_SESSION['user_id']) || isset($_SESSION['admin_id']);
-$userDetails = null;
+// Define the order of subcategories
+$subcategory_order = ['Shirts', 'Jackets', 'Hoodies', 'Sweatshirts'];
 
-if (isset($_SESSION['user_id'])) {
-    $userDetails = getUserDetails($conn, $_SESSION['user_id']);
-}
-
-// Get subcategory from URL if provided
-$subcategory = isset($_GET['subcategory']) ? $_GET['subcategory'] : null;
-
-// Prepare the base query
-$base_query = "SELECT * FROM products WHERE category = 'Men'";
-if ($subcategory) {
-    $base_query .= " AND subcategory = ?";
-}
-
-// Fetch products based on subcategory
-$stmt = $conn->prepare($base_query);
-if (!$stmt) {
-    die("Prepare failed: " . $conn->error);
-}
-
-if ($subcategory) {
+// Fetch products for each subcategory
+$products_by_category = [];
+foreach ($subcategory_order as $subcategory) {
+    $stmt = $conn->prepare("SELECT * FROM products WHERE category = 'Men' AND subcategory = ?");
+    if (!$stmt) {
+        die("Prepare failed: " . $conn->error);
+    }
     $stmt->bind_param("s", $subcategory);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $products_by_category[$subcategory] = $result->fetch_all(MYSQLI_ASSOC);
 }
-$stmt->execute();
-$products = $stmt->get_result();
-
-// Fetch distinct subcategories for navigation
-$subcategories_stmt = $conn->prepare("SELECT DISTINCT subcategory FROM products WHERE category = 'Men' AND subcategory IS NOT NULL");
-$subcategories_stmt->execute();
-$subcategories = $subcategories_stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -109,50 +91,38 @@ $subcategories = $subcategories_stmt->get_result();
       <a href="#sweatshirts">Sweatshirts</a>
     </div>
 
-    <!-- Category Navigation -->
-    <div class="category-nav">
-        <h2>Men's Collection</h2>
-        <ul>
-            <li><a href="index.php" <?php echo !$subcategory ? 'class="active"' : ''; ?>>All</a></li>
-            <?php while($sub = $subcategories->fetch_assoc()): ?>
-                <li>
-                    <a href="index.php?subcategory=<?php echo urlencode($sub['subcategory']); ?>"
-                       <?php echo ($subcategory == $sub['subcategory']) ? 'class="active"' : ''; ?>>
-                        <?php echo htmlspecialchars($sub['subcategory']); ?>
-                    </a>
-                </li>
-            <?php endwhile; ?>
-        </ul>
+    <!-- Hero Section with Title -->
+    <div class="collection-hero">
+        <h1>MEN'S COLLECTION</h1>
     </div>
 
-    <!-- Products display section -->
+    <!-- Products by Subcategory -->
     <div class="container">
-        <section class="collection">
-            <div class="collection-wrapper">
-                <?php 
-                if ($products->num_rows > 0) {
-                    while($product = $products->fetch_assoc()): 
-                ?>
-                    <div class="collection-wrapper-child">
-                        <a href="details.php?id=<?php echo $product['id']; ?>">
-                            <img src="../uploads/products/<?php echo htmlspecialchars($product['images']); ?>" 
-                                 alt="<?php echo htmlspecialchars($product['name']); ?>" />
-                            <h3><?php echo htmlspecialchars($product['name']); ?></h3>
-                            <div class="rating-wrapper">
-                                <i class="fa-regular fa-star"></i>
-                                <?php echo number_format($product['rating'], 1); ?>
+        <?php foreach ($subcategory_order as $subcategory): ?>
+            <section class="collection-section">
+                <h2><?php echo htmlspecialchars($subcategory); ?></h2>
+                <div class="collection-wrapper">
+                    <?php if (!empty($products_by_category[$subcategory])): ?>
+                        <?php foreach ($products_by_category[$subcategory] as $product): ?>
+                            <div class="collection-wrapper-child">
+                                <a href="details.php?id=<?php echo $product['id']; ?>">
+                                    <img src="../uploads/products/<?php echo htmlspecialchars($product['images']); ?>" 
+                                         alt="<?php echo htmlspecialchars($product['name']); ?>" />
+                                    <h3><?php echo htmlspecialchars($product['name']); ?></h3>
+                                    <div class="rating-wrapper">
+                                        <i class="fa-regular fa-star"></i>
+                                        <?php echo number_format($product['rating'], 1); ?>
+                                    </div>
+                                    <p>रु. <?php echo number_format($product['price'], 2); ?></p>
+                                </a>
                             </div>
-                            <p>रु. <?php echo number_format($product['price'], 2); ?></p>
-                        </a>
-                    </div>
-                <?php 
-                    endwhile;
-                } else {
-                    echo "<p>No products found in this category.</p>";
-                }
-                ?>
-            </div>
-        </section>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p class="no-products">No products available in <?php echo htmlspecialchars($subcategory); ?></p>
+                    <?php endif; ?>
+                </div>
+            </section>
+        <?php endforeach; ?>
     </div>
 
     <?php include('../includes/footer.php'); ?>

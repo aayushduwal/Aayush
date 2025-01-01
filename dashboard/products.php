@@ -73,12 +73,18 @@ getSidebar();
                         <input type="number" name="price" step="0.01" required>
                     </div>
                     <div class="form-group">
-                        <label>Category</label>
-                        <select name="category" required>
+                        <label for="category">Category</label>
+                        <select name="category" id="category" required onchange="updateSubcategories()">
                             <option value="">Select Category</option>
                             <option value="Men">Men</option>
                             <option value="Women">Women</option>
                             <option value="Kids">Kids</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subcategory">Subcategory</label>
+                        <select name="subcategory" id="subcategory" required>
+                            <option value="">Select Category First</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -114,6 +120,7 @@ getSidebar();
                 $name = mysqli_real_escape_string($conn, $_POST['name']);
                 $price = floatval($_POST['price']);
                 $category = mysqli_real_escape_string($conn, $_POST['category']);
+                $subcategory = mysqli_real_escape_string($conn, $_POST['subcategory']);
                 $description = mysqli_real_escape_string($conn, $_POST['description']);
                 $inventory = intval($_POST['inventory']);
                 $sizes = mysqli_real_escape_string($conn, $_POST['sizes']);
@@ -122,7 +129,6 @@ getSidebar();
                 $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name)));
                 
                 // Handle image upload
-                $image = '';
                 if(isset($_FILES['images'])) {
                     $main_image = time() . '_' . $_FILES['images']['name'];
                     move_uploaded_file($_FILES['images']['tmp_name'], "../uploads/products/" . $main_image);
@@ -141,17 +147,30 @@ getSidebar();
                     
                     $additional_images_json = json_encode($additional_images);
                     
-                    // Update your SQL query to include additional_images
-                    $stmt = $conn->prepare("INSERT INTO products (name, slug, images, additional_images, price, description, sizes, inventory, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                    $stmt->bind_param("ssssdssss", $name, $slug, $main_image, $additional_images_json, $price, $description, $sizes, $inventory, $category);
+                    // Fixed the SQL query and bind_param
+                    $stmt = $conn->prepare("INSERT INTO products (name, slug, images, additional_images, price, description, sizes, inventory, category, subcategory) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    
+                    // Added 's' for subcategory in bind_param types
+                    $stmt->bind_param("ssssdsssss", 
+                        $name, 
+                        $slug, 
+                        $main_image, 
+                        $additional_images_json, 
+                        $price, 
+                        $description, 
+                        $sizes, 
+                        $inventory, 
+                        $category,
+                        $subcategory
+                    );
+                    
+                    if($stmt->execute()) {
+                        echo "<script>alert('Product added successfully!'); window.location='?action=list';</script>";
+                    } else {
+                        echo "<script>alert('Error adding product: " . $stmt->error . "'); window.location='?action=add';</script>";
+                    }
+                    $stmt->close();
                 }
-                
-                if($stmt->execute()) {
-                    echo "<script>alert('Product added successfully!'); window.location='?action=list';</script>";
-                } else {
-                    echo "<script>alert('Error adding product: " . $stmt->error . "'); window.location='?action=add';</script>";
-                }
-                $stmt->close();
             }
             break;
 
@@ -183,7 +202,18 @@ getSidebar();
                         </div>
                         <div class="form-group">
                             <label>Category</label>
-                            <input type="text" name="category" value="<?php echo $product['category']; ?>" required>
+                            <select name="category" id="category" required onchange="updateSubcategories()">
+                                <option value="">Select Category</option>
+                                <option value="Men" <?php echo $product['category'] == 'Men' ? 'selected' : ''; ?>>Men</option>
+                                <option value="Women" <?php echo $product['category'] == 'Women' ? 'selected' : ''; ?>>Women</option>
+                                <option value="Kids" <?php echo $product['category'] == 'Kids' ? 'selected' : ''; ?>>Kids</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Subcategory</label>
+                            <select name="subcategory" id="subcategory" required>
+                                <option value="">Select Category First</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>Description</label>
@@ -305,5 +335,46 @@ getSidebar();
     }
     ?>
 </div>
+
+<script>
+function updateSubcategories() {
+    const category = document.getElementById('category').value;
+    const subcategorySelect = document.getElementById('subcategory');
+    
+    // Clear existing options
+    subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
+    
+    // Define subcategories for each category
+    const subcategories = {
+        'Men': ['Shirts', 'Jackets', 'Hoodies', 'Sweatshirts'],
+        'Women': ['Tops', 'Bottoms', 'Outerwear', 'Jeans'],
+        'Kids': ['Winterwear', 'Summerwear', 'Jeans', 'Skirts']
+    };
+    
+    // Add new options based on selected category
+    if (category in subcategories) {
+        subcategories[category].forEach(sub => {
+            const option = document.createElement('option');
+            option.value = sub;
+            option.textContent = sub;
+            subcategorySelect.appendChild(option);
+        });
+    }
+}
+
+// Add this to ensure the function runs when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the category select element
+    const categorySelect = document.getElementById('category');
+    
+    // Add event listener for change
+    categorySelect.addEventListener('change', updateSubcategories);
+    
+    // Run once on page load if category is pre-selected
+    if (categorySelect.value) {
+        updateSubcategories();
+    }
+});
+</script>
 
 <?php getFooter(); ?>
