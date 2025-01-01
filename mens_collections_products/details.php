@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('database/config.php');
+include('../database/config.php');
 
 // Function to get user details
 function getUserDetails($conn, $user_id) {
@@ -46,7 +46,7 @@ if (!$product) {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><?php echo htmlspecialchars($product['name']); ?> | Elegance</title>
-  <link rel="stylesheet" href="css/index.css" />
+  <link rel="stylesheet" href="../css/index.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css"
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -600,22 +600,22 @@ if (!$product) {
   <header>
     <div class="logo">
       <a href="index.php">
-        <img src="images/logo.png" alt="Logo" />
+        <img src="../images/logo.png" alt="Logo" />
       </a>
     </div>
     <nav class="nav-container">
       <ul class="navmenu">
-        <li><a href="/aayush/index.php">Home</a></li>
+        <li><a href="../index.php">Home</a></li>
         <li>
-          <a href="shop.php">Shop</a>
+          <a href="../shop.php">Shop</a>
           <ul class="dropdown-menu">
             <li><a href="mens_collection.php">Men's Collection</a></li>
             <li><a href="womens_collection.php">Women's Collection</a></li>
             <li><a href="kids_collection.php">Kid's Collection</a></li>
           </ul>
         </li>
-        <li><a href="About.php">About</a></li>
-        <li><a href="/aayush/contact.php">Contact</a></li>
+        <li><a href="../About.php">About</a></li>
+        <li><a href="../contact.php">Contact</a></li>
 
         <?php if ($isLoggedIn): ?>
           <?php if (isset($_SESSION['is_admin'])): ?>
@@ -645,7 +645,7 @@ if (!$product) {
       <?php else: ?>
         <a href="login.php"><i class="bx bx-user"></i></a>
       <?php endif; ?>
-      <a href="/aayush/cart/cart.php"><i class="bx bx-cart"></i>
+      <a href="../cart/cart.php"><i class="bx bx-cart"></i>
         <span id="cart-badge" class="cart-badge">0</span>
       </a>
       <div class="bx bx-menu" id="menu-icon"></div>
@@ -659,13 +659,13 @@ if (!$product) {
       <div class="row">
         <div class="col-2">
           <!-- Main Product Image -->
-          <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>"
+          <img src="../uploads/products/<?php echo htmlspecialchars($product['images']); ?>"
               width="100%" id="ProductImg" alt="<?php echo htmlspecialchars($product['name']); ?>" />
           
           <div class="small-img-row">
               <!-- Main image thumbnail -->
               <div class="small-img-col">
-                  <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>"
+                  <img src="../uploads/products/<?php echo htmlspecialchars($product['images']); ?>"
                       width="100%" class="small-img" alt="<?php echo htmlspecialchars($product['name']); ?>" />
               </div>
               
@@ -677,7 +677,7 @@ if (!$product) {
                       foreach($additional_images as $image): 
               ?>
                       <div class="small-img-col">
-                          <img src="uploads/products/<?php echo htmlspecialchars($image); ?>"
+                          <img src="../uploads/products/<?php echo htmlspecialchars($image); ?>"
                               width="100%" class="small-img" alt="Additional view" />
                       </div>
               <?php 
@@ -854,7 +854,7 @@ if (!$product) {
         }
         
         $.ajax({
-            url: 'cart/cart_handler.php',
+            url: '../cart/cart_handler.php',
             type: 'POST',
             data: {
                 action: 'add',
@@ -872,7 +872,7 @@ if (!$product) {
                     alert('Product added to cart!');
                     // Update cart count
                     $.ajax({
-                        url: 'cart/cart_handler.php',
+                        url: '../cart/cart_handler.php',
                         type: 'POST',
                         data: { action: 'count' },
                         success: function(count) {

@@ -46,6 +46,30 @@ CREATE TABLE products (
     UNIQUE KEY (slug)
 );
 
+ALTER TABLE products 
+ADD COLUMN subcategory varchar(255) DEFAULT NULL AFTER category;
+
+-- For men's products
+UPDATE products 
+SET subcategory = 'Shirts' 
+WHERE category = 'Men' AND name LIKE '%shirt%';
+
+UPDATE products 
+SET subcategory = 'Jackets' 
+WHERE category = 'Men' AND name LIKE '%jacket%';
+
+UPDATE products 
+SET subcategory = 'Hoodies' 
+WHERE category = 'Men' AND name LIKE '%hoodie%';
+
+UPDATE products 
+SET subcategory = 'Sweatshirts' 
+WHERE category = 'Men' AND name LIKE '%sweatshirt%';
+
+-- yo herna sql:
+SELECT name, category, subcategory FROM products WHERE category = 'Men';
+
+
 -- 4. Orders table (after users and customers tables)
 CREATE TABLE orders (
     id INT(11) NOT NULL AUTO_INCREMENT,
