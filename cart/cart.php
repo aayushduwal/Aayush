@@ -1,3 +1,12 @@
+<?php
+session_start();
+require_once('../database/config.php');
+
+// Check if user is logged in
+$loggedIn = isset($_SESSION['user_id']);
+$username = $loggedIn ? $_SESSION['username'] : '';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,6 +28,9 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/index.css"> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
   
 
@@ -33,7 +45,7 @@
     justify-content: space-between;
     padding: 15px 5%;
     background-color: white;
-    color: black;
+    color: var(--dark-background);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
@@ -50,6 +62,7 @@
     flex: 1;
     display: flex;
     justify-content: center;
+    position: relative;
   }
 
   .navmenu {
@@ -60,11 +73,12 @@
 
   .navmenu li {
     margin: 0 15px;
+    list-style: none;
   }
 
   .navmenu a {
     text-decoration: none;
-    color: black;
+    color: var(--dark-background);
     font-size: 22px;
     font-weight: 450;
     transition: color 0.3s ease, transform 0.3s ease;
@@ -80,7 +94,7 @@
     position: relative;
   }
 
-  .dropdown {
+  /* .dropdown {
     display: none;
     position: absolute;
     left: 0;
@@ -89,7 +103,19 @@
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1;
-  }
+  } */
+
+  .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  display: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px 0;
+  z-index: 100;
+}
+
 
   .navmenu li:hover .dropdown {
     display: block;
@@ -134,10 +160,11 @@
   }
 
   #menu-icon {
-    font-size: 30px;
-    color: black;
-    cursor: pointer;
-  }
+  font-size: 30px;
+  color: var(--dark-background);
+  cursor: pointer;
+  display: none;
+}
 
     .container {
       margin-top: 60px;
@@ -167,35 +194,44 @@
 <body>
 <header>
     <div class="logo">
-      <a href="/aayush/index.php">
-        <img src="../images/logo.png" alt="elegance" />
-      </a>
+        <a href="../index.php">
+            <img src="../images/logo.png" alt="Logo" />
+        </a>
     </div>
-    <div class="nav-container">
-      <ul class="navmenu">
-        <li><a href="/aayush/index.php">Home</a></li>
-        <li>
-          <a href="shop.php">Shop</a>
-          <ul class="dropdown">
-            <li><a href="mens_collection.php">Men's Collection</a></li>
-            <li><a href="womens_collection.php">Women's Collection</a></li>
-            <li><a href="kids_collection.php">Kids' Collection</a></li>
-          </ul>
-        </li>
-        <li><a href="/aayush/abt.php">About</a></li>
-        <li><a href="/aayush/login.php">Login</a></li>
-        <li><a href="/aayush/contact.php">Contact</a></li>
-      </ul>
-    </div>
+    <nav class="nav-container">
+        <ul class="navmenu">
+            <li><a href="../index.php">Home</a></li>
+            <li>
+                <a href="../shop.php">Shop</a>
+                <ul class="dropdown-menu">
+                    <li><a href="../mens_collection.php">Men's Collection</a></li>
+                    <li><a href="../womens_collection.php">Women's Collection</a></li>
+                    <li><a href="../kids_collection.php">Kid's Collection</a></li>
+                </ul>
+            </li>
+            <li><a href="../About.php">About</a></li>
+            <li><a href="../contact.php">Contact</a></li>
+            <?php if($loggedIn): ?>
+                <li><a href="../userdashboard/user_dashboard.php"><?php echo $username; ?>'s Account</a></li>
+                <li><a href="../logout.php">Logout</a></li>
+            <?php else: ?>
+                <li><a href="../login.php">Login</a></li>
+            <?php endif; ?>
+        </ul>
+    </nav>
+
     <div class="nav-icon">
-      <a href="#"><i class="bx bx-search"></i></a>
-      <a href="#"><i class="bx bx-user"></i></a>
-      <a href="/cart.php"><i class="bx bx-cart"></i>
-      <span id="cart-badge" class="cart-badge">0</span>
-    </a>
-      <div class="bx bx-menu" id="menu-icon"></div>
+        <?php if($loggedIn): ?>
+            <p>Logged in as <u><strong><?php echo htmlspecialchars($username); ?></strong></u></p>
+        <?php else: ?>
+            <a href="../login.php"><i class="bx bx-user"></i></a>
+        <?php endif; ?>
+        <a href="../cart/cart.php"><i class="bx bx-cart"></i>
+            <span id="cart-badge" class="cart-badge">0</span>
+        </a>
+        <div class="bx bx-menu" id="menu-icon"></div>
     </div>
-  </header>
+</header>
   <!-- Cart Container -->
   <div class="container">
     <h1 class="text-center mb-4">Your Cart</h1>

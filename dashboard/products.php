@@ -10,6 +10,39 @@ $action = isset($_GET['action']) ? $_GET['action'] : 'list';
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 $category = isset($_GET['category']) ? $_GET['category'] : '';
 
+// Add this at the top where you handle actions
+if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
+    $product_id = $_GET['id'];
+    
+    // First, try to delete the product image
+    $stmt = $conn->prepare("SELECT images FROM products WHERE id = ?");
+    $stmt->bind_param("i", $product_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $product = $result->fetch_assoc();
+    
+    if ($product && $product['images']) {
+        $image_path = "../uploads/products/" . $product['images'];
+        if (file_exists($image_path)) {
+            unlink($image_path); // Delete the image file
+        }
+    }
+    
+    // Then delete the product from database
+    $stmt = $conn->prepare("DELETE FROM products WHERE id = ?");
+    $stmt->bind_param("i", $product_id);
+    
+    if ($stmt->execute()) {
+        // Redirect back to products page with success message
+        header("Location: products.php?msg=Product deleted successfully");
+        exit();
+    } else {
+        // Redirect back with error message
+        header("Location: products.php?error=Failed to delete product");
+        exit();
+    }
+}
+
 getHeader('Products Management');
 getSidebar();
 ?>
@@ -53,8 +86,13 @@ getSidebar();
                         <textarea name="description" rows="4"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Image</label>
-                        <input type="file" name="image" accept="image/*" required>
+                        <label for="images">Main Product Image</label>
+                        <input type="file" name="images" id="images" required accept="image/*" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="additional_images">Additional Images</label>
+                        <input type="file" name="additional_images[]" id="additional_images" multiple accept="image/*" class="form-control">
+                        <small class="text-muted">Hold Ctrl to select multiple images</small>
                     </div>
                     <div class="form-group">
                         <label>Inventory</label>
@@ -85,16 +123,28 @@ getSidebar();
                 
                 // Handle image upload
                 $image = '';
-                if(isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-                    $image = time() . '_' . $_FILES['image']['name'];
-                    move_uploaded_file($_FILES['image']['tmp_name'], "../uploads/products/$image");
+                if(isset($_FILES['images'])) {
+                    $main_image = time() . '_' . $_FILES['images']['name'];
+                    move_uploaded_file($_FILES['images']['tmp_name'], "../uploads/products/" . $main_image);
+                    
+                    // Handle additional images if any
+                    $additional_images = array();
+                    if(isset($_FILES['additional_images'])) {
+                        foreach($_FILES['additional_images']['tmp_name'] as $key => $tmp_name) {
+                            if($_FILES['additional_images']['error'][$key] == 0) {
+                                $filename = time() . '_' . $_FILES['additional_images']['name'][$key];
+                                move_uploaded_file($tmp_name, "../uploads/products/" . $filename);
+                                $additional_images[] = $filename;
+                            }
+                        }
+                    }
+                    
+                    $additional_images_json = json_encode($additional_images);
+                    
+                    // Update your SQL query to include additional_images
+                    $stmt = $conn->prepare("INSERT INTO products (name, slug, images, additional_images, price, description, sizes, inventory, category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    $stmt->bind_param("ssssdssss", $name, $slug, $main_image, $additional_images_json, $price, $description, $sizes, $inventory, $category);
                 }
-
-                $sql = "INSERT INTO products (name, slug, price, category, description, images, inventory, sizes, created_at) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())";
-                        
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param("ssdsssss", $name, $slug, $price, $category, $description, $image, $inventory, $sizes);
                 
                 if($stmt->execute()) {
                     echo "<script>alert('Product added successfully!'); window.location='?action=list';</script>";

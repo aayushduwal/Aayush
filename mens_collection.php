@@ -2,13 +2,12 @@
 session_start();
 include('database/config.php');
 
-// Function to get user details
-function getUserDetails($conn, $user_id) {
-    $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
-    $stmt->bind_param("i", $user_id);  // Changed from "s" to "i"
+// Function to get products by category
+function getProductsByCategory($conn, $category) {
+    $stmt = $conn->prepare("SELECT * FROM products WHERE category = ?");
+    $stmt->bind_param("s", $category);
     $stmt->execute();
-    $result = $stmt->get_result();
-    return $result->fetch_assoc();
+    return $stmt->get_result();
 }
 
 // Check if user is logged in
@@ -19,6 +18,7 @@ if (isset($_SESSION['user_id'])) {
     $userDetails = getUserDetails($conn, $_SESSION['user_id']);
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

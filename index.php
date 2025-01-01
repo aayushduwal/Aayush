@@ -2,6 +2,8 @@
 session_start();
 include('database/config.php');
 
+
+
 // Function to get user details
 function getUserDetails($conn, $user_id) {
     $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
@@ -18,7 +20,22 @@ $userDetails = null;
 if (isset($_SESSION['user_id'])) {
     $userDetails = getUserDetails($conn, $_SESSION['user_id']);
 }
+
+// Fetch products for each category
+ $stmt_men = $conn->prepare("SELECT * FROM products WHERE category = 'Men' LIMIT 4");
+ $stmt_men->execute();
+ $menProducts = $stmt_men->get_result();
+       
+
+$stmt_women = $conn->prepare("SELECT * FROM products WHERE category = 'Women' LIMIT 4");
+$stmt_women->execute();
+$womenProducts = $stmt_women->get_result();
+
+$stmt_kids = $conn->prepare("SELECT * FROM products WHERE category = 'Kids' LIMIT 4");
+$stmt_kids->execute();
+$kidsProducts = $stmt_kids->get_result();
 ?>
+
 
 
  <!DOCTYPE html>
@@ -119,142 +136,68 @@ if (isset($_SESSION['user_id'])) {
    <section id="mens-collection" class="collection">
      <div class="container">
        <h1 class="">Men's Collection</h1>
+       
 
        <div class="collection-wrapper">
-         <div class="collection-wrapper-child">
-           <a href="home_collections_products/mens_jacket1_product_detail.php">
-             <img src="images/index-page_images/mens_collection/jacket.png" alt="" />
-             <h2>jacket</h2>
-             <div class="rating-wrapper">
-               <i class="fa-regular fa-star"></i>
-               4.5
+         <?php while($product = $menProducts->fetch_assoc()): ?>
+             <div class="collection-wrapper-child">
+                 <a href="details.php?id=<?php echo $product['id']; ?>">
+                     <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" />
+                     <h2><?php echo htmlspecialchars($product['name']); ?></h2>
+                     <div class="rating-wrapper">
+                         <i class="fa-regular fa-star"></i>
+                         4.5
+                     </div>
+                     <p>रु. <?php echo number_format($product['price'], 2); ?></p>
+                 </a>
              </div>
-             <p>रु.1500</p>
-           </a>
-         </div>
-         <div class="collection-wrapper-child">
-           <a href="home_collections_products/mens_boxpant1_product_detail.php">
-             <img src="images/index-page_images/mens_collection/pant.png" alt="" />
-             <h2>Cargo Pant</h2>
-             <div class="rating-wrapper">
-               <i class="fa-regular fa-star"></i>
-               4.5
-             </div>
-             <p>रु. 1200</p>
-           </a>
-         </div>
-         <div class="collection-wrapper-child">
-           <img src="images/index-page_images/mens_collection/vans.png" alt="" />
-           <h2>Vans</h2>
-           <div class="rating-wrapper">
-             <i class="fa-regular fa-star"></i>
-             4.5
-           </div>
-           <p>रु. 2000</p>
-         </div>
-         <div class="collection-wrapper-child">
-          <a href="home_collections_products/mens_jacket2_product_detail.php">
-           <img src="images/index-page_images/mens_collection/jacket1.png" alt="" />
-           <h2>Jacket</h2>
-           <div class="rating-wrapper">
-             <i class="fa-regular fa-star"></i>
-             4.5
-           </div>
-           <p>रु. 99.99</p>
-         </div>
+         <?php endwhile; ?>
        </div>
      </div>
    </section>
-   <!-- Womens's collection -->
+   <!-- Women's collection -->
    <section class="collection">
      <div class="container">
-       <h1 class="">Womens's Collection</h1>
+         <h1 class="">Women's Collection</h1>
 
-       <div class="collection-wrapper">
-         <div class="collection-wrapper-child">
-           <img src="images/index-page_images/womens_collection/jacket.png" alt="" />
-           <h2>Jacket</h2>
-           <div class="rating-wrapper">
-             <i class="fa-regular fa-star"></i>
-             4.5
-           </div>
-           <p>रु. 800</p>
+         <div class="collection-wrapper">
+             <?php while($product = $womenProducts->fetch_assoc()): ?>
+                 <div class="collection-wrapper-child">
+                     <a href="details.php?id=<?php echo $product['id']; ?>">
+                         <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" />
+                         <h2><?php echo htmlspecialchars($product['name']); ?></h2>
+                         <div class="rating-wrapper">
+                             <i class="fa-regular fa-star"></i>
+                             4.5
+                         </div>
+                         <p>रु. <?php echo number_format($product['price'], 2); ?></p>
+                     </a>
+                 </div>
+             <?php endwhile; ?>
          </div>
-         <div class="collection-wrapper-child">
-           <img src="images/index-page_images/womens_collection/shoes.png" alt="" />
-           <h2>Shoes</h2>
-           <div class="rating-wrapper">
-             <i class="fa-regular fa-star"></i>
-             4.5
-           </div>
-           <p>रु. 50</p>
-         </div>
-         <div class="collection-wrapper-child">
-           <img src="images/index-page_images/womens_collection/pant.png" alt="" />
-           <h2>Pant</h2>
-           <div class="rating-wrapper">
-             <i class="fa-regular fa-star"></i>
-
-             4.5
-           </div>
-           <p>रु. 200</p>
-         </div>
-         <div class="collection-wrapper-child">
-           <img src="images/index-page_images/womens_collection/top.png" alt="" />
-           <h2>Top</h2>
-           <div class="rating-wrapper">
-             <i class="fa-regular fa-star"></i>
-             4.5
-           </div>
-           <p>रु. 150</p>
-         </div>
-       </div>
      </div>
    </section>
    <!-- Child's collection -->
    <section class="collection">
-     <div class="container">
-       <h1 class="">Child's Collection</h1>
+    <div class="container">
+        <h1 class="">Child's Collection</h1>
 
-       <div class="collection-wrapper">
-         <div class="collection-wrapper-child">
-           <img src="images/index-page_images/kids_collection/tshirt.png" alt="" />
-           <h2>Tshirt</h2>
-           <div class="rating-wrapper">
-             <i class="fa-regular fa-star"></i>
-             4.5
-           </div>
-           <p>रु. 600</p>
-         </div>
-         <div class="collection-wrapper-child">
-           <img src="images/index-page_images/kids_collection/jacket.png" />
-           <h2>Jacket</h2>
-           <div class="rating-wrapper">
-             <i class="fa-regular fa-star"></i>
-             4.5
-           </div>
-           <p>रु. 1800</p>
-         </div>
-         <div class="collection-wrapper-child">
-           <img src="images/index-page_images/kids_collection/shoes.png" />
-           <h2>Shoes</h2>
-           <div class="rating-wrapper">
-             <i class="fa-regular fa-star"></i>
-             4.5
-           </div>
-           <p>रु. 2100</p>
-         </div>
-         <div class="collection-wrapper-child">
-           <img src="images/index-page_images/kids_collection/jacket1.png" alt="" />
-           <h2>Jacket</h2>
-           <div class="rating-wrapper">
-             <i class="fa-regular fa-star"></i>
-             4.5
-           </div>
-           <p>रु. 1500</p>
-         </div>
-       </div>
-     </div>
+        <div class="collection-wrapper">
+            <?php while($product = $kidsProducts->fetch_assoc()): ?>
+                <div class="collection-wrapper-child">
+                    <a href="home_collections_products/kids_product_detail.php?id=<?php echo $product['id']; ?>">
+                        <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" />
+                        <h2><?php echo htmlspecialchars($product['name']); ?></h2>
+                        <div class="rating-wrapper">
+                            <i class="fa-regular fa-star"></i>
+                            4.5
+                        </div>
+                        <p>रु. <?php echo number_format($product['price'], 2); ?></p>
+                    </a>
+                </div>
+            <?php endwhile; ?>
+        </div>
+    </div>
    </section>
 
    <!-- footer starts -->

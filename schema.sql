@@ -100,12 +100,15 @@ CREATE INDEX idx_admin_email ON admin_users(email);
 
 
 CREATE TABLE cart (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT,
-    product_name VARCHAR(255),
-    price DECIMAL(10,2),
-    quantity INT
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    user_id INT(11) DEFAULT NULL,
+    product_id INT(11) DEFAULT NULL,
+    product_name VARCHAR(255) DEFAULT NULL,
+    price DECIMAL(10,2) DEFAULT NULL,
+    quantity INT(11) DEFAULT NULL,
+    PRIMARY KEY (id)
 );
+
 
 
 
