@@ -108,6 +108,10 @@ getSidebar();
                         <label>Sizes Available</label>
                         <input type="text" name="sizes" required placeholder="Example: S,M,L or 40,41,42">
                     </div>
+                    <div class="form-group">
+                        <label for="show_on_home">Show on Home Page:</label>
+                        <input type="checkbox" name="show_on_home" id="show_on_home" value="1">
+                    </div>
                     <button type="submit" class="btn btn-primary">Add Product</button>
                 </form>
             </div>

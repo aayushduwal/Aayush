@@ -49,6 +49,9 @@ CREATE TABLE products (
 ALTER TABLE products 
 ADD COLUMN subcategory varchar(255) DEFAULT NULL AFTER category;
 
+ALTER TABLE products 
+ADD COLUMN show_on_home TINYINT(1) DEFAULT 0;
+
 -- For men's products
 UPDATE products 
 SET subcategory = 'Shirts' 

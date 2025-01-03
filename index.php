@@ -22,16 +22,15 @@ if (isset($_SESSION['user_id'])) {
 }
 
 // Fetch products for each category
- $stmt_men = $conn->prepare("SELECT * FROM products WHERE category = 'Men' LIMIT 4");
- $stmt_men->execute();
- $menProducts = $stmt_men->get_result();
-       
+$stmt_men = $conn->prepare("SELECT * FROM products WHERE category = 'Men' AND show_on_home = 1 LIMIT 4");
+$stmt_men->execute();
+$menProducts = $stmt_men->get_result();
 
-$stmt_women = $conn->prepare("SELECT * FROM products WHERE category = 'Women' LIMIT 4");
+$stmt_women = $conn->prepare("SELECT * FROM products WHERE category = 'Women' AND show_on_home = 1 LIMIT 4");
 $stmt_women->execute();
 $womenProducts = $stmt_women->get_result();
 
-$stmt_kids = $conn->prepare("SELECT * FROM products WHERE category = 'Kids' LIMIT 4");
+$stmt_kids = $conn->prepare("SELECT * FROM products WHERE category = 'Kids' AND show_on_home = 1 LIMIT 4");
 $stmt_kids->execute();
 $kidsProducts = $stmt_kids->get_result();
 ?>
@@ -139,29 +138,10 @@ $kidsProducts = $stmt_kids->get_result();
        
 
        <div class="collection-wrapper">
-         <?php while($product = $menProducts->fetch_assoc()): ?>
-             <div class="collection-wrapper-child">
-                 <a href="details.php?id=<?php echo $product['id']; ?>">
-                     <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" />
-                     <h2><?php echo htmlspecialchars($product['name']); ?></h2>
-                     <div class="rating-wrapper">
-                         <i class="fa-regular fa-star"></i>
-                         4.5
-                     </div>
-                     <p>रु. <?php echo number_format($product['price'], 2); ?></p>
-                 </a>
-             </div>
-         <?php endwhile; ?>
-       </div>
-     </div>
-   </section>
-   <!-- Women's collection -->
-   <section class="collection">
-     <div class="container">
-         <h1 class="">Women's Collection</h1>
-
-         <div class="collection-wrapper">
-             <?php while($product = $womenProducts->fetch_assoc()): ?>
+         <?php 
+         if ($menProducts->num_rows > 0) {
+             while($product = $menProducts->fetch_assoc()) {
+                 ?>
                  <div class="collection-wrapper-child">
                      <a href="details.php?id=<?php echo $product['id']; ?>">
                          <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" />
@@ -173,7 +153,42 @@ $kidsProducts = $stmt_kids->get_result();
                          <p>रु. <?php echo number_format($product['price'], 2); ?></p>
                      </a>
                  </div>
-             <?php endwhile; ?>
+                 <?php
+             }
+         } else {
+             echo '<p class="no-products">No products available in Men\'s Collection</p>';
+         }
+         ?>
+       </div>
+     </div>
+   </section>
+   <!-- Women's collection -->
+   <section class="collection">
+     <div class="container">
+         <h1 class="">Women's Collection</h1>
+
+         <div class="collection-wrapper">
+             <?php 
+             if ($womenProducts->num_rows > 0) {
+                 while($product = $womenProducts->fetch_assoc()) {
+                     ?>
+                     <div class="collection-wrapper-child">
+                         <a href="details.php?id=<?php echo $product['id']; ?>">
+                             <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" />
+                             <h2><?php echo htmlspecialchars($product['name']); ?></h2>
+                             <div class="rating-wrapper">
+                                 <i class="fa-regular fa-star"></i>
+                                 4.5
+                             </div>
+                             <p>रु. <?php echo number_format($product['price'], 2); ?></p>
+                         </a>
+                     </div>
+                     <?php
+                 }
+             } else {
+                 echo '<p class="no-products">No products available in Women\'s Collection</p>';
+             }
+             ?>
          </div>
      </div>
    </section>
@@ -183,19 +198,27 @@ $kidsProducts = $stmt_kids->get_result();
         <h1 class="">Child's Collection</h1>
 
         <div class="collection-wrapper">
-            <?php while($product = $kidsProducts->fetch_assoc()): ?>
-                <div class="collection-wrapper-child">
-                    <a href="home_collections_products/kids_product_detail.php?id=<?php echo $product['id']; ?>">
-                        <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" />
-                        <h2><?php echo htmlspecialchars($product['name']); ?></h2>
-                        <div class="rating-wrapper">
-                            <i class="fa-regular fa-star"></i>
-                            4.5
-                        </div>
-                        <p>रु. <?php echo number_format($product['price'], 2); ?></p>
-                    </a>
-                </div>
-            <?php endwhile; ?>
+            <?php 
+            if ($kidsProducts->num_rows > 0) {
+                while($product = $kidsProducts->fetch_assoc()) {
+                    ?>
+                    <div class="collection-wrapper-child">
+                        <a href="details.php?id=<?php echo $product['id']; ?>">
+                            <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" />
+                            <h2><?php echo htmlspecialchars($product['name']); ?></h2>
+                            <div class="rating-wrapper">
+                                <i class="fa-regular fa-star"></i>
+                                4.5
+                            </div>
+                            <p>रु. <?php echo number_format($product['price'], 2); ?></p>
+                        </a>
+                    </div>
+                    <?php
+                }
+            } else {
+                echo '<p class="no-products">No products available in Kids\' Collection</p>';
+            }
+            ?>
         </div>
     </div>
    </section>
@@ -287,14 +310,42 @@ $kidsProducts = $stmt_kids->get_result();
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
    <script src="cart/addToCart.js"></script>
    <script>
-   const menuIcon = document.getElementById("menu-icon");
-   const navMenu = document.querySelector(".navmenu");
+   document.addEventListener('DOMContentLoaded', function() {
+       const menuIcon = document.querySelector('#menu-icon');
+       const navContainer = document.querySelector('.nav-container');
 
-   menuIcon.addEventListener("click", () => {
-     navMenu.classList.toggle("active");
-   });
+       menuIcon.addEventListener('click', function(e) {
+           e.stopPropagation();
+           navContainer.classList.toggle('active');
+           this.classList.toggle('bx-x');
+       });
 
-   $(document).ready(function() {
+       // Handle dropdown menus
+       const dropdownLinks = document.querySelectorAll('.navmenu li a');
+       dropdownLinks.forEach(link => {
+           link.addEventListener('click', function(e) {
+               const nextElement = this.nextElementSibling;
+               if (nextElement && nextElement.classList.contains('dropdown-menu')) {
+                   e.preventDefault();
+                   nextElement.classList.toggle('show');
+               }
+           });
+       });
+
+       // Close menu when clicking outside
+       document.addEventListener('click', function(e) {
+           if (!menuIcon.contains(e.target) && !navContainer.contains(e.target)) {
+               navContainer.classList.remove('active');
+               menuIcon.classList.remove('bx-x');
+           }
+       });
+
+       // Prevent menu from closing when clicking inside
+       navContainer.addEventListener('click', function(e) {
+           e.stopPropagation();
+       });
+
+       // Cart badge update
        updateCartBadge();
    });
    </script>
