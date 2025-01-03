@@ -64,8 +64,10 @@ $userDetails = getUserDetails($conn, $_SESSION['user_id']);
             <?php if (isset($_SESSION['user_id'])): ?>
                 <p>Welcome, <?php echo htmlspecialchars($userDetails['username']); ?></p>
             <?php endif; ?>
-            <a href="../cart.php"><i class='bx bx-shopping-bag'></i></a>
-            <div id="menu-icon"><i class='bx bx-menu'></i></div>
+            <a href="/aayush/cart/cart.php"><i class="bx bx-cart"></i>
+        <span id="cart-badge" class="cart-badge">0</span>
+      </a>
+      <div class="bx bx-menu" id="menu-icon"></div>
         </div>
     </header>
 

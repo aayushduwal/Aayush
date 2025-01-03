@@ -106,7 +106,10 @@ if (isset($_SESSION['user_id'])) {
     <?php else: ?>
         <a href="login.php"><i class="bx bx-user"></i></a>
     <?php endif; ?>
-    <a href="cart.php"><i class="bx bx-cart"></i></a>
+  <a href="/aayush/cart/cart.php"><i class="bx bx-cart"></i>
+        <span id="cart-badge" class="cart-badge">0</span>
+      </a>
+      <div class="bx bx-menu" id="menu-icon"></div>
 </div>
     </header>
 
@@ -309,7 +312,11 @@ if (isset($_SESSION['user_id'])) {
           searchBar.style.display = "block";
           searchBar.focus();
         }
+
+        // Cart badge update
+       updateCartBadge();
       });
+      
     </script>
   </body>
 </html>
