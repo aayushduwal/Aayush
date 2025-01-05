@@ -128,6 +128,7 @@ getSidebar();
                 $description = mysqli_real_escape_string($conn, $_POST['description']);
                 $inventory = intval($_POST['inventory']);
                 $sizes = mysqli_real_escape_string($conn, $_POST['sizes']);
+                $show_on_home = isset($_POST['show_on_home']) ? 1 : 0;
                 
                 // Generate slug from name
                 $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name)));
@@ -152,10 +153,10 @@ getSidebar();
                     $additional_images_json = json_encode($additional_images);
                     
                     // Fixed the SQL query and bind_param
-                    $stmt = $conn->prepare("INSERT INTO products (name, slug, images, additional_images, price, description, sizes, inventory, category, subcategory) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    $stmt = $conn->prepare("INSERT INTO products (name, slug, images, additional_images, price, description, sizes, inventory, category, subcategory, show_on_home) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                     
                     // Added 's' for subcategory in bind_param types
-                    $stmt->bind_param("ssssdsssss", 
+                    $stmt->bind_param("ssssdsssssi", 
                         $name, 
                         $slug, 
                         $main_image, 
@@ -165,7 +166,8 @@ getSidebar();
                         $sizes, 
                         $inventory, 
                         $category,
-                        $subcategory
+                        $subcategory,
+                        $show_on_home
                     );
                     
                     if($stmt->execute()) {

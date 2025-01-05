@@ -42,15 +42,12 @@ CREATE TABLE products (
     sizes LONGTEXT NOT NULL,
     inventory INT(11) NOT NULL,
     category VARCHAR(255) NOT NULL,
+    subcategory VARCHAR(255) DEFAULT NULL,
+    show_on_home TINYINT(1) DEFAULT 0,
     PRIMARY KEY (id),
     UNIQUE KEY (slug)
 );
 
-ALTER TABLE products 
-ADD COLUMN subcategory varchar(255) DEFAULT NULL AFTER category;
-
-ALTER TABLE products 
-ADD COLUMN show_on_home TINYINT(1) DEFAULT 0;
 
 -- For men's products
 UPDATE products 
