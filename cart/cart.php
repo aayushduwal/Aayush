@@ -188,6 +188,78 @@ $username = $loggedIn ? $_SESSION['username'] : '';
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     visibility: hidden;
   }
+
+  .cart-summary {
+    position: sticky;
+    bottom: 0;
+    right: 0;
+    background: white;
+    padding: 20px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .total-amount {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+
+  .checkout-button .btn {
+    padding: 10px 20px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .checkout-button .btn:hover {
+    background: #45a049;
+  }
+
+  .cart-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .cart-item {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    padding: 20px 0;
+    gap: 20px;
+  }
+
+  .cart-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+
+  .item-details {
+    flex: 1;
+  }
+
+  .remove-btn {
+    background: #ff4444;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .empty-cart {
+    text-align: center;
+    padding: 40px;
+    font-size: 1.2em;
+    color: #666;
+  }
   </style>
 </head>
 
@@ -235,7 +307,55 @@ $username = $loggedIn ? $_SESSION['username'] : '';
   <!-- Cart Container -->
   <div class="container">
     <h1 class="text-center mb-4">Your Cart</h1>
-    <div id="cart-container" class="row"></div>
+    <div class="cart-container">
+        <?php
+        if (isset($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
+            $total = 0; // Initialize total
+            
+            // Fetch cart items
+            $stmt = $conn->prepare("SELECT c.*, p.images FROM cart c 
+                                  LEFT JOIN products p ON c.product_id = p.id 
+                                  WHERE c.user_id = ?");
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            if ($result->num_rows > 0) {
+                while ($item = $result->fetch_assoc()) {
+                    $subtotal = $item['price'] * $item['quantity']; // Calculate subtotal
+                    $total += $subtotal; // Add to total
+                    ?>
+                    <div class="cart-item">
+                        <img src="/aayush/uploads/products/<?php echo $item['images']; ?>" alt="<?php echo $item['product_name']; ?>">
+                        <div class="item-details">
+                            <h3><?php echo $item['product_name']; ?></h3>
+                            <p>Price: रु. <?php echo number_format($item['price'], 0); ?></p>
+                            <p>Quantity: <?php echo $item['quantity']; ?></p>
+                            <p>Subtotal: रु. <?php echo number_format($subtotal, 0); ?></p>
+                            <button onclick="removeFromCart(<?php echo $item['id']; ?>)" class="remove-btn">Remove</button>
+                        </div>
+                    </div>
+                    <?php
+                }
+                ?>
+                <div class="cart-summary">
+                    <div class="total-amount">
+                        <h3>Total Amount: रु. <?php echo number_format($total, 0); ?></h3>
+                    </div>
+                    <div class="checkout-button">
+                        <a href="/aayush/checkout.php" class="btn btn-primary">Proceed to Checkout</a>
+                    </div>
+                </div>
+                <?php
+            } else {
+                echo "<p class='empty-cart'>Your cart is empty</p>";
+            }
+        } else {
+            echo "<p class='empty-cart'>Please login to view your cart</p>";
+        }
+        ?>
+    </div>
   </div>
 
   <!-- jQuery -->
@@ -265,7 +385,7 @@ $username = $loggedIn ? $_SESSION['username'] : '';
           <div class="col-md-6">
             <div class="cart-item border p-3 mb-3">
               <h5>${item.product_name}</h5>
-              <p>Price: <strong>$${parseFloat(item.price).toFixed(2)}</strong></p>
+              <p>Price: <strong>रु. <?php echo number_format($item['price'], 0); ?></strong></p>
               <p>Quantity: <strong>${item.quantity}</strong></p>
               <button class="btn btn-danger btn-sm" onclick="removeFromCart(${item.id})">Remove</button>
             </div>
@@ -275,13 +395,13 @@ $username = $loggedIn ? $_SESSION['username'] : '';
       });
     }
 
-    function removeFromCart(id) {
-      $.post('cart_handler.php', { action: 'remove', id: id }, function (response) {
-        displayCart();
-        updateCartBadge();
-        alert(response);
-      });
-    }
+    // function removeFromCart(id) {
+    //   $.post('cart_handler.php', { action: 'remove', id: id }, function (response) {
+    //     displayCart();
+    //     updateCartBadge();
+    //     alert(response);
+    //   });
+    // }
 
     $(document).ready(displayCart);
 
@@ -294,6 +414,23 @@ $username = $loggedIn ? $_SESSION['username'] : '';
           cartBadge.css("visibility", "hidden");
       }
     });
+  </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+  function removeFromCart(cartId) {
+      if (confirm('Are you sure you want to remove this item?')) {
+          $.post('/aayush/cart/cart_handler.php', {
+              action: 'remove',
+              id: cartId
+          }, function(response) {
+              // Reload the page after successful removal
+              location.reload();
+          }).fail(function(xhr, status, error) {
+              console.error("Error removing item:", error);
+              alert("Error removing item from cart");
+          });
+      }
+  }
   </script>
 </body>
 

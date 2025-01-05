@@ -20,17 +20,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $price = $_POST['price'];
         $quantity = $_POST['quantity'];
 
-        // Insert new cart item directly (simplified logic)
-        $insertStmt = $conn->prepare("INSERT INTO cart (user_id, product_id, product_name, price, quantity) VALUES (?, ?, ?, ?, ?)");
-        if (!$insertStmt) {
-            echo "Database error: " . $conn->error;
-            exit();
+        // First check if product already exists in cart
+        $checkStmt = $conn->prepare("SELECT id, quantity FROM cart WHERE user_id = ? AND product_id = ?");
+        $checkStmt->bind_param("ii", $user_id, $productId);
+        $checkStmt->execute();
+        $result = $checkStmt->get_result();
+
+        if ($result->num_rows > 0) {
+            // Product exists, update quantity
+            $row = $result->fetch_assoc();
+            $newQuantity = $row['quantity'] + $quantity;
+            
+            $updateStmt = $conn->prepare("UPDATE cart SET quantity = ? WHERE id = ?");
+            $updateStmt->bind_param("ii", $newQuantity, $row['id']);
+            $updateStmt->execute();
+            
+            echo "Product quantity updated in cart!";
+        } else {
+            // Product doesn't exist, insert new
+            $insertStmt = $conn->prepare("INSERT INTO cart (user_id, product_id, product_name, price, quantity) VALUES (?, ?, ?, ?, ?)");
+            if (!$insertStmt) {
+                echo "Database error: " . $conn->error;
+                exit();
+            }
+            
+            $insertStmt->bind_param("iisdi", $user_id, $productId, $productName, $price, $quantity);
+            $insertStmt->execute();
+            
+            echo "Product added to cart!";
         }
-        
-        $insertStmt->bind_param("iisdi", $user_id, $productId, $productName, $price, $quantity);
-        $insertStmt->execute();
-        
-        echo "Product added to cart!";
     } elseif ($action === 'count') {
         if (!isset($_SESSION['user_id'])) {
             echo "0";
