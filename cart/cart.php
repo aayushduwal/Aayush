@@ -344,7 +344,9 @@ $username = $loggedIn ? $_SESSION['username'] : '';
                         <h3>Total Amount: रु. <?php echo number_format($total, 0); ?></h3>
                     </div>
                     <div class="checkout-button">
-                        <a href="/aayush/checkout.php" class="btn btn-primary">Proceed to Checkout</a>
+                        <a href="checkout.php" class="checkout-btn" style="background: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                            Proceed to Checkout
+                        </a>
                     </div>
                 </div>
                 <?php
@@ -431,6 +433,18 @@ $username = $loggedIn ? $_SESSION['username'] : '';
           });
       }
   }
+  </script>
+  <script>
+  $(document).ready(function() {
+      // Remove any click handlers that might be attached to checkout button
+      $('.checkout-btn').off('click');
+      
+      // Only attach click handlers to add-to-cart buttons
+      $('.add-to-cart-btn').click(function(e) {
+          e.preventDefault();
+          addToCart();
+      });
+  });
   </script>
 </body>
 
