@@ -220,7 +220,7 @@ header {
   <body>
     <header>
       <div class="logo">
-        <a href="index.php">
+        <a href="/aayush/index.php">
           <img src="../images/logo.png" alt="Logo" />
         </a>
       </div>
@@ -242,7 +242,7 @@ header {
     <?php if (isset($_SESSION['is_admin'])): ?>
         <li><a href="/aayush/dashboard/admin_dashboard.php" class="dashboard-btn">Dashboard</a></li>
     <?php elseif (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'user'): ?>
-        <li><a href="/aayush/user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s Account</a></li>
+        <li><a href="/aayush/userdashboard/user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s Account</a></li>
     <?php endif; ?>
     <li><a href="/aayush/logout.php">Logout</a></li>
 <?php else: ?>

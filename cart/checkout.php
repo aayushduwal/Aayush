@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once('../database/config.php');
+require_once('../payment/payment_config.php');
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../login.php');
@@ -8,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-
 // Get cart items and subtotal
 $stmt = $conn->prepare("SELECT c.*, p.name, p.images FROM cart c 
                       LEFT JOIN products p ON c.product_id = p.id 
@@ -26,12 +26,11 @@ while ($item = $result->fetch_assoc()) {
 
 // Delivery zones and charges
 $delivery_zones = [
-    'inside_ring_road' => ['name' => 'Inside Ring Road', 'charge' => 85],
-    'outside_ring_road' => ['name' => 'Outside Ring Road', 'charge' => 150],
+    'inside_ring' => ['name' => 'Inside Ring Road', 'charge' => 85],
+    'outside_ring' => ['name' => 'Outside Ring Road', 'charge' => 150],
     'outside_valley' => ['name' => 'Outside Valley', 'charge' => 250]
 ];
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -106,15 +105,52 @@ $delivery_zones = [
         .proceed-btn:hover {
             background: #f4511e;
         }
+        .payment-methods {
+            margin: 20px 0;
+        }
+        .payment-method {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+        .payment-method:hover {
+            border-color: #ff5722;
+            background: #fff5f2;
+        }
+        .payment-method.selected {
+            border-color: #ff5722;
+            background: #fff5f2;
+        }
+        .payment-method img {
+            width: 60px;
+            height: auto;
+        }
+        .payment-method-details {
+            flex: 1;
+        }
+        .payment-method-details h4 {
+            margin: 0;
+            font-size: 16px;
+        }
+        .payment-method-details p {
+            margin: 5px 0 0;
+            color: #666;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
     <?php include('../includes/header.php'); ?>
-
     <div class="checkout-container">
         <div class="shipping-details">
             <h2>Shipping Information</h2>
-            <form id="checkoutForm" action="process_payment.php" method="POST">
+            <form id="checkoutForm" action="../payment/process_payment.php" method="POST">
                 <div class="form-group">
                     <label>Full Name</label>
                     <input type="text" name="full_name" class="form-control" required>
@@ -123,6 +159,16 @@ $delivery_zones = [
                 <div class="form-group">
                     <label>Phone</label>
                     <input type="tel" name="phone" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>City</label>
+                    <input type="text" name="city" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Postal Code</label>
+                    <input type="text" name="postal_code" class="form-control" required maxlength="10">
                 </div>
 
                 <div class="form-group">
@@ -140,18 +186,41 @@ $delivery_zones = [
                 
                 <div class="form-group">
                     <label>Detailed Address</label>
-                    <textarea name="address" class="form-control" required></textarea>
+                    <textarea name="detailed_address" class="form-control" required></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label>Payment Method</label>
-                    <select name="payment_method" class="form-control" required>
-                        <option value="">Select Payment Method</option>
-                        <option value="cod">Cash on Delivery</option>
-                        <option value="esewa">eSewa</option>
-                        <option value="khalti">Khalti</option>
-                    </select>
+                <div class="payment-methods">
+                    <h3>Select Payment Method</h3>
+                    
+                    <div class="payment-method" onclick="selectPayment('cod')">
+                        <img src="../images/cashondelivery.jpg" alt="Cash on Delivery">
+                        <div class="payment-method-details">
+                            <h4>Cash on Delivery</h4>
+                            <p>Pay with cash when your order arrives</p>
+                        </div>
+                        <input type="radio" name="payment_method" value="cod" required>
+                    </div>
+
+                    <div class="payment-method" onclick="selectPayment('esewa')">
+                        <img src="../images/esewa.png" alt="eSewa">
+                        <div class="payment-method-details">
+                            <h4>eSewa</h4>
+                            <p>Pay securely with your eSewa account</p>
+                        </div>
+                        <input type="radio" name="payment_method" value="esewa" required>
+                    </div>
+
+                    <!-- <div class="payment-method" onclick="selectPayment('khalti')">
+                        <img src="../images/khalti.png" alt="Khalti">
+                        <div class="payment-method-details">
+                            <h4>Khalti</h4>
+                            <p>Pay securely with your Khalti wallet</p>
+                        </div>
+                        <input type="radio" name="payment_method" value="khalti" required>
+                    </div> -->
                 </div>
+
+                <button type="submit" class="proceed-btn">Continue</button>
             </form>
         </div>
 
@@ -160,7 +229,7 @@ $delivery_zones = [
             <div class="item-list">
                 <?php foreach ($items as $item): ?>
                 <div class="item">
-                    <img src="../uploads/products/<?php echo $item['images']; ?>" alt="<?php echo $item['name']; ?>">
+                    <img src="/aayush/uploads/products/<?php echo $item['images']; ?>" alt="<?php echo $item['name']; ?>">
                     <div>
                         <h4><?php echo $item['name']; ?></h4>
                         <p>Quantity: <?php echo $item['quantity']; ?></p>
@@ -186,26 +255,54 @@ $delivery_zones = [
                 </div>
             </div>
 
-            <button type="submit" form="checkoutForm" class="proceed-btn">Proceed to Pay</button>
         </div>
     </div>
 
     <script>
+    function selectPayment(method) {
+        document.querySelectorAll('input[name="payment_method"]').forEach(input => {
+            if (input.value === method) {
+                input.checked = true;
+            }
+        });
+    }
+
+    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+        // Log form data
+        console.log('Form submitted');
+        console.log('Payment method:', document.querySelector('input[name="payment_method"]:checked')?.value);
+        
+        // Make sure all required fields are filled
+        const requiredFields = this.querySelectorAll('[required]');
+        let allFilled = true;
+        requiredFields.forEach(field => {
+            if (!field.value) {
+                allFilled = false;
+                console.log('Missing required field:', field.name);
+            }
+        });
+        
+        if (!allFilled) {
+            e.preventDefault();
+            alert('Please fill in all required fields');
+            return;
+        }
+
+        // If all fields are filled, let the form submit
+        console.log('All fields filled, submitting form...');
+        return true; // Allow form submission
+    });
+
     document.querySelectorAll('.delivery-option').forEach(option => {
         option.addEventListener('click', function() {
-            // Update selected style
-            document.querySelectorAll('.delivery-option').forEach(opt => opt.classList.remove('selected'));
-            this.classList.add('selected');
+            // Update delivery fee
+            const charge = this.dataset.charge;
+            document.getElementById('delivery-fee').textContent = 'रु. ' + charge;
             
-            // Update radio button
-            this.querySelector('input[type="radio"]').checked = true;
-            
-            // Update delivery fee and total
-            const deliveryCharge = parseInt(this.dataset.charge);
+            // Update total
             const subtotal = <?php echo $subtotal; ?>;
-            
-            document.getElementById('delivery-fee').textContent = 'रु. ' + deliveryCharge.toLocaleString();
-            document.getElementById('total-amount').textContent = 'रु. ' + (subtotal + deliveryCharge).toLocaleString();
+            const total = subtotal + parseInt(charge);
+            document.getElementById('total-amount').textContent = 'रु. ' + total.toLocaleString();
         });
     });
     </script>

@@ -890,6 +890,51 @@ if (!$product) {
     });
   });
   </script>
+  
+  <script>
+  $(document).ready(function() {
+    $('.buy-now').on('click', function(e) {
+        e.preventDefault();
+        
+        const productId = $("#product_id").val();
+        const productName = $("h1").text();
+        const price = $("h4").text().replace("रु.", "").replace(/,/g, "").trim();
+        const quantity = parseInt($("#quantity").val());
+        const size = $("select").val();
+        
+        if (size === 'Select Size') {
+            alert('Please select a size');
+            return;
+        }
+
+        console.log("Hello world")
+        
+        $.ajax({
+            url: '../cart/cart_handler.php',
+            type: 'POST',
+            data: {
+                action: 'add',
+                productId: productId,
+                productName: productName,
+                price: price,
+                quantity: quantity
+            },
+            success: function(response) {
+                if(response === "Please login first") {
+                    alert("Please login to proceed with purchase");
+                    window.location.href = '/aayush/login.php';
+                } else {
+                    window.location.href = '/aayush/cart/checkout.php';
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('Error processing request');
+            }
+        });
+    });
+});
+</script>
 </body>
 
 </html> 

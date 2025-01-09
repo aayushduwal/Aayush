@@ -706,7 +706,7 @@ if (!$product) {
             <button onclick="increment()">+</button>
           </div>
           <div class="btn-container">
-    <a href="#" class="btn buy-now">Buy Now</a>
+    <button class="btn buy-now">Buy Now</button>
     <button class="btn add-to-cart-btn" style="background-color: #FF523B;">Add To Cart</button>
     <input type="hidden" id="product_id" value="<?php echo $product_id; ?>">
 </div>
@@ -750,7 +750,50 @@ if (!$product) {
     ProductImg.src = SmallImg[2].src;
   };
   </script>
+<script>
+  $(document).ready(function() {
+    $('.buy-now').on('click', function(e) {
+        e.preventDefault();
+        
+        const productId = $("#product_id").val();
+        const productName = $("h1").text();
+        const price = $("h4").text().replace("रु.", "").replace(/,/g, "").trim();
+        const quantity = parseInt($("#quantity").val());
+        const size = $("select").val();
+        
+        if (size === 'Select Size') {
+            alert('Please select a size');
+            return;
+        }
 
+        console.log("Hello world")
+        
+        $.ajax({
+            url: '../cart/cart_handler.php',
+            type: 'POST',
+            data: {
+                action: 'add',
+                productId: productId,
+                productName: productName,
+                price: price,
+                quantity: quantity
+            },
+            success: function(response) {
+                if(response === "Please login first") {
+                    alert("Please login to proceed with purchase");
+                    window.location.href = 'login.php';
+                } else {
+                    window.location.href = '/cart/checkout.php';
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('Error processing request');
+            }
+        });
+    });
+});
+</script>
 <script src="cart/addToCart.js"></script>
 
   <!-- footer starts -->
@@ -837,9 +880,7 @@ if (!$product) {
 
   <script>
   $(document).ready(function() {
-    $('.add-to-cart-btn').off('click');
-    
-    $('.add-to-cart-btn').on('click', function(e) {
+    $('.buy-now').on('click', function(e) {
         e.preventDefault();
         
         const productId = $("#product_id").val();
@@ -852,6 +893,8 @@ if (!$product) {
             alert('Please select a size');
             return;
         }
+
+        console.log("Hello world")
         
         $.ajax({
             url: '../cart/cart_handler.php',
@@ -865,31 +908,20 @@ if (!$product) {
             },
             success: function(response) {
                 if(response === "Please login first") {
-                    alert("Please login to add items to cart");
-                    window.location.href = 'login.php';
+                    alert("Please login to proceed with purchase");
+                    window.location.href = '/aayush/login.php';
                 } else {
-                    console.log('Server response:', response);
-                    alert('Product added to cart!');
-                    // Update cart count
-                    $.ajax({
-                        url: '../cart/cart_handler.php',
-                        type: 'POST',
-                        data: { action: 'count' },
-                        success: function(count) {
-                            $('#cart-badge').text(count);
-                            $('#cart-badge').css('visibility', count > 0 ? 'visible' : 'hidden');
-                        }
-                    });
+                    window.location.href = '/aayush/cart/checkout.php';
                 }
             },
             error: function(xhr, status, error) {
                 console.error('Error:', error);
-                alert('Error adding product to cart');
+                alert('Error processing request');
             }
         });
     });
-  });
-  </script>
+});
+</script>
 </body>
 
 </html> 

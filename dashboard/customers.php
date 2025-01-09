@@ -18,14 +18,13 @@ getSidebar();
             // View Customer Details
             $id = isset($_GET['id']) ? $_GET['id'] : 0;
             $stmt = $conn->prepare("
-                SELECT u.*, cd.*,
-       COUNT(o.id) as total_orders,
-       SUM(o.total_amount) as total_spent
-FROM users u
-LEFT JOIN customer_details cd ON u.id = cd.user_id
-LEFT JOIN orders o ON u.id = o.user_id
-WHERE u.id = ?
-GROUP BY u.id
+                SELECT c.*,
+                    COUNT(o.id) as total_orders,
+                    COALESCE(SUM(o.total_amount), 0) as total_spent
+                FROM customers c
+                LEFT JOIN orders o ON c.id = o.customer_id
+                WHERE c.id = ?
+                GROUP BY c.id
             ");
             $stmt->bind_param("i", $id);
             $stmt->execute();
@@ -35,7 +34,7 @@ GROUP BY u.id
                 // Get customer's orders
                 $stmt = $conn->prepare("
                     SELECT * FROM orders 
-                    WHERE user_id = ? 
+                    WHERE customer_id = ? 
                     ORDER BY order_date DESC
                 ");
                 $stmt->bind_param("i", $id);
@@ -57,15 +56,27 @@ GROUP BY u.id
                         <table class="info-table">
                             <tr>
                                 <th>Name:</th>
-                                <td><?php echo $customer['name']; ?></td>
+                                <td><?php echo htmlspecialchars($customer['name']); ?></td>
                             </tr>
                             <tr>
                                 <th>Email:</th>
-                                <td><?php echo $customer['email']; ?></td>
+                                <td><?php echo htmlspecialchars($customer['email']); ?></td>
                             </tr>
                             <tr>
                                 <th>Phone:</th>
-                                <td><?php echo $customer['phone']; ?></td>
+                                <td><?php echo htmlspecialchars($customer['phone']); ?></td>
+                            </tr>
+                            <tr>
+                                <th>Address:</th>
+                                <td><?php echo htmlspecialchars($customer['address']); ?></td>
+                            </tr>
+                            <tr>
+                                <th>City:</th>
+                                <td><?php echo htmlspecialchars($customer['city']); ?></td>
+                            </tr>
+                            <tr>
+                                <th>Country:</th>
+                                <td><?php echo htmlspecialchars($customer['country']); ?></td>
                             </tr>
                             <tr>
                                 <th>Total Orders:</th>
@@ -122,16 +133,16 @@ GROUP BY u.id
 
         default:
             // List Customers (Default View)
-            $customers = $conn->query("
-                SELECT u.*, cd.*,
+            $query = "
+                SELECT c.*,
                        COUNT(o.id) as total_orders,
-                       SUM(o.total_amount) as total_spent
-                FROM users u
-                LEFT JOIN customer_details cd ON u.id = cd.user_id
-                LEFT JOIN orders o ON u.id = o.user_id
-                GROUP BY u.id
-                ORDER BY u.created_at DESC
-            ");
+                       COALESCE(SUM(o.total_amount), 0) as total_spent
+                FROM customers c
+                LEFT JOIN orders o ON c.id = o.customer_id
+                GROUP BY c.id
+                ORDER BY c.created_at DESC
+            ";
+            $customers = $conn->query($query);
             ?>
             <div class="dashboard-header">
                 <h1>Customers Management</h1>
@@ -145,6 +156,7 @@ GROUP BY u.id
                             <th>Name</th>
                             <th>Email</th>
                             <th>Phone</th>
+                            <th>City</th>
                             <th>Total Orders</th>
                             <th>Total Spent</th>
                             <th>Joined Date</th>
@@ -155,9 +167,10 @@ GROUP BY u.id
                         <?php while($customer = $customers->fetch_assoc()): ?>
                         <tr>
                             <td>#<?php echo $customer['id']; ?></td>
-                            <td><?php echo $customer['name']; ?></td>
-                            <td><?php echo $customer['email']; ?></td>
-                            <td><?php echo $customer['phone']; ?></td>
+                            <td><?php echo htmlspecialchars($customer['name']); ?></td>
+                            <td><?php echo htmlspecialchars($customer['email']); ?></td>
+                            <td><?php echo htmlspecialchars($customer['phone']); ?></td>
+                            <td><?php echo htmlspecialchars($customer['city']); ?></td>
                             <td><?php echo $customer['total_orders']; ?></td>
                             <td>Rs. <?php echo number_format($customer['total_spent'], 2); ?></td>
                             <td><?php echo date('d M Y', strtotime($customer['created_at'])); ?></td>

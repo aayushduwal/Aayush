@@ -75,17 +75,17 @@ if (isset($_GET['id'])) {
             <ul class="navmenu">
                 <li><a href="/aayush/index.php">Home</a></li>
                 <li>
-                    <a href="shop.php">Shop</a>
+                    <a href="/aayush/shop.php">Shop</a>
                     <ul class="dropdown-menu">
-                        <li><a href="mens_collection.php">Men's Collection</a></li>
-                        <li><a href="womens_collection.php">Women's Collection</a></li>
-                        <li><a href="kids_collection.php">Kid's Collection</a></li>
+                        <li><a href="/aayush/mens_collection.php">Men's Collection</a></li>
+                        <li><a href="/aayush/womens_collection.php">Women's Collection</a></li>
+                        <li><a href="/aayush/kids_collection.php">Kid's Collection</a></li>
                     </ul>
                 </li>
-                <li><a href="About.php">About</a></li>
+                <li><a href="/aayush/about.php">About</a></li>
                 <li><a href="/aayush/contact.php">Contact</a></li>
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <li><a href="user_dashboard.php"><?php echo htmlspecialchars($user['username']); ?>'s Account</a></li>
+                    <li><a href="/aayush/userdashboard/user_dashboard.php"><?php echo htmlspecialchars($user['username']); ?>'s Account</a></li>
                     <li><a href="/aayush/logout.php">Logout</a></li>
                 <?php else: ?>
                     <li><a href="login.php">Login</a></li>
@@ -96,7 +96,7 @@ if (isset($_GET['id'])) {
             <?php if (isset($_SESSION['user_id'])): ?>
                 <p>Welcome, <?php echo htmlspecialchars($user['username']); ?></p>
             <?php endif; ?>
-            <a href="cart.php"><i class='bx bx-shopping-bag'></i></a>
+            <a href="/aayush/cart/cart.php"><i class='bx bx-shopping-bag'></i></a>
             <div id="menu-icon"><i class='bx bx-menu'></i></div>
         </div>
     </header>
@@ -137,7 +137,7 @@ if (isset($_GET['id'])) {
                         <tr>
                             <td><?php echo $item['product_name']; ?></td>
                             <td>
-                                <img src="uploads/products/<?php echo $item['images']; ?>" 
+                                <img src="/aayush/uploads/products/<?php echo $item['images']; ?>" 
                                      alt="<?php echo $item['product_name']; ?>" 
                                      class="product-thumbnail">
                             </td>

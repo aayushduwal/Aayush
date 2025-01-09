@@ -180,71 +180,223 @@ getSidebar();
             }
             break;
 
-        case 'edit':
-            // Edit Product Form
-            $id = isset($_GET['id']) ? $_GET['id'] : 0;
-            $product = $conn->query("SELECT * FROM products WHERE id = $id")->fetch_assoc();
-            if($product) {
-                ?>
-                <div class="dashboard-header">
-                    <h1>Edit Product</h1>
-                    <div class="nav-icon">
-                        <a href="?action=list" class="btn btn-primary">
-                            <i class="fas fa-arrow-left"></i> Back to List
-                        </a>
-                    </div>
-                </div>
+       case 'edit':
+    // Edit Product Form
+    $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+    $stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $product = $stmt->get_result()->fetch_assoc();
+    
+    if($product) {
+        ?>
+        <div class="dashboard-header">
+            <h1>Edit Product</h1>
+            <div class="nav-icon">
+                <a href="?action=list" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i> Back to List
+                </a>
+            </div>
+        </div>
 
-                <div class="form-container">
-                    <form action="?action=update" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
-                        <div class="form-group">
-                            <label>Product Name</label>
-                            <input type="text" name="name" value="<?php echo $product['name']; ?>" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Price</label>
-                            <input type="number" name="price" step="0.01" value="<?php echo $product['price']; ?>" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Category</label>
-                            <select name="category" id="category" required onchange="updateSubcategories()">
-                                <option value="">Select Category</option>
-                                <option value="Men" <?php echo $product['category'] == 'Men' ? 'selected' : ''; ?>>Men</option>
-                                <option value="Women" <?php echo $product['category'] == 'Women' ? 'selected' : ''; ?>>Women</option>
-                                <option value="Kids" <?php echo $product['category'] == 'Kids' ? 'selected' : ''; ?>>Kids</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Subcategory</label>
-                            <select name="subcategory" id="subcategory" required>
-                                <option value="">Select Category First</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Description</label>
-                            <textarea name="description" rows="4"><?php echo $product['description']; ?></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Current Image</label>
-                            <?php if($product['images']): ?>
-                                <img src="../uploads/products/<?php echo $product['images']; ?>" class="product-thumbnail">
-                            <?php endif; ?>
-                            <input type="file" name="image" accept="image/*">
-                            <small>Leave empty to keep current image</small>
-                        </div>
-                        <div class="form-group">
-                            <label>Inventory</label>
-                            <input type="number" name="inventory" value="<?php echo $product['inventory']; ?>" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Update Product</button>
-                    </form>
+        <div class="form-container">
+            <form action="?action=update" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
+                
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" name="name" value="<?php echo htmlspecialchars($product['name']); ?>" required>
                 </div>
-                <?php
+                
+                <div class="form-group">
+                    <label>Slug</label>
+                    <input type="text" name="slug" value="<?php echo htmlspecialchars($product['slug']); ?>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Price</label>
+                    <input type="number" name="price" step="0.01" value="<?php echo $product['price']; ?>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Category</label>
+                    <select name="category" id="category" required onchange="updateSubcategories()">
+                        <option value="">Select Category</option>
+                        <option value="Men" <?php echo $product['category'] == 'Men' ? 'selected' : ''; ?>>Men</option>
+                        <option value="Women" <?php echo $product['category'] == 'Women' ? 'selected' : ''; ?>>Women</option>
+                        <option value="Kids" <?php echo $product['category'] == 'Kids' ? 'selected' : ''; ?>>Kids</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Subcategory</label>
+                    <select name="subcategory" id="subcategory" required>
+                        <option value="">Select Category First</option>
+                        <?php if($product['subcategory']): ?>
+                            <option value="<?php echo htmlspecialchars($product['subcategory']); ?>" selected>
+                                <?php echo htmlspecialchars($product['subcategory']); ?>
+                            </option>
+                        <?php endif; ?>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" rows="4" required><?php echo htmlspecialchars($product['description']); ?></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Sizes Available</label>
+                    <input type="text" name="sizes" value="<?php echo htmlspecialchars($product['sizes']); ?>" required placeholder="Example: S,M,L or 40,41,42">
+                </div>
+                
+                <div class="form-group">
+                    <label>Current Main Image</label>
+                    <?php if($product['images']): ?>
+                        <img src="../uploads/products/<?php echo htmlspecialchars($product['images']); ?>" class="product-thumbnail">
+                    <?php endif; ?>
+                    <input type="file" name="images" accept="image/*">
+                    <small>Leave empty to keep current image</small>
+                </div>
+                
+                <div class="form-group">
+                    <label>Additional Images</label>
+                    <?php 
+                    $additional_images = !empty($product['additional_images']) ? json_decode($product['additional_images'], true) : [];
+                    if($additional_images): 
+                        foreach($additional_images as $img):
+                    ?>
+                        <div class="additional-image">
+                            <img src="../uploads/products/<?php echo htmlspecialchars($img); ?>" class="product-thumbnail">
+                        </div>
+                    <?php 
+                        endforeach;
+                    endif; 
+                    ?>
+                    <input type="file" name="additional_images[]" multiple accept="image/*">
+                    <small>Hold Ctrl to select multiple images. Leave empty to keep current images.</small>
+                </div>
+                
+                <div class="form-group">
+                    <label>Inventory</label>
+                    <input type="number" name="inventory" value="<?php echo $product['inventory']; ?>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Rating</label>
+                    <input type="number" name="rating" step="0.01" min="0" max="5" value="<?php echo $product['rating']; ?>" readonly>
+                    <small>Rating is automatically calculated based on user reviews</small>
+                </div>
+                
+                <div class="form-group">
+                    <label>Rating Count</label>
+                    <input type="number" name="ratingcount" value="<?php echo $product['ratingcount']; ?>" readonly>
+                    <small>Number of ratings received</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="show_on_home">Show on Home Page</label>
+                    <input type="checkbox" name="show_on_home" id="show_on_home" value="1" <?php echo $product['show_on_home'] ? 'checked' : ''; ?>>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Update Product</button>
+            </form>
+        </div>
+        
+        <script>
+            // Initialize subcategories when page loads
+            document.addEventListener('DOMContentLoaded', function() {
+                updateSubcategories();
+                
+                // Set the initial subcategory value
+                const subcategorySelect = document.getElementById('subcategory');
+                const currentSubcategory = '<?php echo $product['subcategory']; ?>';
+                if (currentSubcategory) {
+                    const option = document.createElement('option');
+                    option.value = currentSubcategory;
+                    option.textContent = currentSubcategory;
+                    option.selected = true;
+                    subcategorySelect.appendChild(option);
+                }
+            });
+        </script>
+        <?php
+    }
+    break;
+
+case 'update':
+    if($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $id = $_POST['id'];
+        $name = mysqli_real_escape_string($conn, $_POST['name']);
+        $slug = mysqli_real_escape_string($conn, $_POST['slug']);
+        $price = floatval($_POST['price']);
+        $category = mysqli_real_escape_string($conn, $_POST['category']);
+        $subcategory = mysqli_real_escape_string($conn, $_POST['subcategory']);
+        $description = mysqli_real_escape_string($conn, $_POST['description']);
+        $inventory = intval($_POST['inventory']);
+        $sizes = mysqli_real_escape_string($conn, $_POST['sizes']);
+        $show_on_home = isset($_POST['show_on_home']) ? 1 : 0;
+
+        // Prepare base query
+        $query = "UPDATE products SET 
+                 name=?, slug=?, price=?, category=?, subcategory=?, 
+                 description=?, sizes=?, inventory=?, show_on_home=?";
+        $params = [$name, $slug, $price, $category, $subcategory, 
+                   $description, $sizes, $inventory, $show_on_home];
+        $types = "ssdssssis"; // Base parameter types
+
+        // Handle main image update if provided
+        if(isset($_FILES['images']) && $_FILES['images']['size'] > 0) {
+            $main_image = time() . '_' . $_FILES['images']['name'];
+            move_uploaded_file($_FILES['images']['tmp_name'], "../uploads/products/" . $main_image);
+            $query .= ", images=?";
+            $params[] = $main_image;
+            $types .= "s";
+            
+            // Delete old image
+            $stmt = $conn->prepare("SELECT images FROM products WHERE id = ?");
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $old_image = $stmt->get_result()->fetch_assoc()['images'];
+            if($old_image && file_exists("../uploads/products/" . $old_image)) {
+                unlink("../uploads/products/" . $old_image);
             }
-            break;
+        }
 
-        case 'list':
+        // Handle additional images if provided
+        if(isset($_FILES['additional_images']) && !empty($_FILES['additional_images']['name'][0])) {
+            $additional_images = [];
+            foreach($_FILES['additional_images']['tmp_name'] as $key => $tmp_name) {
+                if($_FILES['additional_images']['error'][$key] == 0) {
+                    $filename = time() . '_' . $_FILES['additional_images']['name'][$key];
+                    move_uploaded_file($tmp_name, "../uploads/products/" . $filename);
+                    $additional_images[] = $filename;
+                }
+            }
+            if(!empty($additional_images)) {
+                $additional_images_json = json_encode($additional_images);
+                $query .= ", additional_images=?";
+                $params[] = $additional_images_json;
+                $types .= "s";
+            }
+        }
+
+        $query .= " WHERE id=?";
+        $params[] = $id;
+        $types .= "i";
+
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param($types, ...$params);
+        
+        if($stmt->execute()) {
+            header("Location: ?action=list&msg=Product updated successfully");
+        } else {
+            header("Location: ?action=edit&id=$id&error=Failed to update product");
+        }
+        exit();
+    }
+    break;
+            case 'list':
         default:
             // View All Products (Default View)
             ?>
