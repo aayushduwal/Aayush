@@ -26,12 +26,13 @@ if ($stmt->affected_rows > 0) {
     $stmt = $conn->prepare("DELETE FROM cart WHERE user_id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    
-    $_SESSION['success'] = "Payment successful! Your order has been confirmed.";
+
+    // Redirect to a new payment success page with order details
+    header("Location: ../payment/payment_success_page.php?oid=$order_id");
+    exit();
 } else {
     $_SESSION['error'] = "Could not confirm order. Please contact support.";
+    header('Location: ../userdashboard/order_history.php');
+    exit();
 }
-
-header('Location: ../userdashboard/order_history.php');
-exit();
 ?>

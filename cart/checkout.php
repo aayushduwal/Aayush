@@ -26,9 +26,9 @@ while ($item = $result->fetch_assoc()) {
 
 // Delivery zones and charges
 $delivery_zones = [
-    'inside_ring' => ['name' => 'Inside Ring Road', 'charge' => 85],
-    'outside_ring' => ['name' => 'Outside Ring Road', 'charge' => 150],
-    'outside_valley' => ['name' => 'Outside Valley', 'charge' => 250]
+    'inside_ring' => ['name' => 'Inside Ring Road', 'charge' => 10],
+    'outside_ring' => ['name' => 'Outside Ring Road', 'charge' => 15],
+    'outside_valley' => ['name' => 'Outside Valley', 'charge' => 25]
 ];
 ?>
 <!DOCTYPE html>
