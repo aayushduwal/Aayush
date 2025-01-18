@@ -151,31 +151,37 @@ switch ($payment_method) {
         break;
 
     case 'esewa':
-        // eSewa integration
-        $esewa_url = getEsewaUrl();
-        $success_url = "http://" . $_SERVER['HTTP_HOST'] . "/aayush/payment/verify_payment.php?payment_method=esewa&oid=" . $order_id;
-        $failure_url = "http://" . $_SERVER['HTTP_HOST'] . "/aayush/payment/payment_failure.php?oid=" . $order_id;
-        
-        // Format amount to 2 decimal places
-        $amount = number_format($total_amount, 2, '.', '');
-        ?>
-        <form action="<?php echo $esewa_url; ?>" method="POST" id="esewaForm">
-            <input value="<?php echo $amount; ?>" name="tAmt" type="hidden">
-            <input value="<?php echo $amount; ?>" name="amt" type="hidden">
-            <input value="0" name="txAmt" type="hidden">
-            <input value="0" name="psc" type="hidden">
-            <input value="0" name="pdc" type="hidden">
-            <input value="<?php echo ESEWA_MERCHANT_ID; ?>" name="scd" type="hidden">
-            <input value="<?php echo $order_id; ?>" name="pid" type="hidden">
-            <input value="<?php echo $success_url; ?>" type="hidden" name="su">
-            <input value="<?php echo $failure_url; ?>" type="hidden" name="fu">
-        </form>
-        <script>
-            console.log('Submitting to eSewa...');
-            document.getElementById('esewaForm').submit();
-        </script>
-        <?php
-        break;
+    // eSewa integration
+    $esewa_url = getEsewaUrl();
+    $success_url = "http://" . $_SERVER['HTTP_HOST'] . "/aayush/payment/verify_payment.php?payment_method=esewa&oid=" . $order_id;
+    $failure_url = "http://" . $_SERVER['HTTP_HOST'] . "/aayush/payment/payment_failure.php?oid=" . $order_id;
+    
+    // Format amount to 2 decimal places
+    $amount = number_format($total_amount, 2, '.', '');
+
+    // Generate unique PID by combining order_id with timestamp
+    $unique_pid = 'ESEWA_' . $order_id . '_' . time();
+
+    // Add error logging
+    error_log("eSewa Payment Initiated - Order ID: " . $order_id . ", PID: " . $unique_pid . ", Amount: " . $amount);
+    ?>
+    <form action="<?php echo $esewa_url; ?>" method="POST" id="esewaForm">
+        <input value="<?php echo $amount; ?>" name="tAmt" type="hidden">
+        <input value="<?php echo $amount; ?>" name="amt" type="hidden">
+        <input value="0" name="txAmt" type="hidden">
+        <input value="0" name="psc" type="hidden">
+        <input value="0" name="pdc" type="hidden">
+        <input value="<?php echo ESEWA_MERCHANT_ID; ?>" name="scd" type="hidden">
+        <input value="<?php echo $unique_pid; ?>" name="pid" type="hidden">
+        <input value="<?php echo $success_url; ?>" type="hidden" name="su">
+        <input value="<?php echo $failure_url; ?>" type="hidden" name="fu">
+    </form>
+    <script>
+        console.log('Submitting to eSewa...');
+        document.getElementById('esewaForm').submit();
+    </script>
+    <?php
+    break;
 
     case 'khalti':
         // Khalti integration
