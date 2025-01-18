@@ -61,10 +61,7 @@ $shirts = $stmt->get_result();
                             <img src="../../uploads/products/<?php echo htmlspecialchars($product['images']); ?>" 
                                  alt="<?php echo htmlspecialchars($product['name']); ?>" />
                             <h3><?php echo htmlspecialchars($product['name']); ?></h3>
-                            <div class="rating-wrapper">
-                                <i class="fa-regular fa-star"></i>
-                                4.5
-                            </div>
+                            
                             <p>रु. <?php echo number_format($product['price'], 2); ?></p>
                         </a>
                     </div>

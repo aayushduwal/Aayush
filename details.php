@@ -706,7 +706,7 @@ if (!$product) {
             <button onclick="increment()">+</button>
           </div>
           <div class="btn-container">
-    <a href="#" class="btn buy-now">Buy Now</a>
+    <button class="btn buy-now">Buy Now </button>
     <button class="btn add-to-cart-btn" style="background-color: #FF523B;">Add To Cart</button>
     <input type="hidden" id="product_id" value="<?php echo $product_id; ?>">
 </div>

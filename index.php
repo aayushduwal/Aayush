@@ -146,10 +146,7 @@ $kidsProducts = $stmt_kids->get_result();
                      <a href="details.php?id=<?php echo $product['id']; ?>">
                          <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" />
                          <h2><?php echo htmlspecialchars($product['name']); ?></h2>
-                         <div class="rating-wrapper">
-                             <i class="fa-regular fa-star"></i>
-                             4.5
-                         </div>
+                         
                          <p>रु. <?php echo number_format($product['price'], 2); ?></p>
                      </a>
                  </div>
@@ -176,10 +173,7 @@ $kidsProducts = $stmt_kids->get_result();
                          <a href="details.php?id=<?php echo $product['id']; ?>">
                              <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" />
                              <h2><?php echo htmlspecialchars($product['name']); ?></h2>
-                             <div class="rating-wrapper">
-                                 <i class="fa-regular fa-star"></i>
-                                 4.5
-                             </div>
+                             
                              <p>रु. <?php echo number_format($product['price'], 2); ?></p>
                          </a>
                      </div>
@@ -206,10 +200,7 @@ $kidsProducts = $stmt_kids->get_result();
                         <a href="details.php?id=<?php echo $product['id']; ?>">
                             <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" />
                             <h2><?php echo htmlspecialchars($product['name']); ?></h2>
-                            <div class="rating-wrapper">
-                                <i class="fa-regular fa-star"></i>
-                                4.5
-                            </div>
+                            
                             <p>रु. <?php echo number_format($product['price'], 2); ?></p>
                         </a>
                     </div>

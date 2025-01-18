@@ -157,9 +157,10 @@ $delivery_zones = [
                 </div>
                 
                 <div class="form-group">
-                    <label>Phone</label>
-                    <input type="tel" name="phone" class="form-control" required>
-                </div>
+    <label>Phone</label>
+    <input type="tel" name="phone" class="form-control" required pattern="^(98|97)[0-9]{8}$" title="Please enter a valid Nepalese phone number starting with 98 or 97">
+</div>
+
 
                 <div class="form-group">
                     <label>City</label>
@@ -167,9 +168,9 @@ $delivery_zones = [
                 </div>
 
                 <div class="form-group">
-                    <label>Postal Code</label>
-                    <input type="text" name="postal_code" class="form-control" required maxlength="10">
-                </div>
+    <label>Postal Code</label>
+    <input type="text" name="postal_code" class="form-control" required pattern="[0-9]{5,10}" maxlength="10" title="Please enter a valid postal code (5-10 digits)">
+</div>
 
                 <div class="form-group">
                     <label>Delivery Zone</label>
@@ -210,7 +211,7 @@ $delivery_zones = [
                         <input type="radio" name="payment_method" value="esewa" required>
                     </div>
 
-                    <!-- <div class="payment-method" onclick="selectPayment('khalti')">
+                   <!-- <div class="payment-method" onclick="selectPayment('khalti')">
                         <img src="../images/khalti.png" alt="Khalti">
                         <div class="payment-method-details">
                             <h4>Khalti</h4>
@@ -306,6 +307,20 @@ $delivery_zones = [
         });
     });
     </script>
+
+    <script>
+    document.getElementById('checkoutForm').addEventListener('submit', function (e) {
+        const phoneField = document.querySelector('input[name="phone"]');
+        const nepalPhoneRegex = /^(98|97)[0-9]{8}$/;
+
+        if (!nepalPhoneRegex.test(phoneField.value)) {
+            e.preventDefault();
+            alert('Please enter a valid Nepalese phone number starting with 98 or 97.');
+            phoneField.focus();
+            return false;
+        }
+    });
+</script>
 
     <?php include('../includes/footer.php'); ?>
 </body>
