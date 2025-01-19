@@ -17,15 +17,14 @@ CREATE TABLE users (
 CREATE TABLE customers (
     id INT(11) NOT NULL AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
     phone VARCHAR(15),
     address TEXT,
     city VARCHAR(50),
     country VARCHAR(50),
     postal_code VARCHAR(10),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    PRIMARY KEY (id),
-    UNIQUE KEY (email)
+    PRIMARY KEY (id)
 );
 
 -- 3. Products table
@@ -67,7 +66,7 @@ SET subcategory = 'Sweatshirts'
 WHERE category = 'Men' AND name LIKE '%sweatshirt%';
 
 -- yo herna sql:
-SELECT name, category, subcategory FROM products WHERE category = 'Men';
+-- SELECT name, category, subcategory FROM products WHERE category = 'Men';
 
 
 -- 4. Orders table (after users and customers tables)
@@ -79,10 +78,15 @@ CREATE TABLE orders (
     shipping_address TEXT,
     order_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     customer_id INT(11),
+    payment_method VARCHAR(50) NOT NULL,
+    payment_ref VARCHAR(255) DEFAULT NULL,
+    delivery_zone VARCHAR(50) NOT NULL,
+    delivery_date DATE DEFAULT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
     FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE SET NULL
 );
+
 
 -- 5. Order Items table (after orders and products tables)
 CREATE TABLE order_items (
@@ -127,10 +131,12 @@ CREATE TABLE cart (
     id INT(11) NOT NULL AUTO_INCREMENT,
     user_id INT(11) DEFAULT NULL,
     product_id INT(11) DEFAULT NULL,
-    product_name VARCHAR(255) DEFAULT NULL,
+    product_name VARCHAR(255) NOT NULL,
     price DECIMAL(10,2) DEFAULT NULL,
     quantity INT(11) DEFAULT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
 
 

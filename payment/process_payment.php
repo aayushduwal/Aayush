@@ -95,6 +95,8 @@ $shipping_address .= "City: $city\n";
 $shipping_address .= "Postal Code: $postal_code\n";
 $shipping_address .= "Delivery Zone: $delivery_zone";
 
+$delivery_date = date('Y-m-d', strtotime('+7 days'));
+
 // Create order
 $stmt = $conn->prepare("INSERT INTO orders (user_id, customer_id, total_amount, status, shipping_address, payment_method, delivery_zone) 
                        VALUES (?, ?, ?, 'pending', ?, ?, ?)");
