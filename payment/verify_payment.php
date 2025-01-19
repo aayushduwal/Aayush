@@ -63,7 +63,7 @@ if (strpos($response, 'Success') !== false) {
     $stmt->execute();
     
     $_SESSION['success'] = "Payment successful! Your order has been confirmed.";
-    header('Location: ../userdashboard/order_history.php');
+    header("Location: ../payment/payment_success_page.php?oid=" . $order_id);
 } else {
     // Update order status to failed
     $stmt = $conn->prepare("UPDATE orders SET status = 'failed', payment_ref = ? WHERE id = ? AND user_id = ?");
