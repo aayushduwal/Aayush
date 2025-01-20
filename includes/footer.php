@@ -3,6 +3,7 @@
     <section class="contact">
         <div class="contact-info">
             <div class="first-info info">
+                <a href="index.php">
                 <img
                     src="/aayush/images/logo.png"
                     width="80"
@@ -10,6 +11,7 @@
                     height="80"
                     alt="Elegance Logo"
                 />
+                </a>
                 <ul>
                     <li><p>Kathmandu, Nepal</p></li>
                     <li><p>0160-5462-8214</p></li>
@@ -31,8 +33,8 @@
                 <h4>Shop</h4>
                 <ul>
                     <li><a href="/aayush/mens_collections_products/index.php"><p>Men's Shopping</p></a></li>
-                    <li><a href="/aayush/womens_collection.php"><p>Women's Shopping</p></a></li>
-                    <li><a href="/aayush/kids_collection.php"><p>Kid's Shopping</p></a></li>
+                    <li><a href="/aayush/womens_collections_products/index.php."><p>Women's Shopping</p></a></li>
+                    <li><a href="/aayush/kids_collections_products/index.php"><p>Kid's Shopping</p></a></li>
                     <li><a href="/aayush/discount.php"><p>Discount</p></a></li>
                 </ul>
             </div>

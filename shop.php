@@ -81,7 +81,7 @@ if (isset($_SESSION['user_id'])) {
     <?php if (isset($_SESSION['is_admin'])): ?>
         <li><a href="dashboard/admin_dashboard.php" class="dashboard-btn">Dashboard</a></li>
     <?php elseif (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'user'): ?>
-        <li><a href="user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s Account</a></li>
+        <li><a href="userdashboard/user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s Account</a></li>
     <?php endif; ?>
     <li><a href="logout.php">Logout</a></li>
 <?php else: ?>
@@ -224,6 +224,7 @@ if (isset($_SESSION['user_id'])) {
       <section class="contact">
         <div class="contact-info">
           <div class="first-info info">
+            <a href="index.php">
             <img
               src="images/logo.png"
               width="80"
@@ -231,6 +232,7 @@ if (isset($_SESSION['user_id'])) {
               height="80"
               alt="Elegance Logo"
             />
+            </a>
             <ul>
               <li>
                 <p>Kathmandu, Nepal</p>

@@ -690,7 +690,7 @@ if (!$product) {
         <div class="col-2">
           <p>Home / <?php echo htmlspecialchars($product['category']); ?></p>
           <h1><?php echo htmlspecialchars($product['name']); ?></h1>
-          <h4>रु. <?php echo number_format($product['price'], 2); ?></h4>
+          <h4>Rs. <?php echo number_format($product['price'], 2); ?></h4>
           <select>
             <option>Select Size</option>
             <?php 
@@ -742,7 +742,7 @@ if (!$product) {
         
         const productId = $("#product_id").val();
         const productName = $("h1").text();
-        const price = $("h4").text().replace("रु.", "").replace(/,/g, "").trim();
+        const price = $("h4").text().replace("Rs.", "").replace(/,/g, "").trim();
         const quantity = parseInt($("#quantity").val());
         const size = $("select").val();
         
@@ -889,7 +889,7 @@ if (!$product) {
         
         const productId = $("#product_id").val();
         const productName = $("h1").text();
-        const price = $("h4").text().replace("रु.", "").replace(/,/g, "").trim();
+        const price = $("h4").text().replace("Rs.", "").replace(/,/g, "").trim();
         const quantity = parseInt($("#quantity").val());
         const size = $("select").val();
         

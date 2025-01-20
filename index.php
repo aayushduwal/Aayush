@@ -147,7 +147,7 @@ $kidsProducts = $stmt_kids->get_result();
                          <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" />
                          <h2><?php echo htmlspecialchars($product['name']); ?></h2>
                          
-                         <p>रु. <?php echo number_format($product['price'], 2); ?></p>
+                         <p>Rs. <?php echo number_format($product['price'], 2); ?></p>
                      </a>
                  </div>
                  <?php
@@ -174,7 +174,7 @@ $kidsProducts = $stmt_kids->get_result();
                              <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" />
                              <h2><?php echo htmlspecialchars($product['name']); ?></h2>
                              
-                             <p>रु. <?php echo number_format($product['price'], 2); ?></p>
+                             <p>Rs. <?php echo number_format($product['price'], 2); ?></p>
                          </a>
                      </div>
                      <?php
@@ -201,7 +201,7 @@ $kidsProducts = $stmt_kids->get_result();
                             <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" />
                             <h2><?php echo htmlspecialchars($product['name']); ?></h2>
                             
-                            <p>रु. <?php echo number_format($product['price'], 2); ?></p>
+                            <p>Rs. <?php echo number_format($product['price'], 2); ?></p>
                         </a>
                     </div>
                     <?php
@@ -239,7 +239,7 @@ $kidsProducts = $stmt_kids->get_result();
            <h4>Support</h4>
            <ul>
              <li>
-               <a href="#">
+               <a href="/aayush/contact.php">
                  <p>Contact us</p>
                </a>
              </li>
@@ -265,17 +265,17 @@ $kidsProducts = $stmt_kids->get_result();
            <h4>Shop</h4>
            <ul>
              <li>
-               <a href="#">
+               <a href="/aayush/mens_collections_products/index.php">
                  <p>Men's Shopping</p>
                </a>
              </li>
              <li>
-               <a href="#">
+               <a href="/aayush/womens_collections_products/index.php">
                  <p>Women's Shopping</p>
                </a>
              </li>
              <li>
-               <a href="#">
+               <a href="/aayush/kids_collections_products/index.php">
                  <p>Kid's Shopping</p>
                </a>
              </li>

@@ -110,7 +110,7 @@ foreach ($subcategory_order as $subcategory) {
                                          alt="<?php echo htmlspecialchars($product['name']); ?>" />
                                     <h3><?php echo htmlspecialchars($product['name']); ?></h3>
                                     
-                                    <p>रु. <?php echo number_format($product['price'], 2); ?></p>
+                                    <p>Rs. <?php echo number_format($product['price'], 2); ?></p>
                                 </a>
                             </div>
                         <?php endforeach; ?>

@@ -609,9 +609,9 @@ if (!$product) {
         <li>
           <a href="../shop.php">Shop</a>
           <ul class="dropdown-menu">
-            <li><a href="mens_collection.php">Men's Collection</a></li>
-            <li><a href="womens_collection.php">Women's Collection</a></li>
-            <li><a href="kids_collection.php">Kid's Collection</a></li>
+            <li><a href="/aayush/mens_collections_products/index.php">Men's Collection</a></li>
+            <li><a href="/aayush/womens_collections_products/index.php">Women's Collection</a></li>
+            <li><a href="/aayush/kids_collections_products/index.php">Kid's Collection</a></li>
           </ul>
         </li>
         <li><a href="../About.php">About</a></li>
@@ -621,7 +621,7 @@ if (!$product) {
           <?php if (isset($_SESSION['is_admin'])): ?>
             <li><a href="dashboard/admin_dashboard.php" class="dashboard-btn">Dashboard</a></li>
           <?php else: ?>
-            <li><a href="userdashboard/user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s Account</a></li>
+            <li><a href="/aayush/userdashboard/user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s Account</a></li>
           <?php endif; ?>
           <li><a href="logout.php">Logout</a></li>
         <?php else: ?>
@@ -690,7 +690,7 @@ if (!$product) {
         <div class="col-2">
           <p>Home / <?php echo htmlspecialchars($product['category']); ?></p>
           <h1><?php echo htmlspecialchars($product['name']); ?></h1>
-          <h4>रु. <?php echo number_format($product['price'], 2); ?></h4>
+          <h4>Rs. <?php echo number_format($product['price'], 2); ?></h4>
           <select>
             <option>Select Size</option>
             <?php 
@@ -757,7 +757,7 @@ if (!$product) {
         
         const productId = $("#product_id").val();
         const productName = $("h1").text();
-        const price = $("h4").text().replace("रु.", "").replace(/,/g, "").trim();
+        const price = $("h4").text().replace("Rs.", "").replace(/,/g, "").trim();
         const quantity = parseInt($("#quantity").val());
         const size = $("select").val();
         
@@ -801,7 +801,9 @@ if (!$product) {
     <section class="contact">
       <div class="contact-info">
         <div class="first-info info">
-          <img src="images/logo.png" width="80" class="footer-image" height="80" alt="Elegance Logo" />
+          <a href="index.php">
+          <img src="/aayush/images/logo.png" width="80" class="footer-image" height="80" alt="Elegance Logo" />
+          </a>
           <ul>
             <li>
               <p>Kathmandu, Nepal</p>
@@ -885,7 +887,7 @@ if (!$product) {
         
         const productId = $("#product_id").val();
         const productName = $("h1").text();
-        const price = $("h4").text().replace("रु.", "").replace(/,/g, "").trim();
+        const price = $("h4").text().replace("Rs.", "").replace(/,/g, "").trim();
         const quantity = parseInt($("#quantity").val());
         const size = $("select").val();
         
