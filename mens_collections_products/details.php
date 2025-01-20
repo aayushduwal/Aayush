@@ -621,7 +621,7 @@ if (!$product) {
           <?php if (isset($_SESSION['is_admin'])): ?>
             <li><a href="dashboard/admin_dashboard.php" class="dashboard-btn">Dashboard</a></li>
           <?php else: ?>
-            <li><a href="/aayush/userdashboard/user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s Account</a></li>
+            <li><a href="userdashboard/user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s Account</a></li>
           <?php endif; ?>
           <li><a href="logout.php">Logout</a></li>
         <?php else: ?>
