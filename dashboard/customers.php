@@ -117,7 +117,7 @@ getSidebar();
                                         </span>
                                     </td>
                                     <td>
-                                        <a href="orders.php?action=view&id=<?php echo $order['id']; ?>" class="btn-view">
+                                        <a href="ordeRs.php?action=view&id=<?php echo $order['id']; ?>" class="btn-view">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     </td>

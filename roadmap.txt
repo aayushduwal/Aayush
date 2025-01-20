@@ -9,10 +9,10 @@
 Aayush/
 ├── dashboard/
  └── admin_dashboard.php
- └── customers.php
+ └── customeRs.php
  └── login.php (for admin only)
  └── logout.php (for admin only)
- └── orders.php
+ └── ordeRs.php
  └── products.php
  └── signup.php (for admin only)
 ├── css/

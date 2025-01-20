@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['name'] = "Only letters and whitespaces allowed.";
         $validation = false;
     } elseif (strlen($username) > 50) {
-        $errors['name'] = "Username cannot exceed 50 characters.";
+        $errors['name'] = "Username cannot exceed 50 characteRs.";
         $validation = false;
     }
 
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['email'] = "Invalid email format.";
         $validation = false;
     } elseif (strlen($email) > 255) {
-        $errors['email'] = "Email cannot exceed 255 characters.";
+        $errors['email'] = "Email cannot exceed 255 characteRs.";
         $validation = false;
     }
 

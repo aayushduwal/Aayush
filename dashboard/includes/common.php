@@ -53,13 +53,13 @@ function getSidebar() {
                 </div>
             </li>
             <li>
-                <a href="orders.php">
+                <a href="ordeRs.php">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Orders</span>
                 </a>
             </li>
             <li>
-                <a href="customers.php">
+                <a href="customeRs.php">
                     <i class="fas fa-users"></i>
                     <span>Customers</span>
                 </a>

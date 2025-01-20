@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['name'] = "Only letters, numbers, underscore and dash allowed.";
         $validation = false;
     } elseif (strlen($username) > 50) {
-        $errors['name'] = "Username cannot exceed 50 characters.";
+        $errors['name'] = "Username cannot exceed 50 characteRs.";
         $validation = false;
     }
 
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['email'] = "Invalid email format.";
         $validation = false;
     } elseif (strlen($email) > 255) {
-        $errors['email'] = "Email cannot exceed 255 characters.";
+        $errors['email'] = "Email cannot exceed 255 characteRs.";
         $validation = false;
     }
 
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['password'] = "Password is required.";
         $validation = false;
     } elseif (strlen($password) < 8) {
-        $errors['password'] = "Password must be at least 8 characters.";
+        $errors['password'] = "Password must be at least 8 characteRs.";
         $validation = false;
     } elseif (!preg_match('/[a-zA-Z]/', $password)) {
         $errors['password'] = "Password must include at least one letter.";

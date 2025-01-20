@@ -174,7 +174,7 @@ getSidebar();
             <div class="filter-section">
                 <form method="GET" class="filter-form">
                     <div class="form-group">
-                        <input type="text" name="search" placeholder="Search orders..." value="<?php echo $search; ?>">
+                        <input type="text" name="search" placeholder="Search ordeRs..." value="<?php echo $search; ?>">
                     </div>
                     <div class="form-group">
                         <select name="status">
@@ -190,7 +190,7 @@ getSidebar();
                         <input type="date" name="date_to" value="<?php echo $date_to; ?>">
                     </div>
                     <button type="submit" class="btn btn-primary">Filter</button>
-                    <a href="orders.php" class="btn btn-secondary">Reset</a>
+                    <a href="ordeRs.php" class="btn btn-secondary">Reset</a>
                 </form>
             </div>
 

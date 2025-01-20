@@ -296,7 +296,7 @@ getSidebar();
                 
                 <div class="form-group">
                     <label for="show_on_home">Show on Home Page</label>
-                    <input type="checkbox" name="show_on_home" id="show_on_home" value="1" <?php echo $product['show_on_home'] ? 'checked' : ''; ?>>
+                    <input type="checkbox" name="show_on_home" value="1" <?php echo $product['show_on_home'] == 1 ? 'checked' : ''; ?>>
                 </div>
                 
                 <button type="submit" class="btn btn-primary">Update Product</button>
