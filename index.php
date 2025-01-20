@@ -189,7 +189,7 @@ $kidsProducts = $stmt_kids->get_result();
    <!-- Child's collection -->
    <section class="collection">
     <div class="container">
-        <h1 class="">Child's Collection</h1>
+        <h1 class="">Kid's Collection</h1>
 
         <div class="collection-wrapper">
             <?php 

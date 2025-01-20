@@ -803,7 +803,9 @@ if (!$product) {
     <section class="contact">
       <div class="contact-info">
         <div class="first-info info">
+          <a href="index.php">
           <img src="images/logo.png" width="80" class="footer-image" height="80" alt="Elegance Logo" />
+          </a>
           <ul>
             <li>
               <p>Kathmandu, Nepal</p>
