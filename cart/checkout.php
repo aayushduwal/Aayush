@@ -180,7 +180,7 @@ $delivery_zones = [
                             <input type="radio" name="delivery_zone" value="<?php echo $key; ?>" required>
                             <?php echo $zone['name']; ?>
                         </label>
-                        <span>Rs. <?php echo number_format($zone['charge'], 0); ?></span>
+                        <span>NPR. <?php echo number_format($zone['charge'], 0); ?></span>
                     </div>
                     <?php endforeach; ?>
                 </div>
@@ -234,7 +234,7 @@ $delivery_zones = [
                     <div>
                         <h4><?php echo $item['name']; ?></h4>
                         <p>Quantity: <?php echo $item['quantity']; ?></p>
-                        <p>Rs. <?php echo number_format($item['price'], 0); ?></p>
+                        <p>NPR. <?php echo number_format($item['price'], 0); ?></p>
                     </div>
                 </div>
                 <?php endforeach; ?>
@@ -243,16 +243,16 @@ $delivery_zones = [
             <div class="price-details">
                 <div class="d-flex justify-content-between mb-2">
                     <span>Items Total (<?php echo count($items); ?> Items)</span>
-                    <span>Rs. <?php echo number_format($subtotal, 0); ?></span>
+                    <span>NPR. <?php echo number_format($subtotal, 0); ?></span>
                 </div>
                 <div class="d-flex justify-content-between mb-2">
                     <span>Delivery Fee</span>
-                    <span id="delivery-fee">Rs. 0</span>
+                    <span id="delivery-fee">NPR. 0</span>
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between mb-2">
                     <strong>Total:</strong>
-                    <strong id="total-amount">Rs. <?php echo number_format($subtotal, 0); ?></strong>
+                    <strong id="total-amount">NPR. <?php echo number_format($subtotal, 0); ?></strong>
                 </div>
             </div>
 
@@ -298,12 +298,12 @@ $delivery_zones = [
         option.addEventListener('click', function() {
             // Update delivery fee
             const charge = this.dataset.charge;
-            document.getElementById('delivery-fee').textContent = 'Rs. ' + charge;
+            document.getElementById('delivery-fee').textContent = 'NPR. ' + charge;
             
             // Update total
             const subtotal = <?php echo $subtotal; ?>;
             const total = subtotal + parseInt(charge);
-            document.getElementById('total-amount').textContent = 'Rs. ' + total.toLocaleString();
+            document.getElementById('total-amount').textContent = 'NPR. ' + total.toLocaleString();
         });
     });
     </script>

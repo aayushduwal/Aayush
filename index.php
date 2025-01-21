@@ -42,7 +42,7 @@ $kidsProducts = $stmt_kids->get_result();
 
  <head>
    <meta charset="UTF-8" />
-   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0">
    <title>Ecommerce Website - Elegance</title>
    <!-- CSS-link -->
    <link rel="stylesheet" href="css/style.css" />
@@ -121,6 +121,13 @@ $kidsProducts = $stmt_kids->get_result();
 
    <!-- Hero section -->
    <section class="main-home">
+     <div class="slider"> <!--adding multiple images in home page(index.php)-->
+    <!-- Add your background images here -->
+    <div class="slide active" style="background-image: url('images/hero1.jpg')"></div>
+    <div class="slide" style="background-image: url('images/hero2.jpg')"></div>
+    <div class="slide" style="background-image: url('images/hero3.jpg')"></div>
+    <div class="slide" style="background-image: url('images/hero4.jpg')"></div>
+  </div> <!--multiple images ends here-->
      <div class="main-home-overlay"></div>
      <div class="main-text">
        <h2>Collection</h2>
@@ -147,7 +154,7 @@ $kidsProducts = $stmt_kids->get_result();
                          <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" />
                          <h2><?php echo htmlspecialchars($product['name']); ?></h2>
                          
-                         <p>Rs. <?php echo number_format($product['price'], 2); ?></p>
+                         <p>NPR. <?php echo number_format($product['price'], 2); ?></p>
                      </a>
                  </div>
                  <?php
@@ -174,7 +181,7 @@ $kidsProducts = $stmt_kids->get_result();
                              <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" />
                              <h2><?php echo htmlspecialchars($product['name']); ?></h2>
                              
-                             <p>Rs. <?php echo number_format($product['price'], 2); ?></p>
+                             <p>NPR. <?php echo number_format($product['price'], 2); ?></p>
                          </a>
                      </div>
                      <?php
@@ -201,7 +208,7 @@ $kidsProducts = $stmt_kids->get_result();
                             <img src="uploads/products/<?php echo htmlspecialchars($product['images']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" />
                             <h2><?php echo htmlspecialchars($product['name']); ?></h2>
                             
-                            <p>Rs. <?php echo number_format($product['price'], 2); ?></p>
+                            <p>NPR. <?php echo number_format($product['price'], 2); ?></p>
                         </a>
                     </div>
                     <?php
@@ -340,6 +347,22 @@ $kidsProducts = $stmt_kids->get_result();
        updateCartBadge();
    });
    </script>
+   
+   <script> //for image slider in home page(index.php)
+document.addEventListener('DOMContentLoaded', function() {
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+    
+    function nextSlide() {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }
+    
+    // Change slide every 3 seconds
+    setInterval(nextSlide, 5000);
+});
+</script>
  </body>
 
  </html>

@@ -330,9 +330,9 @@ $username = $loggedIn ? $_SESSION['username'] : '';
                         <img src="/aayush/uploads/products/<?php echo $item['images']; ?>" alt="<?php echo $item['product_name']; ?>">
                         <div class="item-details">
                             <h3><?php echo $item['product_name']; ?></h3>
-                            <p>Price: रु. <?php echo number_format($item['price'], 0); ?></p>
+                            <p>Price: NPR. <?php echo number_format($item['price'], 0); ?></p>
                             <p>Quantity: <?php echo $item['quantity']; ?></p>
-                            <p>Subtotal: रु. <?php echo number_format($subtotal, 0); ?></p>
+                            <p>Subtotal: NPR <?php echo number_format($subtotal, 0); ?></p>
                             <button onclick="removeFromCart(<?php echo $item['id']; ?>)" class="remove-btn">Remove</button>
                         </div>
                     </div>
@@ -341,7 +341,7 @@ $username = $loggedIn ? $_SESSION['username'] : '';
                 ?>
                 <div class="cart-summary">
                     <div class="total-amount">
-                        <h3>Total Amount: रु. <?php echo number_format($total, 0); ?></h3>
+                        <h3>Total Amount: NPR <?php echo number_format($total, 0); ?></h3>
                     </div>
                     <div class="checkout-button">
                         <a href="checkout.php" class="checkout-btn" style="background: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
@@ -387,7 +387,7 @@ $username = $loggedIn ? $_SESSION['username'] : '';
           <div class="col-md-6">
             <div class="cart-item border p-3 mb-3">
               <h5>${item.product_name}</h5>
-              <p>Price: <strong>रु. <?php echo number_format($item['price'], 0); ?></strong></p>
+              <p>Price: <strong>NPR <?php echo number_format($item['price'], 0); ?></strong></p>
               <p>Quantity: <strong>${item.quantity}</strong></p>
               <button class="btn btn-danger btn-sm" onclick="removeFromCart(${item.id})">Remove</button>
             </div>
