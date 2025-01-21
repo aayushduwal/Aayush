@@ -119,7 +119,7 @@ if (isset($_GET['id'])) {
                             <?php echo ucfirst($first_row['status']); ?>
                         </span>
                     </p>
-                    <p><strong>Total Amount:</strong> Rs. <?php echo number_format($first_row['total_amount'], 2); ?></p>
+                    <p><strong>Total Amount:</strong> NPR. <?php echo number_format($first_row['total_amount'], 2); ?></p>
                 </div>
                 <h3>Order Items</h3>
                 <table class="data-table">
@@ -141,9 +141,9 @@ if (isset($_GET['id'])) {
                                      alt="<?php echo $item['product_name']; ?>" 
                                      class="product-thumbnail">
                             </td>
-                            <td>Rs. <?php echo number_format($item['price'], 2); ?></td>
+                            <td>NPR. <?php echo number_format($item['price'], 2); ?></td>
                             <td><?php echo $item['quantity']; ?></td>
-                            <td>Rs. <?php echo number_format($item['price'] * $item['quantity'], 2); ?></td>
+                            <td>NPR. <?php echo number_format($item['price'] * $item['quantity'], 2); ?></td>
                         </tr>
                         <?php endwhile; ?>
                     </tbody>
@@ -170,7 +170,7 @@ if (isset($_GET['id'])) {
                             <td>#<?php echo $order['id']; ?></td>
                             <td><?php echo date('F j, Y', strtotime($order['order_date'])); ?></td>
                             <td><?php echo $order['total_items']; ?></td>
-                            <td>Rs. <?php echo number_format($order['total_amount'], 2); ?></td>
+                            <td>NPR. <?php echo number_format($order['total_amount'], 2); ?></td>
                             <td>
                                 <span class="status status-<?php echo strtolower($order['status']); ?>">
                                     <?php echo ucfirst($order['status']); ?>

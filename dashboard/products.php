@@ -471,7 +471,7 @@ case 'update':
                                      class="product-thumbnail">
                             </td>
                             <td><?php echo $product['name']; ?></td>
-                            <td>Rs. <?php echo number_format($product['price'], 2); ?></td>
+                            <td>NPR. <?php echo number_format($product['price'], 2); ?></td>
                             <td><?php echo $product['category']; ?></td>
                             <td><?php echo $product['inventory']; ?></td>
                             <td class="actions">

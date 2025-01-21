@@ -51,7 +51,7 @@ getSidebar();
         </div>
         <div class="stat-card">
             <h3>Total Revenue</h3>
-            <div class="number">Rs. <?php echo number_format($total_revenue, 2); ?></div>
+            <div class="number">NPR. <?php echo number_format($total_revenue, 2); ?></div>
         </div>
     </div>
 
@@ -74,7 +74,7 @@ getSidebar();
                 <tr>
                     <td>#<?php echo $order['id']; ?></td>
                     <td><?php echo $order['customer_name']; ?></td>
-                    <td>Rs. <?php echo number_format($order['total_amount'], 2); ?></td>
+                    <td>NPR. <?php echo number_format($order['total_amount'], 2); ?></td>
                     <td>
                         <span class="status status-<?php echo strtolower($order['status']); ?>">
                             <?php echo ucfirst($order['status']); ?>

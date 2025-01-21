@@ -84,7 +84,7 @@ getSidebar();
                             </tr>
                             <tr>
                                 <th>Total Spent:</th>
-                                <td>Rs. <?php echo number_format($customer['total_spent'], 2); ?></td>
+                                <td>NPR. <?php echo number_format($customer['total_spent'], 2); ?></td>
                             </tr>
                             <tr>
                                 <th>Joined Date:</th>
@@ -110,14 +110,14 @@ getSidebar();
                                 <tr>
                                     <td>#<?php echo $order['id']; ?></td>
                                     <td><?php echo date('d M Y', strtotime($order['order_date'])); ?></td>
-                                    <td>Rs. <?php echo number_format($order['total_amount'], 2); ?></td>
+                                    <td>NPR. <?php echo number_format($order['total_amount'], 2); ?></td>
                                     <td>
                                         <span class="status status-<?php echo strtolower($order['status']); ?>">
                                             <?php echo ucfirst($order['status']); ?>
                                         </span>
                                     </td>
                                     <td>
-                                        <a href="ordeRs.php?action=view&id=<?php echo $order['id']; ?>" class="btn-view">
+                                        <a href="ordeNPR.php?action=view&id=<?php echo $order['id']; ?>" class="btn-view">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     </td>
@@ -172,7 +172,7 @@ getSidebar();
                             <td><?php echo htmlspecialchars($customer['phone']); ?></td>
                             <td><?php echo htmlspecialchars($customer['city']); ?></td>
                             <td><?php echo $customer['total_orders']; ?></td>
-                            <td>Rs. <?php echo number_format($customer['total_spent'], 2); ?></td>
+                            <td>NPR. <?php echo number_format($customer['total_spent'], 2); ?></td>
                             <td><?php echo date('d M Y', strtotime($customer['created_at'])); ?></td>
                             <td>
                                 <a href="?action=view&id=<?php echo $customer['id']; ?>" class="btn-view">

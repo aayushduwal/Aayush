@@ -93,7 +93,7 @@ getSidebar();
                             </tr>
                             <tr>
                                 <th>Total Amount:</th>
-                                <td>Rs. <?php echo number_format($order['total_amount'], 2); ?></td>
+                                <td>NPR. <?php echo number_format($order['total_amount'], 2); ?></td>
                             </tr>
                         </table>
                     </div>
@@ -137,9 +137,9 @@ getSidebar();
                                              alt="<?php echo $item['product_name']; ?>" 
                                              class="product-thumbnail">
                                     </td>
-                                    <td>Rs. <?php echo number_format($item['price'], 2); ?></td>
+                                    <td>NPR. <?php echo number_format($item['price'], 2); ?></td>
                                     <td><?php echo $item['quantity']; ?></td>
-                                    <td>Rs. <?php echo number_format($item['price'] * $item['quantity'], 2); ?></td>
+                                    <td>NPR. <?php echo number_format($item['price'] * $item['quantity'], 2); ?></td>
                                 </tr>
                                 <?php endwhile; ?>
                             </tbody>
@@ -174,7 +174,7 @@ getSidebar();
             <div class="filter-section">
                 <form method="GET" class="filter-form">
                     <div class="form-group">
-                        <input type="text" name="search" placeholder="Search ordeRs..." value="<?php echo $search; ?>">
+                        <input type="text" name="search" placeholder="Search ordeNPR..." value="<?php echo $search; ?>">
                     </div>
                     <div class="form-group">
                         <select name="status">
@@ -190,7 +190,7 @@ getSidebar();
                         <input type="date" name="date_to" value="<?php echo $date_to; ?>">
                     </div>
                     <button type="submit" class="btn btn-primary">Filter</button>
-                    <a href="ordeRs.php" class="btn btn-secondary">Reset</a>
+                    <a href="ordeNPR.php" class="btn btn-secondary">Reset</a>
                 </form>
             </div>
 
@@ -211,7 +211,7 @@ getSidebar();
                         <tr>
                             <td>#<?php echo $order['id']; ?></td>
                             <td><?php echo $order['customer_name']; ?></td>
-                            <td>Rs. <?php echo number_format($order['total_amount'], 2); ?></td>
+                            <td>NPR. <?php echo number_format($order['total_amount'], 2); ?></td>
                             <td>
                                 <span class="status status-<?php echo strtolower($order['status']); ?>">
                                     <?php echo ucfirst($order['status']); ?>
