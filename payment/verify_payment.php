@@ -51,27 +51,34 @@ curl_close($ch);
 // Log the verification attempt
 error_log("eSewa Verification Response for Order #$order_id: " . $response);
 
-if (strpos($response, 'Success') !== false) {
+if ($response && strpos($response, 'Success') !== false) {
+    // Log success response
+    error_log("Payment verified successfully for Order #$order_id with Ref ID: $ref_id");
+
     // Update order status to confirmed
     $stmt = $conn->prepare("UPDATE orders SET status = 'confirmed', payment_ref = ? WHERE id = ? AND user_id = ?");
     $stmt->bind_param("sii", $ref_id, $order_id, $user_id);
     $stmt->execute();
-
+    
     // Clear cart
     $stmt = $conn->prepare("DELETE FROM cart WHERE user_id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
-    
+
     $_SESSION['success'] = "Payment successful! Your order has been confirmed.";
     header("Location: ../payment/payment_success_page.php?oid=" . $order_id);
 } else {
+    // Log failure response
+    error_log("Payment verification failed for Order #$order_id with Ref ID: $ref_id. Response: $response");
+
     // Update order status to failed
     $stmt = $conn->prepare("UPDATE orders SET status = 'failed', payment_ref = ? WHERE id = ? AND user_id = ?");
     $stmt->bind_param("sii", $ref_id, $order_id, $user_id);
     $stmt->execute();
-    
+
     $_SESSION['error'] = "Payment verification failed. Please try again or contact support.";
     header('Location: ../cart/checkout.php');
 }
+
 exit();
 ?>

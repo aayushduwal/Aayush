@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-$order_id = isset($_GET['oid']) ? $_GET['oid'] : (isset($_GET['pid']) ? $_GET['pid'] : null);
+$order_id = isset($_GET['oid']) ? $_GET['oid'] : null;
 
 if (!$order_id) {
     $_SESSION['error'] = "Invalid order reference";
@@ -16,12 +16,28 @@ if (!$order_id) {
     exit();
 }
 
-// Update order status to failed
-$stmt = $conn->prepare("UPDATE orders SET status = 'failed' WHERE id = ? AND user_id = ?");
+// Check if the order is still pending
+$stmt = $conn->prepare("SELECT status FROM orders WHERE id = ? AND user_id = ?");
 $stmt->bind_param("ii", $order_id, $user_id);
 $stmt->execute();
+$result = $stmt->get_result();
+$order = $result->fetch_assoc();
 
-$_SESSION['error'] = "Payment failed. Please try again or choose a different payment method.";
-header('Location: ../cart/checkout.php');
-exit();
+if ($order && $order['status'] === 'pending') {
+    // Log the cancellation
+    error_log("Order #$order_id canceled by user");
+
+    $_SESSION['error'] = "Payment was canceled. Your order is still pending.";
+    header('Location: ../cart/checkout.php');
+    exit();
+} else {
+    // Update order status to failed if needed
+    $stmt = $conn->prepare("UPDATE orders SET status = 'failed' WHERE id = ? AND user_id = ?");
+    $stmt->bind_param("ii", $order_id, $user_id);
+    $stmt->execute();
+
+    $_SESSION['error'] = "Payment failed. Please try again or choose a different payment method.";
+    header('Location: ../cart/checkout.php');
+    exit();
+}
 ?>

@@ -147,6 +147,15 @@ $delivery_zones = [
 </head>
 <body>
     <?php include('../includes/header.php'); ?>
+    <?php if (isset($_SESSION['error'])): ?>
+    <div class="alert alert-danger">
+        <?php
+        echo $_SESSION['error'];
+        unset($_SESSION['error']); // Clear the message after displaying
+        ?>
+    </div>
+<?php endif; ?>
+
     <div class="checkout-container">
         <div class="shipping-details">
             <h2>Shipping Information</h2>
