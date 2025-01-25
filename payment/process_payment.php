@@ -21,7 +21,10 @@ $city = $_POST['city'] ?? '';
 $postal_code = $_POST['postal_code'] ?? '';
 $delivery_zone = $_POST['delivery_zone'] ?? '';
 $detailed_address = $_POST['detailed_address'] ?? '';
-$email = $_SESSION['email'] ?? ''; // Get email from session
+$email = $_SESSION['email'] ?? 'example@gmail.com'; // Get email from session
+
+// echo 
+
 
 // Validate required fields
 if (!$payment_method || !$full_name || !$phone || !$city || !$delivery_zone) {
@@ -112,6 +115,7 @@ $stmt->bind_param("iidsss", $user_id, $customer_id, $total_amount, $shipping_add
 
 if (!$stmt->execute()) {
     error_log("Order creation failed: " . $stmt->error);
+    echo $stmt->error;
     $_SESSION['error'] = "Failed to create order. Please try again.";
     header('Location: ../cart/checkout.php');
     exit();

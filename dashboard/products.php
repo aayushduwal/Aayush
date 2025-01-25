@@ -110,7 +110,7 @@ getSidebar();
                     </div>
                     <div class="form-group">
                         <label for="show_on_home">Show on Home Page:</label>
-                        <input type="checkbox" name="show_on_home" id="show_on_home" value="1">
+                        <input type="checkbox" name="show_on_home" id="show_on_home" defaultValue="1">
                     </div>
                     <button type="submit" class="btn btn-primary">Add Product</button>
                 </form>
@@ -119,6 +119,7 @@ getSidebar();
             break;
 
         case 'create':
+            try {
             // Handle Add Product Form Submission
             if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $name = mysqli_real_escape_string($conn, $_POST['name']);
@@ -177,6 +178,9 @@ getSidebar();
                     }
                     $stmt->close();
                 }
+            }
+            } catch(err) {
+                echo err;
             }
             break;
 

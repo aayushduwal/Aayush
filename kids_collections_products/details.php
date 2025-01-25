@@ -783,7 +783,7 @@ if (!$product) {
                     alert("Please login to proceed with purchase");
                     window.location.href = 'login.php';
                 } else {
-                    window.location.href = '/cart/checkout.php';
+                    window.location.href = '/aayush/cart/checkout.php';
                 }
             },
             error: function(xhr, status, error) {
