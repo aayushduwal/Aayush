@@ -3,6 +3,8 @@ session_start();
 require_once('../database/config.php');
 require_once('../payment/payment_config.php');
 
+// At the top of checkout.php
+error_log("Session data: " . print_r($_SESSION, true));
 
 // Function to get user details
 function getUserDetails($conn, $user_id) {
@@ -46,9 +48,9 @@ while ($item = $result->fetch_assoc()) {
 
 // Delivery zones and charges
 $delivery_zones = [
-    'inside_ring' => ['name' => 'Inside Ring Road', 'charge' => 5],
-    'outside_ring' => ['name' => 'Outside Ring Road', 'charge' => 5],
-    'outside_valley' => ['name' => 'Outside Valley', 'charge' => 5]
+    'inside_ring' => ['name' => 'Inside Ring Road', 'charge' => 85],
+    'outside_ring' => ['name' => 'Outside Ring Road', 'charge' => 100],
+    'outside_valley' => ['name' => 'Outside Vall    ey', 'charge' => 150]
 ];
 ?>
 <!DOCTYPE html>
