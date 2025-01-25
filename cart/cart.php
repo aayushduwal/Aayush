@@ -281,8 +281,8 @@ $username = $loggedIn ? $_SESSION['username'] : '';
                     <li><a href="../kids_collection.php">Kid's Collection</a></li>
                 </ul>
             </li>
-            <li><a href="../About.php">About</a></li>
-            <li><a href="../contact.php">Contact</a></li>
+            <!-- <li><a href="../About.php">About</a></li>
+            <li><a href="../contact.php">Contact</a></li> -->
             <?php if($loggedIn): ?>
                 <li><a href="../userdashboard/user_dashboard.php"><?php echo $username; ?>'s Account</a></li>
                 <li><a href="../logout.php">Logout</a></li>

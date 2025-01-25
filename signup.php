@@ -156,9 +156,7 @@ $conn->close();
               <li><a href="kids_collection.php">Kid's Collection</a></li>
             </ul>
           </li>
-          <li><a href="About.php">About</a></li>
-          <li><a href="login.php">Login</a></li>
-          <li><a href="contact.php">Contact</a></li>
+               <li><a href="login.php">Login</a></li>
         </ul>
       </nav>
       <div class="nav-icon">

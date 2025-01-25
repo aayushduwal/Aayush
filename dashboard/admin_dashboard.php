@@ -66,7 +66,7 @@ getSidebar();
                     <th>Amount</th>
                     <th>Status</th>
                     <th>Date</th>
-                    <th>Action</th>
+                    <!-- <th>Action</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -81,9 +81,9 @@ getSidebar();
                         </span>
                     </td>
                     <td><?php echo date('d M Y', strtotime($order['order_date'])); ?></td>
-                    <td>
+                    <!-- <td>
                         <a href="orders/view.php?id=<?php echo $order['id']; ?>" class="btn-view">View</a>
-                    </td>
+                    </td> -->
                 </tr>
                 <?php endwhile; ?>
             </tbody>

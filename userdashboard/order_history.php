@@ -82,8 +82,8 @@ if (isset($_GET['id'])) {
                         <li><a href="/aayush/kids_collection.php">Kid's Collection</a></li>
                     </ul>
                 </li>
-                <li><a href="/aayush/about.php">About</a></li>
-                <li><a href="/aayush/contact.php">Contact</a></li>
+                <!-- <li><a href="/aayush/about.php">About</a></li>
+                <li><a href="/aayush/contact.php">Contact</a></li> -->
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <li><a href="/aayush/userdashboard/user_dashboard.php"><?php echo htmlspecialchars($user['username']); ?>'s Account</a></li>
                     <li><a href="/aayush/logout.php">Logout</a></li>

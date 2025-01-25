@@ -614,12 +614,12 @@ if (!$product) {
             <li><a href="/aayush/kids_collections_products/index.php">Kid's Collection</a></li>
           </ul>
         </li>
-        <li><a href="../About.php">About</a></li>
-        <li><a href="../contact.php">Contact</a></li>
+        <!-- <li><a href="../About.php">About</a></li>
+        <li><a href="../contact.php">Contact</a></li> -->
 
         <?php if ($isLoggedIn): ?>
           <?php if (isset($_SESSION['is_admin'])): ?>
-            <li><a href="dashboard/admin_dashboard.php" class="dashboard-btn">Dashboard</a></li>
+        <li><a style="white-space: nowrap;word-break: keep-all;display:block;" href="/aayush/userdashboard/user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s Account</a></li>
           <?php else: ?>
             <li><a href="/aayush/userdashboard/user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s Account</a></li>
           <?php endif; ?>
@@ -812,7 +812,7 @@ if (!$product) {
               <p>0160-5462-8214</p>
             </li>
             <li>
-              <p>elegance2024@gmail.com</p>
+              <p>elegance2025@gmail.com</p>
             </li>
           </ul>
         </div>
@@ -820,7 +820,7 @@ if (!$product) {
         <div class="second-info info">
           <h4>Support</h4>
           <ul>
-            <li>
+            <!-- <li>
               <a href="#">
                 <p>Contact us</p>
               </a>
@@ -829,7 +829,7 @@ if (!$product) {
               <a href="#">
                 <p>About page</p>
               </a>
-            </li>
+            </li> -->
             <li>
               <a href="#">
                 <p>Shopping & Returns</p>
@@ -873,7 +873,7 @@ if (!$product) {
     <div class="copyright">
       <hr style="width: 100%; margin: 20px; border-top: 1px solid #000" />
       <p>
-        &copy; 2024 ELEGANCE. All rights reserved.
+        &copy; 2025 ELEGANCE. All rights reserved.
         <a href="#">Privacy Policy</a>
       </p>
     </div>

@@ -614,8 +614,7 @@ if (!$product) {
             <li><a href="kids_collection.php">Kid's Collection</a></li>
           </ul>
         </li>
-        <li><a href="About.php">About</a></li>
-        <li><a href="/aayush/contact.php">Contact</a></li>
+           <!-- <li><a href="/aayush/contact.php">Contact</a></li> -->
 
         <?php if ($isLoggedIn): ?>
           <?php if (isset($_SESSION['is_admin'])): ?>
@@ -814,7 +813,7 @@ if (!$product) {
               <p>0160-5462-8214</p>
             </li>
             <li>
-              <p>elegance2024@gmail.com</p>
+              <p>elegance2025@gmail.com</p>
             </li>
           </ul>
         </div>
@@ -822,7 +821,7 @@ if (!$product) {
         <div class="second-info info">
           <h4>Support</h4>
           <ul>
-            <li>
+            <!-- <li>
               <a href="#">
                 <p>Contact us</p>
               </a>
@@ -831,7 +830,7 @@ if (!$product) {
               <a href="#">
                 <p>About page</p>
               </a>
-            </li>
+            </li> -->
             <li>
               <a href="#">
                 <p>Shopping & Returns</p>
@@ -875,7 +874,7 @@ if (!$product) {
     <div class="copyright">
       <hr style="width: 100%; margin: 20px; border-top: 1px solid #000" />
       <p>
-        &copy; 2024 ELEGANCE. All rights reserved.
+        &copy; 2025 ELEGANCE. All rights reserved.
         <a href="#">Privacy Policy</a>
       </p>
     </div>

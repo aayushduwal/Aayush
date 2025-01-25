@@ -137,8 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <li><a href="kids_collection.php">Kid's Collection</a></li>
                     </ul>
                 </li>
-                <li><a href="About.php">About</a></li>
-                <li><a href="/aayush/contact.php">Contact</a></li>
+                           <!-- <li><a href="/aayush/contact.php">Contact</a></li> -->
 
                 <?php if ($isLoggedIn): ?>
                     <?php if (isset($_SESSION['is_admin'])): ?>

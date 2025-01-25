@@ -235,14 +235,14 @@ header {
               <li><a href="/aayush/kids_collection.php">Kid's Collection</a></li>
             </ul>
           </li>
-          <li><a href="/aayush/about.php">About</a></li>
-          <li><a href="/aayush/contact.php">Contact</a></li>
+          <!-- <li><a href="/aayush/about.php">About</a></li>
+          <li><a href="/aayush/contact.php">Contact</a></li> -->
 
               <?php if ($isLoggedIn): ?>
     <?php if (isset($_SESSION['is_admin'])): ?>
         <li><a href="/aayush/dashboard/admin_dashboard.php" class="dashboard-btn">Dashboard</a></li>
     <?php elseif (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'user'): ?>
-        <li><a href="/aayush/userdashboard/user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s Account</a></li>
+        <li><a style="white-space: nowrap;word-break: keep-all;display:block;" href="/aayush/userdashboard/user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s Account</a></li>
     <?php endif; ?>
     <li><a href="/aayush/logout.php">Logout</a></li>
 <?php else: ?>

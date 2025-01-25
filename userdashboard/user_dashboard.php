@@ -50,8 +50,8 @@ $userDetails = getUserDetails($conn, $_SESSION['user_id']);
                         <li><a href="../kids_collection.php">Kid's Collection</a></li>
                     </ul>
                 </li>
-                <li><a href="../About.php">About</a></li>
-                <li><a href="../contact.php">Contact</a></li>
+                <!-- <li><a href="../About.php">About</a></li>
+                <li><a href="../contact.php">Contact</a></li> -->
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <li><a href="user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s Account</a></li>
                     <li><a href="../logout.php">Logout</a></li>
