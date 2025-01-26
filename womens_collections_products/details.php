@@ -56,7 +56,7 @@ if (!$product) {
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <!-- closing the font of inter -->
   <style>
   * {
@@ -68,7 +68,7 @@ if (!$product) {
   /* font of inter */
   body {
     margin: 0;
-    
+
     font-family: "Inter", sans-serif;
     font-weight: 400;
     min-height: 100vh;
@@ -79,8 +79,8 @@ if (!$product) {
   /* closing the font of inter */
 
   /* -------------------- Navbar Start -------------------- */
-  header { 
-    width: 100%; 
+  header {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -160,6 +160,7 @@ if (!$product) {
     background-color: white;
     white-space: nowrap;
   }
+
   /* End of CSS for dropdown in shop */
 
   .nav-icon {
@@ -311,23 +312,24 @@ if (!$product) {
     aspect-ratio: 1/1;
   }
 
- .cart-badge {
-  position: relative;
-  top: -10px;
-  right: 5px;
-  background-color: #ff5733;
-  color: white;
-  font-size: 8px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold; /* Bold text */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  visibility: hidden;
-}
+  .cart-badge {
+    position: relative;
+    top: -10px;
+    right: 5px;
+    background-color: #ff5733;
+    color: white;
+    font-size: 8px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    /* Bold text */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    visibility: hidden;
+  }
 
 
   /* end of multiple small images */
@@ -471,66 +473,66 @@ if (!$product) {
     margin: 40px auto;
     padding: 0 20px;
   }
-  
+
   .product-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 40px;
   }
-  
+
   .product-images {
     display: flex;
     flex-direction: column;
     gap: 20px;
   }
-  
+
   .main-image img {
     width: 100%;
     height: auto;
     object-fit: contain;
   }
-  
+
   .thumbnail-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
   }
-  
+
   .thumbnail-grid img {
     width: 100%;
     height: 100px;
     object-fit: cover;
     cursor: pointer;
   }
-  
+
   .product-info h1 {
     font-size: 2rem;
     margin-bottom: 20px;
   }
-  
+
   .price {
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 20px;
   }
-  
+
   .size-select {
     margin-bottom: 20px;
   }
-  
+
   .quantity-selector {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-bottom: 20px;
   }
-  
+
   .button-group {
     display: flex;
     gap: 10px;
     margin-bottom: 30px;
   }
-  
+
   .button-group button {
     flex: 1;
     padding: 12px;
@@ -538,12 +540,12 @@ if (!$product) {
     border-radius: 4px;
     cursor: pointer;
   }
-  
+
   .buy-now {
     background-color: #007bff;
     color: white;
   }
-  
+
   .add-to-cart {
     background-color: #ff523b;
     color: white;
@@ -578,7 +580,7 @@ if (!$product) {
     color: black;
   }
 
-  .navmenu > li {
+  .navmenu>li {
     position: relative;
     display: inline-block;
   }
@@ -618,32 +620,36 @@ if (!$product) {
         <li><a href="../contact.php">Contact</a></li> -->
 
         <?php if ($isLoggedIn): ?>
-          <?php if (isset($_SESSION['is_admin'])): ?>
-        <li><a style="white-space: nowrap;word-break: keep-all;display:block;" href="/aayush/userdashboard/user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s Account</a></li>
-          <?php else: ?>
-            <li><a href="/aayush/userdashboard/user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s Account</a></li>
-          <?php endif; ?>
-          <li><a href="logout.php">Logout</a></li>
+        <?php if (isset($_SESSION['is_admin'])): ?>
+        <li><a style="white-space: nowrap;word-break: keep-all;display:block;"
+            href="/aayush/userdashboard/user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s
+            Account</a></li>
         <?php else: ?>
-          <li><a href="login.php">Login</a></li>
+        <li><a
+            href="/aayush/userdashboard/user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s
+            Account</a></li>
+        <?php endif; ?>
+        <li><a href="logout.php">Logout</a></li>
+        <?php else: ?>
+        <li><a href="login.php">Login</a></li>
         <?php endif; ?>
       </ul>
     </nav>
 
     <div class="nav-icon">
       <?php if ($isLoggedIn): ?>
-        <p>
-          Logged in as <u><strong>
-          <?php 
+      <p>
+        Logged in as <u><strong>
+            <?php 
             if (isset($_SESSION['is_admin'])) {
               echo htmlspecialchars($_SESSION['admin_username']);
             } elseif ($userDetails && isset($userDetails['username'])) {
               echo htmlspecialchars($userDetails['username']);
             }
           ?></strong></u>
-        </p>
+      </p>
       <?php else: ?>
-        <a href="login.php"><i class="bx bx-user"></i></a>
+      <a href="login.php"><i class="bx bx-user"></i></a>
       <?php endif; ?>
       <a href="../cart/cart.php"><i class="bx bx-cart"></i>
         <span id="cart-badge" class="cart-badge">0</span>
@@ -659,28 +665,28 @@ if (!$product) {
       <div class="row">
         <div class="col-2">
           <!-- Main Product Image -->
-          <img src="../uploads/products/<?php echo htmlspecialchars($product['images']); ?>"
-              width="100%" id="ProductImg" alt="<?php echo htmlspecialchars($product['name']); ?>" />
-          
+          <img src="../uploads/products/<?php echo htmlspecialchars($product['images']); ?>" width="100%"
+            id="ProductImg" alt="<?php echo htmlspecialchars($product['name']); ?>" />
+
           <div class="small-img-row">
-              <!-- Main image thumbnail -->
-              <div class="small-img-col">
-                  <img src="../uploads/products/<?php echo htmlspecialchars($product['images']); ?>"
-                      width="100%" class="small-img" alt="<?php echo htmlspecialchars($product['name']); ?>" />
-              </div>
-              
-              <!-- Additional images -->
-              <?php 
+            <!-- Main image thumbnail -->
+            <div class="small-img-col">
+              <img src="../uploads/products/<?php echo htmlspecialchars($product['images']); ?>" width="100%"
+                class="small-img" alt="<?php echo htmlspecialchars($product['name']); ?>" />
+            </div>
+
+            <!-- Additional images -->
+            <?php 
               if(!empty($product['additional_images'])) {
                   $additional_images = json_decode($product['additional_images'], true);
                   if(is_array($additional_images)) {
                       foreach($additional_images as $image): 
               ?>
-                      <div class="small-img-col">
-                          <img src="../uploads/products/<?php echo htmlspecialchars($image); ?>"
-                              width="100%" class="small-img" alt="Additional view" />
-                      </div>
-              <?php 
+            <div class="small-img-col">
+              <img src="../uploads/products/<?php echo htmlspecialchars($image); ?>" width="100%" class="small-img"
+                alt="Additional view" />
+            </div>
+            <?php 
                       endforeach;
                   }
               }
@@ -697,7 +703,7 @@ if (!$product) {
             $sizes = explode(',', $product['sizes']);
             foreach($sizes as $size): 
             ?>
-                <option value="<?php echo trim($size); ?>"><?php echo trim($size); ?></option>
+            <option value="<?php echo trim($size); ?>"><?php echo trim($size); ?></option>
             <?php endforeach; ?>
           </select>
           <div class="number-input">
@@ -706,10 +712,10 @@ if (!$product) {
             <button onclick="increment()">+</button>
           </div>
           <div class="btn-container">
-    <button class="btn buy-now">Buy Now</button>
-    <button class="btn add-to-cart-btn" style="background-color: #FF523B;">Add To Cart</button>
-    <input type="hidden" id="product_id" value="<?php echo $product_id; ?>">
-</div>
+            <button class="btn buy-now">Buy Now</button>
+            <button class="btn add-to-cart-btn" style="background-color: #FF523B;">Add To Cart</button>
+            <input type="hidden" id="product_id" value="<?php echo $product_id; ?>">
+          </div>
           <h3>Product Details <i class="fa fa-indent"></i></h3>
           <br />
           <p><?php echo nl2br(htmlspecialchars($product['description'])); ?></p>
@@ -751,7 +757,7 @@ if (!$product) {
   };
   </script>
 
-<script src="cart/addToCart.js"></script>
+  <script src="cart/addToCart.js"></script>
 
   <!-- footer starts -->
   <footer class="infos">
@@ -759,7 +765,7 @@ if (!$product) {
       <div class="contact-info">
         <div class="first-info info">
           <a href="index.php">
-          <img src="/aayush/images/logo.png" width="80" class="footer-image" height="80" alt="Elegance Logo" />
+            <img src="/aayush/images/logo.png" width="80" class="footer-image" height="80" alt="Elegance Logo" />
           </a>
           <ul>
             <li>
@@ -818,11 +824,11 @@ if (!$product) {
                 <p>Kid's Shopping</p>
               </a>
             </li>
-            <li>
+            <!-- <li>
               <a href="#">
                 <p>Discount</p>
               </a>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
@@ -840,103 +846,105 @@ if (!$product) {
   <script>
   $(document).ready(function() {
     $('.add-to-cart-btn').off('click');
-    
+
     $('.add-to-cart-btn').on('click', function(e) {
-        e.preventDefault();
-        
-        const productId = $("#product_id").val();
-        const productName = $("h1").text();
-        const price = $("h4").text().replace("NPR.", "").replace(/,/g, "").trim();
-        const quantity = parseInt($("#quantity").val());
-        const size = $("select").val();
-        
-        if (size === 'Select Size') {
-            alert('Please select a size');
-            return;
+      e.preventDefault();
+
+      const productId = $("#product_id").val();
+      const productName = $("h1").text();
+      const price = $("h4").text().replace("NPR.", "").replace(/,/g, "").trim();
+      const quantity = parseInt($("#quantity").val());
+      const size = $("select").val();
+
+      if (size === 'Select Size') {
+        alert('Please select a size');
+        return;
+      }
+
+      $.ajax({
+        url: '../cart/cart_handler.php',
+        type: 'POST',
+        data: {
+          action: 'add',
+          productId: productId,
+          productName: productName,
+          price: price,
+          quantity: quantity
+        },
+        success: function(response) {
+          if (response === "Please login first") {
+            alert("Please login to add items to cart");
+            window.location.href = 'login.php';
+          } else {
+            console.log('Server response:', response);
+            alert('Product added to cart!');
+            // Update cart count
+            $.ajax({
+              url: '../cart/cart_handler.php',
+              type: 'POST',
+              data: {
+                action: 'count'
+              },
+              success: function(count) {
+                $('#cart-badge').text(count);
+                $('#cart-badge').css('visibility', count > 0 ? 'visible' : 'hidden');
+              }
+            });
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error('Error:', error);
+          alert('Error adding product to cart');
         }
-        
-        $.ajax({
-            url: '../cart/cart_handler.php',
-            type: 'POST',
-            data: {
-                action: 'add',
-                productId: productId,
-                productName: productName,
-                price: price,
-                quantity: quantity
-            },
-            success: function(response) {
-                if(response === "Please login first") {
-                    alert("Please login to add items to cart");
-                    window.location.href = 'login.php';
-                } else {
-                    console.log('Server response:', response);
-                    alert('Product added to cart!');
-                    // Update cart count
-                    $.ajax({
-                        url: '../cart/cart_handler.php',
-                        type: 'POST',
-                        data: { action: 'count' },
-                        success: function(count) {
-                            $('#cart-badge').text(count);
-                            $('#cart-badge').css('visibility', count > 0 ? 'visible' : 'hidden');
-                        }
-                    });
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                alert('Error adding product to cart');
-            }
-        });
+      });
     });
   });
   </script>
-  
+
   <script>
   $(document).ready(function() {
     $('.buy-now').on('click', function(e) {
-        e.preventDefault();
-        
-        const productId = $("#product_id").val();
-        const productName = $("h1").text();
-        const price = $("h4").text().replace("NPR.", "").replace(/,/g, "").trim();
-        const quantity = parseInt($("#quantity").val());
-        const size = $("select").val();
-        
-        if (size === 'Select Size') {
-            alert('Please select a size');
-            return;
-        }
+      e.preventDefault();
 
-        console.log("Hello world")
-        
-        $.ajax({
-            url: '../cart/cart_handler.php',
-            type: 'POST',
-            data: {
-                action: 'add',
-                productId: productId,
-                productName: productName,
-                price: price,
-                quantity: quantity
-            },
-            success: function(response) {
-                if(response === "Please login first") {
-                    alert("Please login to proceed with purchase");
-                    window.location.href = '/aayush/login.php';
-                } else {
-                    window.location.href = '/aayush/cart/checkout.php';
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-                alert('Error processing request');
-            }
-        });
+      const productId = $("#product_id").val();
+      const productName = $("h1").text();
+      const price = $("h4").text().replace("NPR.", "").replace(/,/g, "").trim();
+      const quantity = parseInt($("#quantity").val());
+      const size = $("select").val();
+
+      if (size === 'Select Size') {
+        alert('Please select a size');
+        return;
+      }
+
+      console.log("Hello world")
+
+      $.ajax({
+        url: '../cart/cart_handler.php',
+        type: 'POST',
+        data: {
+          action: 'add',
+          productId: productId,
+          productName: productName,
+          price: price,
+          quantity: quantity
+        },
+        success: function(response) {
+          if (response === "Please login first") {
+            alert("Please login to proceed with purchase");
+            window.location.href = '/aayush/login.php';
+          } else {
+            window.location.href = '/aayush/cart/checkout.php';
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error('Error:', error);
+          alert('Error processing request');
+        }
+      });
     });
-});
-</script>
+  });
+  </script>
 </body>
 
-</html> 
+</html>
