@@ -88,8 +88,11 @@ $kidsProducts = $stmt_kids->get_result();
         <li><a href="dashboard/admin_dashboard.php" class="dashboard-btn">Dashboard</a></li>
         <?php else: ?>
         <li><a style="white-space: nowrap;word-break: keep-all;display:block;"
-            href="/aayush/userdashboard/user_dashboard.php"><?php echo htmlspecialchars($userDetails['username']); ?>'s
-            Account</a></li>
+            href="/aayush/userdashboard/user_dashboard.php">
+            <?php 
+                // Check if userDetails exists before accessing username
+                echo isset($userDetails['username']) ? htmlspecialchars($userDetails['username']) : 'My'; 
+            ?>'s Account</a></li>
         <?php endif; ?>
         <li><a href="logout.php">Logout</a></li>
         <?php else: ?>
@@ -330,7 +333,7 @@ $kidsProducts = $stmt_kids->get_result();
       link.addEventListener('click', function(e) {
         const nextElement = this.nextElementSibling;
         if (nextElement && nextElement.classList.contains('dropdown-menu')) {
-          e.preventDefault();
+          // e.preventDefault();
           nextElement.classList.toggle('show');
         }
       });
