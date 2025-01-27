@@ -11,7 +11,12 @@
         <h1>Forgot Password</h1>
         <?php
         if (isset($_POST['email'])) {
-            require_once 'config.php'; // Database connection file
+            // Check if config.php exists
+            if (file_exists('database/config.php')) {
+                require_once 'database/config.php'; // Database connection file
+            } else {
+                die("Error: Configuration file not found.");
+            }
             
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
             
@@ -31,16 +36,31 @@
                 $stmt->bind_param("sss", $token, $expiry, $email);
                 $stmt->execute();
                 
-                // Send reset email
+                // Send reset email using PHPMailer
+                require 'path/to/PHPMailer/src/PHPMailer.php';
+                require 'path/to/PHPMailer/src/SMTP.php';
+                require 'path/to/PHPMailer/src/Exception.php';
+
+                $mail = new PHPMailer\PHPMailer\PHPMailer();
+                $mail->isSMTP();
+                $mail->Host = 'smtp.gmail.com'; // Set the SMTP server to send through
+                $mail->Port = 587; // TCP port to connect to
+                $mail->SMTPSecure = 'tls'; // Enable TLS encryption
+                $mail->SMTPAuth = true; // Enable SMTP authentication
+                $mail->Username = 'aayushduwal16@gmail.com'; // Your Gmail address
+                $mail->Password = 'your_app_password'; // Your Gmail password or app password
+                $mail->setFrom('aayushduwal16@gmail.com', 'Your Website'); // Your email address
+                $mail->addAddress($email); // Recipient's email address
+                $mail->Subject = "Password Reset Request";
                 $reset_link = "http://yourwebsite.com/reset-password.php?token=" . $token;
-                $to = $email;
-                $subject = "Password Reset Request";
                 $message = "Click the following link to reset your password: " . $reset_link;
-                $headers = "From: noreply@yourwebsite.com";
-                
-                mail($to, $subject, $message, $headers);
-                
-                echo "<div class='message success'>Password reset instructions have been sent to your email.</div>";
+                $mail->Body = $message;
+
+                if ($mail->send()) {
+                    echo "<div class='message success'>Password reset instructions have been sent to your email.</div>";
+                } else {
+                    echo "<div class='message error'>Mailer Error: " . $mail->ErrorInfo . "</div>";
+                }
             } else {
                 echo "<div class='message error'>Email address not found.</div>";
             }

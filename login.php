@@ -107,7 +107,7 @@ $stmt->close();
           <?php if (isset($error)): ?>
           <p style='color: red;'><?php echo $error; ?></p>
           <?php endif; ?>
-          <a href="forgot-password.php" class="forgot-password">Forgot password?</a>
+          <a href="reset-pwd.php" class="forgot-password">Forgot password?</a>
         </div>
         <button type="submit" class="btn">Login</button>
         <div class="register-link">
