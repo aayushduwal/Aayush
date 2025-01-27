@@ -3,7 +3,7 @@ session_start();
 require_once('../database/config.php');
 
 // Add security check after your existing code
-$ADMIN_REGISTRATION_KEY = "Elegance_Admin_2025_K9MP5VN2XL7HQ4WR8YT1ZB6";
+$ADMIN_REGISTRATION_KEY = "Elegance_Admin_2024_K9MP5VN2XL7HQ4WR8YT1ZB6";
 
 if (!isset($_GET['key']) || $_GET['key'] !== $ADMIN_REGISTRATION_KEY) {
     die("Unauthorized access");

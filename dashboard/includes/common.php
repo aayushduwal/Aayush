@@ -42,6 +42,12 @@ function getSidebar() {
                     <span>Dashboard</span>
                 </a>
             </li>
+            <li>
+                <a href="categories.php">
+                    <i class="fas fa-th-list"></i>
+                    <span>Categories</span>
+                </a>
+            </li>
             <li class="has-dropdown">
                 <a href="#">
                     <i class="fas fa-box"></i>
@@ -53,13 +59,13 @@ function getSidebar() {
                 </div>
             </li>
             <li>
-                <a href="ordeRs.php">
+                <a href="orders.php">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Orders</span>
                 </a>
             </li>
             <li>
-                <a href="customeRs.php">
+                <a href="customers.php">
                     <i class="fas fa-users"></i>
                     <span>Customers</span>
                 </a>
@@ -73,6 +79,47 @@ function getFooter() {
     ?>
     </body>
     </html>
+    <?php
+}
+
+// New function for Categories Management
+function getCategoriesManagement() {
+    ?>
+    <div class="categories-management">
+        <h1>Category Management</h1>
+        <input type="text" placeholder="Search products..." id="search-products">
+        <select id="category-filter">
+            <option value="all">All Categories</option>
+            <option value="men">Men</option>
+            <option value="women">Women</option>
+            <option value="kids">Kids</option>
+        </select>
+        <button onclick="filterCategories()">Filter</button>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Inventory</th>
+                </tr>
+            </thead>
+            <tbody id="categories-list">
+                <!-- Dynamic content will be populated here -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function filterCategories() {
+            // Logic to filter categories based on selected category and search input
+            const searchValue = document.getElementById('search-products').value;
+            const categoryValue = document.getElementById('category-filter').value;
+            // Fetch and display filtered categories
+        }
+    </script>
     <?php
 }
 ?>

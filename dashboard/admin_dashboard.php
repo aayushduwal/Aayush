@@ -30,7 +30,7 @@ getSidebar();
     <div class="dashboard-header">
         <h1>Dashboard Overview</h1>
         <div class="nav-icon">
-            <p>Welcome, <?php echo $_SESSION['admin_username']; ?></p>
+            <p>Welcome, <?php echo htmlspecialchars($_SESSION['admin_username']); ?></p>
             <a href="../logout.php">Logout</a>
         </div>
     </div>
@@ -66,14 +66,13 @@ getSidebar();
                     <th>Amount</th>
                     <th>Status</th>
                     <th>Date</th>
-                    <!-- <th>Action</th> -->
                 </tr>
             </thead>
             <tbody>
                 <?php while($order = $recent_orders->fetch_assoc()): ?>
                 <tr>
                     <td>#<?php echo $order['id']; ?></td>
-                    <td><?php echo $order['customer_name']; ?></td>
+                    <td><?php echo htmlspecialchars($order['customer_name']); ?></td>
                     <td>NPR. <?php echo number_format($order['total_amount'], 2); ?></td>
                     <td>
                         <span class="status status-<?php echo strtolower($order['status']); ?>">
@@ -81,14 +80,87 @@ getSidebar();
                         </span>
                     </td>
                     <td><?php echo date('d M Y', strtotime($order['order_date'])); ?></td>
-                    <!-- <td>
-                        <a href="orders/view.php?id=<?php echo $order['id']; ?>" class="btn-view">View</a>
-                    </td> -->
                 </tr>
                 <?php endwhile; ?>
             </tbody>
         </table>
     </div>
 </div>
+
+<style>
+/* Enhanced UI Styles */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    flex: 1;
+    min-width: 200px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.stat-card .number {
+    font-size: 2em;
+    font-weight: bold;
+    color: ##45556C;
+}
+
+.recent-orders {
+    margin-top: 20px;
+}
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.order-table th, .order-table td {
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    text-align: left;
+}
+
+.order-table th {
+    background-color: #f8f9fa;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 4px;
+    color: white;
+}
+
+.status-completed {
+    background-color: #28a745;
+}
+
+.status-pending {
+    background-color: #ffc107;
+}
+
+.status-cancelled {
+    background-color: #dc3545;
+}
+</style>
 
 <?php getFooter(); ?>

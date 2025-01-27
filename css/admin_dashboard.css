@@ -442,3 +442,30 @@ body {
   width: 20px;
   text-align: center;
 }
+
+/* Style for the categories section */
+.categories-section {
+  margin: 10px 0;
+}
+
+/* Style for the select dropdown */
+.categories-section select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #2c3e50;
+  color: #fff;
+  font-size: 14px;
+}
+
+/* Change the appearance on focus */
+.categories-section select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Style for the dropdown options */
+.categories-section select option {
+  padding: 10px;
+}

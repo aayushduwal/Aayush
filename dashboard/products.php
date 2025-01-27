@@ -66,15 +66,15 @@ getSidebar();
                 <form action="?action=create" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label>Product Name</label>
-                        <input type="text" name="name" required>
+                        <input type="text" name="name" required class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Price</label>
-                        <input type="number" name="price" step="0.01" required>
+                        <input type="number" name="price" step="0.01" required class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="category">Category</label>
-                        <select name="category" id="category" required onchange="updateSubcategories()">
+                        <select name="category" id="category" required class="form-control" onchange="updateSubcategories()">
                             <option value="">Select Category</option>
                             <option value="Men">Men</option>
                             <option value="Women">Women</option>
@@ -83,13 +83,13 @@ getSidebar();
                     </div>
                     <div class="form-group">
                         <label for="subcategory">Subcategory</label>
-                        <select name="subcategory" id="subcategory" required>
+                        <select name="subcategory" id="subcategory" required class="form-control">
                             <option value="">Select Category First</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea name="description" rows="4"></textarea>
+                        <textarea name="description" rows="4" class="form-control"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="images">Main Product Image</label>
@@ -102,15 +102,15 @@ getSidebar();
                     </div>
                     <div class="form-group">
                         <label>Inventory</label>
-                        <input type="number" name="inventory" required>
+                        <input type="number" name="inventory" required class="form-control">
                     </div>
                     <div class="form-group">
                         <label>Sizes Available</label>
-                        <input type="text" name="sizes" required placeholder="Example: S,M,L or 40,41,42">
+                        <input type="text" name="sizes" required placeholder="Example: S,M,L or 40,41,42" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="show_on_home">Show on Home Page:</label>
-                        <input type="checkbox" name="show_on_home" id="show_on_home" defaultValue="1">
+                        <input type="checkbox" name="show_on_home" id="show_on_home" value="1">
                     </div>
                     <button type="submit" class="btn btn-primary">Add Product</button>
                 </form>
@@ -209,22 +209,22 @@ getSidebar();
                 
                 <div class="form-group">
                     <label>Product Name</label>
-                    <input type="text" name="name" value="<?php echo htmlspecialchars($product['name']); ?>" required>
+                    <input type="text" name="name" value="<?php echo htmlspecialchars($product['name']); ?>" required class="form-control">
                 </div>
                 
                 <div class="form-group">
                     <label>Slug</label>
-                    <input type="text" name="slug" value="<?php echo htmlspecialchars($product['slug']); ?>" required>
+                    <input type="text" name="slug" value="<?php echo htmlspecialchars($product['slug']); ?>" required class="form-control">
                 </div>
                 
                 <div class="form-group">
                     <label>Price</label>
-                    <input type="number" name="price" step="0.01" value="<?php echo $product['price']; ?>" required>
+                    <input type="number" name="price" step="0.01" value="<?php echo $product['price']; ?>" required class="form-control">
                 </div>
                 
                 <div class="form-group">
                     <label>Category</label>
-                    <select name="category" id="category" required onchange="updateSubcategories()">
+                    <select name="category" id="category" required class="form-control" onchange="updateSubcategories()">
                         <option value="">Select Category</option>
                         <option value="Men" <?php echo $product['category'] == 'Men' ? 'selected' : ''; ?>>Men</option>
                         <option value="Women" <?php echo $product['category'] == 'Women' ? 'selected' : ''; ?>>Women</option>
@@ -234,7 +234,7 @@ getSidebar();
                 
                 <div class="form-group">
                     <label>Subcategory</label>
-                    <select name="subcategory" id="subcategory" required>
+                    <select name="subcategory" id="subcategory" required class="form-control">
                         <option value="">Select Category First</option>
                         <?php if($product['subcategory']): ?>
                             <option value="<?php echo htmlspecialchars($product['subcategory']); ?>" selected>
@@ -246,12 +246,12 @@ getSidebar();
                 
                 <div class="form-group">
                     <label>Description</label>
-                    <textarea name="description" rows="4" required><?php echo htmlspecialchars($product['description']); ?></textarea>
+                    <textarea name="description" rows="4" required class="form-control"><?php echo htmlspecialchars($product['description']); ?></textarea>
                 </div>
                 
                 <div class="form-group">
                     <label>Sizes Available</label>
-                    <input type="text" name="sizes" value="<?php echo htmlspecialchars($product['sizes']); ?>" required placeholder="Example: S,M,L or 40,41,42">
+                    <input type="text" name="sizes" value="<?php echo htmlspecialchars($product['sizes']); ?>" required placeholder="Example: S,M,L or 40,41,42" class="form-control">
                 </div>
                 
                 <div class="form-group">
@@ -259,7 +259,7 @@ getSidebar();
                     <?php if($product['images']): ?>
                         <img src="../uploads/products/<?php echo htmlspecialchars($product['images']); ?>" class="product-thumbnail">
                     <?php endif; ?>
-                    <input type="file" name="images" accept="image/*">
+                    <input type="file" name="images" accept="image/*" class="form-control">
                     <small>Leave empty to keep current image</small>
                 </div>
                 
@@ -277,24 +277,24 @@ getSidebar();
                         endforeach;
                     endif; 
                     ?>
-                    <input type="file" name="additional_images[]" multiple accept="image/*">
+                    <input type="file" name="additional_images[]" multiple accept="image/*" class="form-control">
                     <small>Hold Ctrl to select multiple images. Leave empty to keep current images.</small>
                 </div>
                 
                 <div class="form-group">
                     <label>Inventory</label>
-                    <input type="number" name="inventory" value="<?php echo $product['inventory']; ?>" required>
+                    <input type="number" name="inventory" value="<?php echo $product['inventory']; ?>" required class="form-control">
                 </div>
                 
                 <div class="form-group">
                     <label>Rating</label>
-                    <input type="number" name="rating" step="0.01" min="0" max="5" value="<?php echo $product['rating']; ?>" readonly>
+                    <input type="number" name="rating" step="0.01" min="0" max="5" value="<?php echo $product['rating']; ?>" readonly class="form-control">
                     <small>Rating is automatically calculated based on user reviews</small>
                 </div>
                 
                 <div class="form-group">
                     <label>Rating Count</label>
-                    <input type="number" name="ratingcount" value="<?php echo $product['ratingcount']; ?>" readonly>
+                    <input type="number" name="ratingcount" value="<?php echo $product['ratingcount']; ?>" readonly class="form-control">
                     <small>Number of ratings received</small>
                 </div>
                 
@@ -418,10 +418,10 @@ case 'update':
                 <form method="GET" class="filter-form">
                     <input type="hidden" name="action" value="list">
                     <div class="form-group">
-                        <input type="text" name="search" placeholder="Search products..." value="<?php echo $search; ?>">
+                        <input type="text" name="search" placeholder="Search products..." value="<?php echo $search; ?>" class="form-control" style="display: inline-block; width: 500px; height: 40px; font-size: 16px;">
                     </div>
                     <div class="form-group">
-                        <select name="category">
+                        <select name="category" class="form-control" style="display: inline-block; width: 500px; height: 40px; font-size: 16px;">
                             <option value="">All Categories</option>
                             <?php
                             $categories = $conn->query("SELECT DISTINCT category FROM products");
@@ -433,8 +433,8 @@ case 'update':
                             <?php endwhile; ?>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Filter</button>
-                    <a href="?action=list" class="btn btn-secondary">Reset</a>
+                    <button type="submit" class="btn btn-primary" style="display: inline-block; height: 40px; font-size: 16px;">Filter</button>
+                    <a href="?action=list" class="btn btn-secondary" style="display: inline-block; height: 40px; font-size: 16px;"><i class="fas fa-redo"> </i>Reset</a>
                 </form>
             </div>
 
@@ -474,9 +474,9 @@ case 'update':
                                      alt="<?php echo $product['name']; ?>" 
                                      class="product-thumbnail">
                             </td>
-                            <td><?php echo $product['name']; ?></td>
+                            <td><?php echo htmlspecialchars($product['name']); ?></td>
                             <td>NPR. <?php echo number_format($product['price'], 2); ?></td>
-                            <td><?php echo $product['category']; ?></td>
+                            <td><?php echo htmlspecialchars($product['category']); ?></td>
                             <td><?php echo $product['inventory']; ?></td>
                             <td class="actions">
                                 <a href="?action=edit&id=<?php echo $product['id']; ?>" class="btn-edit">
