@@ -53,143 +53,146 @@ if (isset($_GET['id'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order History - ELEGANCE</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/index.css">
-    <link rel="stylesheet" href="../userdashboard/css/order_history.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order History - ELEGANCE</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../userdashboard/css/order_history.css">
   <!-- font of inter -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css">
 </head>
+
 <body>
-    <header>
-        <div class="logo">
-            <a href="index.php">
-                <img src="../images/logo.png" alt="Logo" />
-            </a>
-        </div>
-        <nav class="nav-container">
-            <ul class="navmenu">
-                <li><a href="/aayush/index.php">Home</a></li>
-                <li>
-                    <a href="/aayush/shop.php">Shop</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/aayush/mens_collection.php">Men's Collection</a></li>
-                        <li><a href="/aayush/womens_collection.php">Women's Collection</a></li>
-                        <li><a href="/aayush/kids_collection.php">Kid's Collection</a></li>
-                    </ul>
-                </li>
-                <!-- <li><a href="/aayush/about.php">About</a></li>
+  <header>
+    <div class="logo">
+      <a href="../index.php">
+        <img src="../images/logo.png" width="80" class="footer-image" height="80" alt="Elegance Logo" />
+      </a>
+    </div>
+    <nav class="nav-container">
+      <ul class="navmenu">
+        <li><a href="/aayush/index.php">Home</a></li>
+        <li>
+          <a href="/aayush/shop.php">Shop</a>
+          <ul class="dropdown-menu">
+            <li><a href="/aayush/mens_collection.php">Men's Collection</a></li>
+            <li><a href="/aayush/womens_collection.php">Women's Collection</a></li>
+            <li><a href="/aayush/kids_collection.php">Kid's Collection</a></li>
+          </ul>
+        </li>
+        <!-- <li><a href="/aayush/about.php">About</a></li>
                 <li><a href="/aayush/contact.php">Contact</a></li> -->
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <li><a href="/aayush/userdashboard/user_dashboard.php"><?php echo htmlspecialchars($user['username']); ?>'s Account</a></li>
-                    <li><a href="/aayush/logout.php">Logout</a></li>
-                <?php else: ?>
-                    <li><a href="login.php">Login</a></li>
-                <?php endif; ?>
-            </ul>
-        </nav>
-        <div class="nav-icon">
-            <?php if (isset($_SESSION['user_id'])): ?>
-                <p>Welcome, <?php echo htmlspecialchars($user['username']); ?></p>
-            <?php endif; ?>
-            <a href="/aayush/cart/cart.php"><i class='bx bx-shopping-bag'></i></a>
-            <div id="menu-icon"><i class='bx bx-menu'></i></div>
-        </div>
-    </header>
+        <?php if (isset($_SESSION['user_id'])): ?>
+        <li><a href="/aayush/userdashboard/user_dashboard.php"><?php echo htmlspecialchars($user['username']); ?>'s
+            Account</a></li>
+        <li><a href="/aayush/logout.php">Logout</a></li>
+        <?php else: ?>
+        <li><a href="login.php">Login</a></li>
+        <?php endif; ?>
+      </ul>
+    </nav>
+    <div class="nav-icon">
+      <?php if (isset($_SESSION['user_id'])): ?>
+      <p>Welcome, <?php echo htmlspecialchars($user['username']); ?></p>
+      <?php endif; ?>
+      <a href="/aayush/cart/cart.php"><i class='bx bx-shopping-bag'></i></a>
+      <div id="menu-icon"><i class='bx bx-menu'></i></div>
+    </div>
+  </header>
 
 
-    <div class="order-history-container">
-        <?php if (isset($_GET['id']) && $order_details && $order_details->num_rows > 0): 
+  <div class="order-history-container">
+    <?php if (isset($_GET['id']) && $order_details && $order_details->num_rows > 0): 
             $first_row = $order_details->fetch_assoc();
             $order_details->data_seek(0);
         ?>
-            <a href="order_history.php" class="back-btn">
-                <i class="fas fa-arrow-left"></i> Back to Orders
-            </a>
-            <div class="order-details">
-                <h2>Order #<?php echo $first_row['id']; ?></h2>
-                <div class="order-info">
-                    <p><strong>Order Date:</strong> <?php echo date('F j, Y', strtotime($first_row['order_date'])); ?></p>
-                    <p><strong>Status:</strong> 
-                        <span class="status status-<?php echo strtolower($first_row['status']); ?>">
-                            <?php echo ucfirst($first_row['status']); ?>
-                        </span>
-                    </p>
-                    <p><strong>Total Amount:</strong> NPR. <?php echo number_format($first_row['total_amount'], 2); ?></p>
-                </div>
-                <h3>Order Items</h3>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Image</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while($item = $order_details->fetch_assoc()): ?>
-                        <tr>
-                            <td><?php echo $item['product_name']; ?></td>
-                            <td>
-                                <img src="/aayush/uploads/products/<?php echo $item['images']; ?>" 
-                                     alt="<?php echo $item['product_name']; ?>" 
-                                     class="product-thumbnail">
-                            </td>
-                            <td>NPR. <?php echo number_format($item['price'], 2); ?></td>
-                            <td><?php echo $item['quantity']; ?></td>
-                            <td>NPR. <?php echo number_format($item['price'] * $item['quantity'], 2); ?></td>
-                        </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-            </div>
-        <?php else: ?>
-            <div class="orders-list">
-                <h2>Order History</h2>
-                <?php if ($orders->num_rows > 0): ?>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Date</th>
-                            <th>Total Items</th>
-                            <th>Total Amount</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while($order = $orders->fetch_assoc()): ?>
-                        <tr>
-                            <td>#<?php echo $order['id']; ?></td>
-                            <td><?php echo date('F j, Y', strtotime($order['order_date'])); ?></td>
-                            <td><?php echo $order['total_items']; ?></td>
-                            <td>NPR. <?php echo number_format($order['total_amount'], 2); ?></td>
-                            <td>
-                                <span class="status status-<?php echo strtolower($order['status']); ?>">
-                                    <?php echo ucfirst($order['status']); ?>
-                                </span>
-                            </td>
-                            <td>
-                                <a href="?id=<?php echo $order['id']; ?>" class="btn-view">
-                                    <i class="fas fa-eye"></i> View Details
-                                </a>
-                            </td>
-                        </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-                <?php else: ?>
-                    <p>No orders found.</p>
-                <?php endif; ?>
-            </div>
-        <?php endif; ?>
+    <a href="order_history.php" class="back-btn">
+      <i class="fas fa-arrow-left"></i> Back to Orders
+    </a>
+    <div class="order-details">
+      <h2>Order #<?php echo $first_row['id']; ?></h2>
+      <div class="order-info">
+        <p><strong>Order Date:</strong> <?php echo date('F j, Y', strtotime($first_row['order_date'])); ?></p>
+        <p><strong>Status:</strong>
+          <span class="status status-<?php echo strtolower($first_row['status']); ?>">
+            <?php echo ucfirst($first_row['status']); ?>
+          </span>
+        </p>
+        <p><strong>Total Amount:</strong> NPR. <?php echo number_format($first_row['total_amount'], 2); ?></p>
+      </div>
+      <h3>Order Items</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Image</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php while($item = $order_details->fetch_assoc()): ?>
+          <tr>
+            <td><?php echo $item['product_name']; ?></td>
+            <td>
+              <img src="/aayush/uploads/products/<?php echo $item['images']; ?>"
+                alt="<?php echo $item['product_name']; ?>" class="product-thumbnail">
+            </td>
+            <td>NPR. <?php echo number_format($item['price'], 2); ?></td>
+            <td><?php echo $item['quantity']; ?></td>
+            <td>NPR. <?php echo number_format($item['price'] * $item['quantity'], 2); ?></td>
+          </tr>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
     </div>
+    <?php else: ?>
+    <div class="orders-list">
+      <h2>Order History</h2>
+      <?php if ($orders->num_rows > 0): ?>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Total Items</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php while($order = $orders->fetch_assoc()): ?>
+          <tr>
+            <td>#<?php echo $order['id']; ?></td>
+            <td><?php echo date('F j, Y', strtotime($order['order_date'])); ?></td>
+            <td><?php echo $order['total_items']; ?></td>
+            <td>NPR. <?php echo number_format($order['total_amount'], 2); ?></td>
+            <td>
+              <span class="status status-<?php echo strtolower($order['status']); ?>">
+                <?php echo ucfirst($order['status']); ?>
+              </span>
+            </td>
+            <td>
+              <a href="?id=<?php echo $order['id']; ?>" class="btn-view">
+                <i class="fas fa-eye"></i> View Details
+              </a>
+            </td>
+          </tr>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
+      <?php else: ?>
+      <p>No orders found.</p>
+      <?php endif; ?>
+    </div>
+    <?php endif; ?>
+  </div>
 </body>
+
 </html>

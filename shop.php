@@ -176,7 +176,7 @@ if (isset($_SESSION['user_id'])) {
     </div>
   </section>
 
-  <section id="best-sellers">
+  <!-- <section id="best-sellers">
     <h2>Best Sellers</h2>
     <div class="best-seller-grid">
       <div class="best-seller-item">
@@ -205,7 +205,7 @@ if (isset($_SESSION['user_id'])) {
         <p>$199</p>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <section id="partnership">
     <div class="lv-banner">
