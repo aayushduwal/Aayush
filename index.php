@@ -128,10 +128,10 @@ $kidsProducts = $stmt_kids->get_result();
     <div class="slider">
       <!--adding multiple images in home page(index.php)-->
       <!-- Add your background images here -->
-      <div class="slide active" style="background-image: url('images/hero1.jpg')"></div>
-      <div class="slide" style="background-image: url('images/hero2.jpg')"></div>
-      <div class="slide" style="background-image: url('images/hero3.jpg')"></div>
+      <div class="slide active" style="background-image: url('images/hero3.jpg')"></div>
       <div class="slide" style="background-image: url('images/hero4.jpg')"></div>
+      <div class="slide" style="background-image: url('images/hero2.jpg')"></div>
+      <div class="slide" style="background-image: url('images/hero1.jpg')"></div>
     </div>
     <!--multiple images ends here-->
     <div class="main-home-overlay"></div>

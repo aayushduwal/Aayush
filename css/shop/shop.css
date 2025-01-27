@@ -154,9 +154,9 @@ header {
 
 #hero {
   height: 100vh;
-  margin-top: 95px;
-  padding-top: 95px;
-  background: url("https://assets.vogue.com/photos/6402527822c03e383970c37d/master/w_2560%2Cc_limit/00-story%2520(1).jpg")
+  /* margin-top: 95px; */
+  /* padding-top: 95px; */
+  background: url("https://im.uniqlo.com/global-cms/spa/rese23602ee184455e362416484bf4ed9c4fr.jpg")
     no-repeat center center/cover;
   display: flex;
   justify-content: center;

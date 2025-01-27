@@ -655,7 +655,7 @@ if (!$product) {
       <a href="../cart/cart.php"><i class="bx bx-cart"></i>
         <span id="cart-badge" class="cart-badge">0</span>
       </a>
-      <div class="bx bx-menu" id="menu-icon"></div>
+      <!-- <div class="bx bx-menu" id="menu-icon"></div> -->
     </div>
   </header>
   <!-- end of navbar -->
