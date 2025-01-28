@@ -89,94 +89,95 @@ unset($_SESSION['error_message']);
 
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Edit Profile - ELEGANCE</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/index.css">
-    <link rel="stylesheet" href="../userdashboard/css/edit_profile.css">
-    <style>
-        .success-message {
-            background-color: #d4edda;
-            color: #155724;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-            border: 1px solid #c3e6cb;
-        }
-        .error-message {
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-            border: 1px solid #f5c6cb;
-        }
-    </style>
+  <title>Edit Profile - ELEGANCE</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../userdashboard/css/edit_profile.css">
+  <style>
+  .success-message {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 1px solid #c3e6cb;
+  }
+
+  .error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 1px solid #f5c6cb;
+  }
+  </style>
 </head>
+
 <body>
-    <?php include('../includes/header.php'); ?>
+  <?php include('../includes/header.php'); ?>
 
-    <div class="edit-profile-container">
-        <div class="edit-profile-form">
-            <h2>Edit Profile</h2>
-            
-            <?php if ($success_message): ?>
-                <div class="success-message"><?php echo htmlspecialchars($success_message); ?></div>
-            <?php endif; ?>
-            
-            <?php if ($error_message): ?>
-                <div class="error-message"><?php echo htmlspecialchars($error_message); ?></div>
-            <?php endif; ?>
+  <div class="edit-profile-container">
+    <div class="edit-profile-form">
+      <h2>Edit Profile</h2>
 
-            <form method="POST" action="">
-                <div class="form-group">
-                    <label for="username">Username (Cannot be changed)</label>
-                    <input type="text" id="username" value="<?php echo htmlspecialchars($user['username']); ?>" disabled>
-                </div>
+      <?php if ($success_message): ?>
+      <div class="success-message"><?php echo htmlspecialchars($success_message); ?></div>
+      <?php endif; ?>
 
-                <div class="form-group">
-                    <label for="email">Email (Cannot be changed)</label>
-                    <input type="email" id="email" value="<?php echo htmlspecialchars($user['email']); ?>" disabled>
-                </div>
+      <?php if ($error_message): ?>
+      <div class="error-message"><?php echo htmlspecialchars($error_message); ?></div>
+      <?php endif; ?>
 
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" 
-                           value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>"
-                           pattern="[0-9]{10}" 
-                           title="Please enter a valid 10-digit phone number">
-                </div>
-
-                <div class="form-group">
-                    <label for="address">Delivery Address</label>
-                    <textarea id="address" name="address" rows="3"><?php echo htmlspecialchars($user['address'] ?? ''); ?></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="city">City</label>
-                    <input type="text" id="city" name="city" 
-                           value="<?php echo htmlspecialchars($user['city'] ?? ''); ?>">
-                </div>
-
-                <div class="form-group">
-                    <label>Country</label>
-                    <input type="text" value="Nepal" disabled>
-                    <input type="hidden" name="country" value="Nepal">
-                </div>
-
-                <div class="form-group">
-                    <label for="postal_code">Postal Code</label>
-                    <input type="text" id="postal_code" name="postal_code" 
-                           value="<?php echo htmlspecialchars($user['postal_code'] ?? ''); ?>"
-                           pattern="[0-9]{5}" 
-                           title="Please enter a valid 5-digit postal code">
-                </div>
-
-                <button type="submit" class="submit-btn">Update Profile</button>
-            </form>
+      <form method="POST" action="">
+        <div class="form-group">
+          <label for="username">Username (Cannot be changed)</label>
+          <input type="text" id="username" value="<?php echo htmlspecialchars($user['username']); ?>" disabled>
         </div>
-    </div>
 
-    <?php include('../includes/footer.php'); ?>
+        <div class="form-group">
+          <label for="email">Email (Cannot be changed)</label>
+          <input type="email" id="email" value="<?php echo htmlspecialchars($user['email']); ?>" disabled>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>"
+            pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number">
+        </div>
+
+        <div class="form-group">
+          <label for="address">Address</label>
+          <textarea id="address" name="address"
+            rows="3"><?php echo htmlspecialchars($user['address'] ?? ''); ?></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" id="city" name="city" value="<?php echo htmlspecialchars($user['city'] ?? ''); ?>">
+        </div>
+
+        <div class="form-group">
+          <label>Country</label>
+          <input type="text" value="Nepal" disabled>
+          <input type="hidden" name="country" value="Nepal">
+        </div>
+
+        <div class="form-group">
+          <label for="postal_code">Postal Code</label>
+          <input type="text" id="postal_code" name="postal_code"
+            value="<?php echo htmlspecialchars($user['postal_code'] ?? ''); ?>" pattern="[0-9]{5}"
+            title="Please enter a valid 5-digit postal code">
+        </div>
+
+        <button type="submit" class="submit-btn">Update Profile</button>
+      </form>
+    </div>
+  </div>
+
+  <?php include('../includes/footer.php'); ?>
 </body>
+
 </html>
