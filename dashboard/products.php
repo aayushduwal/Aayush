@@ -445,9 +445,10 @@ case 'update':
         </select>
       </div>
       <button type="submit" class="btn btn-primary"
-        style="display: inline-block; height: 40px; font-size: 16px;">Filter</button>
-      <a href="?action=list" class="btn btn-secondary" style="display: inline-block; height: 40px; font-size: 16px;"><i
-          class="fas fa-redo"> </i>Reset</a>
+        style="display: inline-block; padding: 0.4rem 1rem; font-size: 16px; background-color: #7F22FE; border-color: #7F22FE; color: white; border-radius: 7px;">Filter</button>
+      <a href="?action=list" class="btn btn-secondary" style=" display: inline-block; padding: 0.4rem 1rem;
+        font-size: 16px; background-color: #F1F5F9; border: 1px solid #CAD5E2; color: #314158; border-radius: 7px; text-decoration-line: none;
+"><i class="fas fa-redo"></i>Reset</a>
     </form>
   </div>
 

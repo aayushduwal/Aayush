@@ -3,8 +3,8 @@ session_start();
 require_once('../database/config.php');
 
 // Check if user is logged in
-$loggedIn = isset($_SESSION['user_id']);
-$username = $loggedIn ? $_SESSION['username'] : '';
+$isloggedIn = isset($_SESSION['user_id']);
+$username = $isloggedIn ? $_SESSION['username'] : '';
 ?>
 
 <!DOCTYPE html>
@@ -29,17 +29,15 @@ $username = $loggedIn ? $_SESSION['username'] : '';
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/index.css"> 
+  <link rel="stylesheet" href="../css/index.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
-  
-
   /* closing the font of inter */
 
   /* -------------------- Navbar Start -------------------- */
 
-  header { 
-    width: 100%; 
+  header {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -106,15 +104,15 @@ $username = $loggedIn ? $_SESSION['username'] : '';
   } */
 
   .dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: white;
-  display: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 10px 0;
-  z-index: 100;
-}
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    display: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+    z-index: 100;
+  }
 
 
   .navmenu li:hover .dropdown {
@@ -160,17 +158,17 @@ $username = $loggedIn ? $_SESSION['username'] : '';
   }
 
   #menu-icon {
-  font-size: 30px;
-  color: var(--dark-background);
-  cursor: pointer;
-  display: none;
-}
+    font-size: 30px;
+    color: var(--dark-background);
+    cursor: pointer;
+    display: none;
+  }
 
-    .container {
-      margin-top: 60px;
-    }
+  .container {
+    margin-top: 60px;
+  }
 
-    
+
   .cart-badge {
     position: relative;
     top: -10px;
@@ -195,7 +193,7 @@ $username = $loggedIn ? $_SESSION['username'] : '';
     right: 0;
     background: white;
     padding: 20px;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
@@ -264,51 +262,64 @@ $username = $loggedIn ? $_SESSION['username'] : '';
 </head>
 
 <body>
-<header>
+  <header>
     <div class="logo">
-        <a href="../index.php">
-            <img src="../images/logo.png" alt="Logo" />
-        </a>
+      <a href="../index.php">
+        <img src="../images/logo.png" alt="Logo" />
+      </a>
     </div>
     <nav class="nav-container">
-        <ul class="navmenu">
-            <li><a href="../index.php">Home</a></li>
-            <li>
-                <a href="../shop.php">Shop</a>
-                <ul class="dropdown-menu">
-                    <li><a href="../mens_collection.php">Men's Collection</a></li>
-                    <li><a href="../womens_collection.php">Women's Collection</a></li>
-                    <li><a href="../kids_collection.php">Kid's Collection</a></li>
-                </ul>
-            </li>
-            <!-- <li><a href="../About.php">About</a></li>
+      <ul class="navmenu">
+        <li><a href="../index.php">Home</a></li>
+        <li>
+          <a href="../shop.php">Shop</a>
+          <ul class="dropdown-menu">
+            <li><a href="../mens_collection.php">Men's Collection</a></li>
+            <li><a href="../womens_collection.php">Women's Collection</a></li>
+            <li><a href="../kids_collection.php">Kid's Collection</a></li>
+          </ul>
+        </li>
+        <!-- <li><a href="../About.php">About</a></li>
             <li><a href="../contact.php">Contact</a></li> -->
-            <?php if($loggedIn): ?>
-                <li><a href="../userdashboard/user_dashboard.php"><?php echo $username; ?>'s Account</a></li>
-                <li><a href="../logout.php">Logout</a></li>
-            <?php else: ?>
-                <li><a href="../login.php">Login</a></li>
-            <?php endif; ?>
-        </ul>
+        <?php if($isloggedIn): ?>
+        <?php if (isset($_SESSION['is_admin'])): ?>
+        <li><a href="dashboard/admin_dashboard.php" class="dashboard-btn">Dashboard</a></li>
+        <?php else: ?>
+        <li><a style="white-space: nowrap;word-break: keep-all;display:block;"
+            href="/aayush/userdashboard/user_dashboard.php">
+            <?php 
+                // Check if userDetails exists before accessing username
+                if (isset($userDetails['username'])) {
+                    echo htmlspecialchars($userDetails['username']); 
+                } else {
+                    echo htmlspecialchars($username); // Fallback to session username
+                }
+            ?>'s Account</a></li>
+        <?php endif; ?>
+        <li><a href="logout.php">Logout</a></li>
+        <?php else: ?>
+        <li><a href="login.php">Login</a></li>
+        <?php endif; ?>
+      </ul>
     </nav>
 
     <div class="nav-icon">
-        <?php if($loggedIn): ?>
-            <p>Logged in as <u><strong><?php echo htmlspecialchars($username); ?></strong></u></p>
-        <?php else: ?>
-            <a href="../login.php"><i class="bx bx-user"></i></a>
-        <?php endif; ?>
-        <a href="../cart/cart.php"><i class="bx bx-cart"></i>
-            <span id="cart-badge" class="cart-badge">0</span>
-        </a>
-        <div class="bx bx-menu" id="menu-icon"></div>
+      <?php if($isloggedIn): ?>
+      <p>Logged in as <u><strong><?php echo htmlspecialchars($username); ?></strong></u></p>
+      <?php else: ?>
+      <a href="../login.php"><i class="bx bx-user"></i></a>
+      <?php endif; ?>
+      <a href="../cart/cart.php"><i class="bx bx-cart"></i>
+        <span id="cart-badge" class="cart-badge">0</span>
+      </a>
+      <div class="bx bx-menu" id="menu-icon"></div>
     </div>
-</header>
+  </header>
   <!-- Cart Container -->
   <div class="container">
     <h1 class="text-center mb-4">Your Cart</h1>
     <div class="cart-container">
-        <?php
+      <?php
         if (isset($_SESSION['user_id'])) {
             $user_id = $_SESSION['user_id'];
             $total = 0; // Initialize total
@@ -326,30 +337,31 @@ $username = $loggedIn ? $_SESSION['username'] : '';
                     $subtotal = $item['price'] * $item['quantity']; // Calculate subtotal
                     $total += $subtotal; // Add to total
                     ?>
-                    <div class="cart-item">
-                        <img src="/aayush/uploads/products/<?php echo $item['images']; ?>" alt="<?php echo $item['product_name']; ?>">
-                        <div class="item-details">
-                            <h3><?php echo $item['product_name']; ?></h3>
-                            <p>Price: NPR. <?php echo number_format($item['price'], 0); ?></p>
-                            <p>Quantity: <?php echo $item['quantity']; ?></p>
-                            <p>Subtotal: NPR <?php echo number_format($subtotal, 0); ?></p>
-                            <button onclick="removeFromCart(<?php echo $item['id']; ?>)" class="remove-btn">Remove</button>
-                        </div>
-                    </div>
-                    <?php
+      <div class="cart-item">
+        <img src="/aayush/uploads/products/<?php echo $item['images']; ?>" alt="<?php echo $item['product_name']; ?>">
+        <div class="item-details">
+          <h3><?php echo $item['product_name']; ?></h3>
+          <p>Price: NPR. <?php echo number_format($item['price'], 0); ?></p>
+          <p>Quantity: <?php echo $item['quantity']; ?></p>
+          <p>Subtotal: NPR <?php echo number_format($subtotal, 0); ?></p>
+          <button onclick="removeFromCart(<?php echo $item['id']; ?>)" class="remove-btn">Remove</button>
+        </div>
+      </div>
+      <?php
                 }
                 ?>
-                <div class="cart-summary">
-                    <div class="total-amount">
-                        <h3>Total Amount: NPR <?php echo number_format($total, 0); ?></h3>
-                    </div>
-                    <div class="checkout-button">
-                        <a href="checkout.php" class="checkout-btn" style="background: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
-                            Proceed to Checkout
-                        </a>
-                    </div>
-                </div>
-                <?php
+      <div class="cart-summary">
+        <div class="total-amount">
+          <h3>Total Amount: NPR <?php echo number_format($total, 0); ?></h3>
+        </div>
+        <div class="checkout-button">
+          <a href="checkout.php" class="checkout-btn"
+            style="background: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+            Proceed to Checkout
+          </a>
+        </div>
+      </div>
+      <?php
             } else {
                 echo "<p class='empty-cart'>Your cart is empty</p>";
             }
@@ -365,25 +377,27 @@ $username = $loggedIn ? $_SESSION['username'] : '';
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Cart Script -->
-  <script src="addToCart.js" ></script>
+  <script src="addToCart.js"></script>
   <script>
-    let cart = [];
+  let cart = [];
 
-    function displayCart() {
-      
-      $.post('cart_handler.php', { action: 'fetch' }, function (response) {
-        const cart = JSON.parse(response);
-        const cartContainer = $('#cart-container');
-        // const cartCount = $('#cart-count');
-        // updateCartBadge();
+  function displayCart() {
 
-        // cartCount.text(cart.length);
-        if (cart.length === 0) {
-          cartContainer.html(`<div class="col-12 text-center"><p class="text-muted">Your cart is empty.</p></div>`);
-          return;
-        }
-       
-        const cartItemsHtml = cart.map(item => `
+    $.post('cart_handler.php', {
+      action: 'fetch'
+    }, function(response) {
+      const cart = JSON.parse(response);
+      const cartContainer = $('#cart-container');
+      // const cartCount = $('#cart-count');
+      // updateCartBadge();
+
+      // cartCount.text(cart.length);
+      if (cart.length === 0) {
+        cartContainer.html(`<div class="col-12 text-center"><p class="text-muted">Your cart is empty.</p></div>`);
+        return;
+      }
+
+      const cartItemsHtml = cart.map(item => `
           <div class="col-md-6">
             <div class="cart-item border p-3 mb-3">
               <h5>${item.product_name}</h5>
@@ -393,57 +407,59 @@ $username = $loggedIn ? $_SESSION['username'] : '';
             </div>
           </div>
         `).join('');
-        cartContainer.html(cartItemsHtml);
-      });
-    }
-
-    // function removeFromCart(id) {
-    //   $.post('cart_handler.php', { action: 'remove', id: id }, function (response) {
-    //     displayCart();
-    //     updateCartBadge();
-    //     alert(response);
-    //   });
-    // }
-
-    $(document).ready(displayCart);
-
-    $.post('cart_handler.php', { action: 'count' }, function(response) {
-      const totalItems = parseInt(response);
-      const cartBadge = $("#cart-badge");
-      if (totalItems > 0) {
-          cartBadge.css("visibility", "visible").text(totalItems);
-      } else {
-          cartBadge.css("visibility", "hidden");
-      }
+      cartContainer.html(cartItemsHtml);
     });
+  }
+
+  // function removeFromCart(id) {
+  //   $.post('cart_handler.php', { action: 'remove', id: id }, function (response) {
+  //     displayCart();
+  //     updateCartBadge();
+  //     alert(response);
+  //   });
+  // }
+
+  $(document).ready(displayCart);
+
+  $.post('cart_handler.php', {
+    action: 'count'
+  }, function(response) {
+    const totalItems = parseInt(response);
+    const cartBadge = $("#cart-badge");
+    if (totalItems > 0) {
+      cartBadge.css("visibility", "visible").text(totalItems);
+    } else {
+      cartBadge.css("visibility", "hidden");
+    }
+  });
   </script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script>
   function removeFromCart(cartId) {
-      if (confirm('Are you sure you want to remove this item?')) {
-          $.post('/aayush/cart/cart_handler.php', {
-              action: 'remove',
-              id: cartId
-          }, function(response) {
-              // Reload the page after successful removal
-              location.reload();
-          }).fail(function(xhr, status, error) {
-              console.error("Error removing item:", error);
-              alert("Error removing item from cart");
-          });
-      }
+    if (confirm('Are you sure you want to remove this item?')) {
+      $.post('/aayush/cart/cart_handler.php', {
+        action: 'remove',
+        id: cartId
+      }, function(response) {
+        // Reload the page after successful removal
+        location.reload();
+      }).fail(function(xhr, status, error) {
+        console.error("Error removing item:", error);
+        alert("Error removing item from cart");
+      });
+    }
   }
   </script>
   <script>
   $(document).ready(function() {
-      // Remove any click handlers that might be attached to checkout button
-      $('.checkout-btn').off('click');
-      
-      // Only attach click handlers to add-to-cart buttons
-      $('.add-to-cart-btn').click(function(e) {
-          e.preventDefault();
-          addToCart();
-      });
+    // Remove any click handlers that might be attached to checkout button
+    $('.checkout-btn').off('click');
+
+    // Only attach click handlers to add-to-cart buttons
+    $('.add-to-cart-btn').click(function(e) {
+      e.preventDefault();
+      addToCart();
+    });
   });
   </script>
 </body>

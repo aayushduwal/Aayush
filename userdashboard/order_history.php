@@ -99,7 +99,9 @@ if (isset($_GET['id'])) {
       <?php if (isset($_SESSION['user_id'])): ?>
       <p>Welcome, <?php echo htmlspecialchars($user['username']); ?></p>
       <?php endif; ?>
-      <a href="/aayush/cart/cart.php"><i class='bx bx-shopping-bag'></i></a>
+      <a href="/aayush/cart/cart.php"><i class='bx bx-cart'></i>
+        <!-- <span id="cart-badge" class="cart-badge">0</span> -->
+      </a>
       <div id="menu-icon"><i class='bx bx-menu'></i></div>
     </div>
   </header>
